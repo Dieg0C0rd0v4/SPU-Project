@@ -1,1 +1,18 @@
 
+module instruction_memory(addr,Instruction1,Instruction2); // Memory read for all instruction in a text file
+
+input [31:0] addr;
+output [31:0] Instruction1;
+output [31:0] Instruction2; 
+
+reg [7:0][7:0] mem[0:1024]; 
+
+
+initial begin
+ $readmemh("code.txt",mem);
+end
+
+assign Instruction1 = mem[3:0][addr>>3];
+assign Instruction2 = mem[7:0][addr>>3]; 
+
+endmodule

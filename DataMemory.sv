@@ -7,7 +7,7 @@ input [127:0] writeData;
 input clk, memWrite,memRead;
 output reg [127:0] readData; 
 
-reg [16:0][8:0] Memory[0:2000]; 
+reg [16:0][7:0] Memory[0:2000]; 
 
 
 
@@ -87,4 +87,3 @@ end
 DataMemory dm(address, writeData,clk, memWrite, memRead, readData);
 
 endmodule
-

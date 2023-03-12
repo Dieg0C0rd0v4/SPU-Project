@@ -1,20 +1,23 @@
 
-module program_counter(PC,clk,reset,PCwrite); // Program counter with adder included
+module ProgramCounter(PCNext,PCout,reset,clk,PCenable); // Program counter with adder included
+
+ parameter bitsize = 32;
+ 
+ input clk,reset,PCenable;	
+
+ input [bitsize-1:0] PCNext;
+ output reg [bitsize-1:0] PCout;
 
 
- input clk,reset,PCwrite;	
- output logic [31:0] PC =  32'd0;
-
-
- always_ff@(posedge clk) begin 
+ always @(posedge clk) begin 
 	
 	if (reset == 1) begin
-	 PC <= 32'd0;
+	 	PCout <= 0;
 	end
 	else begin
-         if(PCwrite==1) begin 
-	  PC <= PC + 4; 
-         end 
+         	if(PCenable==1) begin 
+	  		PCout <= PCNext; 
+         	end 
         end
- end
+end
 endmodule
