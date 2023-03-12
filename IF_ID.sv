@@ -1,5 +1,5 @@
 
-module IF_ID (PC_adderOut,instruction1,instruction2,PC_plusEight,instruction1,instruction2);
+module IF_ID (clk,PC_adderOut,instruction1,instruction2,PC_plusEight,first_instruction,second_instruction);
 
 parameter PCbitsize=32;
 
@@ -9,9 +9,9 @@ input [PCbitsize-1:0] PC_adderOut;
 
 input [31:0] instruction1,instruction2;
 
-output [PCbitsize-1:0] PC_plusEight;
+output logic[PCbitsize-1:0] PC_plusEight;
 
-output [31:0]  first_instruction, second_instruction; 
+output logic [31:0] first_instruction, second_instruction; 
 
 always_ff @(posedge clk) begin 
 
