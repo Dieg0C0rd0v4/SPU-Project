@@ -1,18 +1,4 @@
 
-module TestMemory(address, writeData,clk, memWrite, memRead, readData);
-
-input [31:0] address; 
-input [127:0] writeData;
-
-input clk, memWrite,memRead;
-output reg [127:0] readData; 
-
-reg [16:0][7:0] Memory[0:2000]; 
-
-
-
-endmodule
-
 
 module DataMemory(address, writeData,clk, memWrite, memRead, readData);
 
@@ -22,13 +8,8 @@ input [127:0] writeData;
 input clk, memWrite,memRead;
 output reg [127:0] readData; 
 
-reg [128:0] Memory[0:2000]; 
+reg [127:0] Memory[0:2000]; 
 
-
-
-logic memorycheck1;
-logic memorycheck2;
-logic [31:0] memorycheck3;
 
 always @(posedge clk) begin 
 
@@ -50,9 +31,6 @@ always @(posedge clk) begin
 
 	end
 
-	memorycheck1 <= address[1:0];
-	memorycheck2 <= address[1];
-	memorycheck3 <= address>>4;
 end
 
 
