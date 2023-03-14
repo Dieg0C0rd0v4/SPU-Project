@@ -82,27 +82,52 @@ R11
 R12
 R13
 n@data@memory_@test@bench
-vID_EX
+vEX_MEM
 R0
-!s110 1678685459
+!s110 1678761872
 !i10b 1
-!s100 7d6d=j3hb<;[o?ilAX:e<2
-II?nSU1h7WmRX:k<BcM?D12
+!s100 oZZ4G3FJ??K>VjX<Vgh:K1
+IIC0Umi?80H>nkSMQ>IBfE0
 R2
-!s105 ID_EX_sv_unit
+!s105 EX_MEM_sv_unit
 S1
 R4
-w1678685455
-8C:/intelFPGA/SPU Project/ID_EX.sv
-FC:/intelFPGA/SPU Project/ID_EX.sv
+w1678761871
+8C:/intelFPGA/SPU Project/EX_MEM.sv
+FC:/intelFPGA/SPU Project/EX_MEM.sv
 L0 2
 R8
 r1
 !s85 0
 31
-!s108 1678685459.000000
-!s107 C:/intelFPGA/SPU Project/ID_EX.sv|
-!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/ID_EX.sv|
+!s108 1678761872.000000
+!s107 C:/intelFPGA/SPU Project/EX_MEM.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/EX_MEM.sv|
+!i113 1
+R12
+R13
+n@e@x_@m@e@m
+vID_EX
+R0
+!s110 1678746834
+!i10b 1
+!s100 hz`nJ=8;bbL?dKfi28?nQ2
+I^8MU9`LjG<:DgmUT9D4cL3
+R2
+!s105 ID_EX_sv_unit
+S1
+R4
+w1678746831
+8C:\intelFPGA\SPU Project\ID_EX.sv
+FC:\intelFPGA\SPU Project\ID_EX.sv
+L0 2
+R8
+r1
+!s85 0
+31
+!s108 1678746834.000000
+!s107 C:\intelFPGA\SPU Project\ID_EX.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:\intelFPGA\SPU Project\ID_EX.sv|
 !i113 1
 R12
 R13
@@ -134,25 +159,25 @@ R13
 n@i@f_@i@d
 vinstruction_memory
 R0
-R14
+!s110 1678758017
 !i10b 1
-!s100 2ZB3ZS>oRRJYJY3CQnf?z2
-I2dnYa>;W^gi_F0JKd>Njn2
+!s100 `oW8P@_d0FR6EhBa>0fQk1
+IamRU_XG=g02l;ENZY]7KU0
 R2
 !s105 Instruction20Memory_sv_unit
 S1
 R4
-w1678656680
-8C:/intelFPGA/SPU Project/Instruction Memory.sv
-FC:/intelFPGA/SPU Project/Instruction Memory.sv
+w1678758014
+8C:\intelFPGA\SPU Project\Instruction Memory.sv
+FC:\intelFPGA\SPU Project\Instruction Memory.sv
 L0 2
 R8
 r1
 !s85 0
 31
-R15
-!s107 C:/intelFPGA/SPU Project/Instruction Memory.sv|
-!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/Instruction Memory.sv|
+!s108 1678758017.000000
+!s107 C:\intelFPGA\SPU Project\Instruction Memory.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:\intelFPGA\SPU Project\Instruction Memory.sv|
 !i113 1
 R12
 R13
@@ -181,6 +206,31 @@ R15
 R12
 R13
 n@instruction@fetch
+vJumpPCAdder
+R0
+!s110 1678761754
+!i10b 1
+!s100 jZ]0;Gef0fGSeHR3mEdzJ3
+Ihz2m6o9Ig;@2?>9lB>nNg2
+R2
+!s105 JumpPCAdder_sv_unit
+S1
+R4
+w1678761751
+8C:/intelFPGA/SPU Project/JumpPCAdder.sv
+FC:/intelFPGA/SPU Project/JumpPCAdder.sv
+L0 3
+R8
+r1
+!s85 0
+31
+!s108 1678761754.000000
+!s107 C:/intelFPGA/SPU Project/JumpPCAdder.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/JumpPCAdder.sv|
+!i113 1
+R12
+R13
+n@jump@p@c@adder
 vmain_TB
 R0
 !s110 1678664652
@@ -208,7 +258,7 @@ R13
 nmain_@t@b
 vmux2_to_1_32BIT
 R0
-R14
+!s110 1678750664
 !i10b 1
 !s100 F3OiLEMGWFg_DbmIi92lz3
 Ifd3hbWila;7F4Q`:OOTfX1
@@ -224,13 +274,38 @@ R8
 r1
 !s85 0
 31
-R15
+!s108 1678750664.000000
 !s107 C:/intelFPGA/SPU Project/mux2_to_1_32bits.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/mux2_to_1_32bits.sv|
 !i113 1
 R12
 R13
 nmux2_to_1_32@b@i@t
+vmux2_to_1_7BIT
+R0
+!s110 1678750127
+!i10b 1
+!s100 <n6O_gD[@?WIXR1Aa_aU`0
+IoaaZA<1IPeB1?V88Ti9MK1
+R2
+!s105 mux2_to_1_7bits_sv_unit
+S1
+R4
+w1678750125
+8C:/intelFPGA/SPU Project/mux2_to_1_7bits.sv
+FC:/intelFPGA/SPU Project/mux2_to_1_7bits.sv
+L0 3
+R8
+r1
+!s85 0
+31
+!s108 1678750127.000000
+!s107 C:/intelFPGA/SPU Project/mux2_to_1_7bits.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/mux2_to_1_7bits.sv|
+!i113 1
+R12
+R13
+nmux2_to_1_7@b@i@t
 vPCAdder
 R0
 R14
@@ -380,6 +455,30 @@ R26
 R12
 R13
 n@register@file@memory_@test@bench
+vshift3
+R0
+!s110 1678750617
+!i10b 1
+!s100 dD0a`UHfYVCIXlTa<Y4<R3
+I7>bOT^A:^[2WDb1XZ?fid1
+R2
+!s105 shiftLeft3_sv_unit
+S1
+R4
+w1678750614
+8C:/intelFPGA/SPU Project/shiftLeft3.sv
+FC:/intelFPGA/SPU Project/shiftLeft3.sv
+L0 2
+R8
+r1
+!s85 0
+31
+!s108 1678750617.000000
+!s107 C:/intelFPGA/SPU Project/shiftLeft3.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/shiftLeft3.sv|
+!i113 1
+R12
+R13
 vTestMemory
 R0
 R1

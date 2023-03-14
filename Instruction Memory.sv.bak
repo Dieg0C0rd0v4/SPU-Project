@@ -12,7 +12,7 @@ initial begin
  $readmemh("code.txt",mem);
 end
 
-assign Instruction1 = mem[3:0][addr>>3];
-assign Instruction2 = mem[7:0][addr>>3]; 
+assign Instruction1 = mem[addr>>3][7:4];
+assign Instruction2 = mem[addr>>3][3:0]; 
 
 endmodule
