@@ -31,7 +31,6 @@ always_ff @(posedge clk) begin
 		ALUResult_out <=ALUResult_in;
 		ReadData2_out<=ReadData2_in;
 		RegisterRT_out<=RegisterRT_in;
-
 	end
 end
 endmodule 

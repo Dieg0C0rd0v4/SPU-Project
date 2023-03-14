@@ -31,9 +31,6 @@ always @(posedge clk) begin
 
 	end
 
-	memorycheck1 <= address[1:0];
-	memorycheck2 <= address[1];
-	memorycheck3 <= address>>4;
 end
 
 

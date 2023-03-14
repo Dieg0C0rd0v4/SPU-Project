@@ -206,6 +206,31 @@ R22
 !i113 1
 R6
 R7
+vInstructionDecoder
+R0
+!s110 1678836928
+!i10b 1
+!s100 >DT_OeUV1ibO?6@XSZDkh1
+IKQV0kV9kd4TW<ahI?08OG1
+R2
+!s105 InstructionDecoder_sv_unit
+S1
+R3
+w1678836926
+8C:/intelFPGA/SPU Project/InstructionDecoder.sv
+FC:/intelFPGA/SPU Project/InstructionDecoder.sv
+L0 3
+R4
+r1
+!s85 0
+31
+!s108 1678836928.000000
+!s107 C:/intelFPGA/SPU Project/InstructionDecoder.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/InstructionDecoder.sv|
+!i113 1
+R6
+R7
+n@instruction@decoder
 vInstructionFetch
 R0
 R21
@@ -457,25 +482,25 @@ R7
 n@program@counter
 vRegisterFileMemory
 R0
-R21
+Z28 !s110 1678831253
 !i10b 1
-!s100 lcDhZCXhK0i>d1;baOh1a3
-I2_Sm`FC;M:bY[mVfTU<l80
+!s100 WHGiRV1_N:`B[7HEcKBU;2
+Ig;dBzZeGjLzfgXYA7lHXZ3
 R2
-Z28 !s105 RegisterFileMemory_sv_unit
+Z29 !s105 RegisterFileMemory_sv_unit
 S1
 R3
-Z29 w1678141752
-Z30 8C:/intelFPGA/SPU Project/RegisterFileMemory.sv
-Z31 FC:/intelFPGA/SPU Project/RegisterFileMemory.sv
+Z30 w1678831032
+Z31 8C:/intelFPGA/SPU Project/RegisterFileMemory.sv
+Z32 FC:/intelFPGA/SPU Project/RegisterFileMemory.sv
 L0 2
 R4
 r1
 !s85 0
 31
-R22
-Z32 !s107 C:/intelFPGA/SPU Project/RegisterFileMemory.sv|
-Z33 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/RegisterFileMemory.sv|
+Z33 !s108 1678831253.000000
+Z34 !s107 C:/intelFPGA/SPU Project/RegisterFileMemory.sv|
+Z35 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/RegisterFileMemory.sv|
 !i113 1
 R6
 R7
@@ -491,41 +516,41 @@ VdAk7PR5MJfCTU:^NT5fA[0
 S1
 R3
 w1678138425
-R30
 R31
+R32
 L0 18
 R4
 r1
 !s85 0
 31
 !s108 1678138449.000000
-R32
-R33
+R34
+R35
 !i113 1
 R6
 R7
 n@register@file@memory_sv_unit
 vRegisterFileMemory_TestBench
 R0
-R21
-!i10b 1
-!s100 3@NO1^M=JBg8<W4d]@8>11
-I18WS8]UYzd>C]1>1`D@8h3
-R2
 R28
+!i10b 1
+!s100 PL>BgIJTeD0]cN7FPfIf>1
+IJTj2;f=oM3XiAZ8@G<Llm3
+R2
+R29
 S1
 R3
-R29
 R30
 R31
-L0 33
+R32
+L0 35
 R4
 r1
 !s85 0
 31
-R22
-R32
 R33
+R34
+R35
 !i113 1
 R6
 R7
