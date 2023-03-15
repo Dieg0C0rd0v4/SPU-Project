@@ -5,7 +5,7 @@ input [31:0] addr;
 output [31:0] Instruction1;
 output [31:0] Instruction2; 
 
-reg [7:0][7:0] mem[0:1024]; 
+reg [7:0][7:0] mem[0:249]; 
 
 
 initial begin

@@ -1,16 +1,14 @@
 
 module IF_ID (clk,reset, PC_adderOut,instruction1,instruction2,PC_plusEight,first_instruction,second_instruction);
 
-parameter PCbitsize=32;
+parameter PCbitsize=11;
 
-input clk;
+input clk,reset;
 
 input [PCbitsize-1:0] PC_adderOut;
-
 input [31:0] instruction1,instruction2;
 
 output logic[PCbitsize-1:0] PC_plusEight;
-
 output logic [31:0] first_instruction, second_instruction; 
 
 

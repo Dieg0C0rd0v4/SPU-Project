@@ -1,7 +1,7 @@
 
 module InstructionFetch(reset,clk,PC_jump,PC_adderOut,PC_source,PC_enable,instruction1,instruction2);
 
-parameter bitsize= 32;
+parameter bitsize= 11;
 
 input clk,reset,PC_enable,PC_source;
 
@@ -12,7 +12,7 @@ output [bitsize-1:0] PC_adderOut;
 
 program_counter pc(PC_next,PC_out,clk,reset,PCenable);
 PCAdder(PC_out,PC_adderOut);
-mux2_to_1_32BIT Jump_or_Pc4(PC_next,PC_adderOut,PC_jump,PC_source);
+mux2_to_1_11BIT Jump_or_Pc4(PC_next,PC_adderOut,PC_jump,PC_source);
 instruction_memory insMem(PC_out,instruction1,instruction2);
 
 endmodule

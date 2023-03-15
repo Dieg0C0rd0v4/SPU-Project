@@ -1,7 +1,7 @@
 
 module ProgramCounter(PCNext,PCout,reset,clk,PCenable); // Program counter with adder included
 
- parameter bitsize = 32;
+ parameter bitsize = 11;
  
  input clk,reset,PCenable;	
 

@@ -1,48 +1,55 @@
-module sign_ext(in_7bits,in_10bits,in_16bits,in_18bits,out,select);
+module sign_ext(clk,reset,in_7bits,in_10bits,in_16bits,in_18bits,out,select);
 
 	input [6:0]in_7bits;
 	input [9:0]in_10bits;
 	input [15:0]in_16bits;
 	input [17:0]in_18bits;
-
+	input clk,reset;
 	output logic signed [127:0]out;
 	input  [1:0]select;
 
-always_comb begin
+always_ff @(posedge clk) begin
+		if (reset == 1) begin
+			out <= {121{1'b0}};
+		end
+		
+		else begin ////
 		case(select)
 		2'b00: begin
 			if (in_7bits[6]) begin
-				out = {{121{1'b1}},in_7bits};
+				out <= {{121{1'b1}},in_7bits};
 			end
 			else begin
-				out = {{121{1'b0}},in_7bits};
+				out <= {{121{1'b0}},in_7bits};
 			end
 		end	
 		2'b01: begin
 			if (in_10bits[9]) begin
-				out = {{118{1'b1}},in_10bits};
+				out <= {{118{1'b1}},in_10bits};
 			end
 			else begin
-				out = {{118{1'b0}},in_10bits};
+				out <= {{118{1'b0}},in_10bits};
 			end
 		end
 		2'b10: begin 
 			if (in_16bits[15]) begin
-				out = {{112{1'b1}},in_16bits};
+				out <= {{112{1'b1}},in_16bits};
 			end
 			else begin
-				out = {{112{1'b0}},in_16bits};
+				out <= {{112{1'b0}},in_16bits};
 			end
 		end
 		2'b11:begin
 			if (in_18bits[17]) begin
-				out = {{110{1'b1}},in_18bits};
+				out <= {{110{1'b1}},in_18bits};
 			end
 			else begin
-				out = {{110{1'b0}},in_18bits};
+				out <= {{110{1'b0}},in_18bits};
 			end
 		end
-	endcase
+		endcase
+		end    //////
+	
 end
 
 //sign_ext ET(out_temp,out,negative,select);
@@ -77,6 +84,7 @@ module sign_ext_tb();
 logic signed [127:0] out; 
 logic [1:0] select; 
 logic clk;
+logic reset=1; 
 initial clk = 0;
 always #10 clk = ~clk;
 
@@ -85,16 +93,16 @@ assign in2=10'h1AA;
 assign in3=16'h1DD;
 assign in4=18'h1AD;
 always begin
-     
-     select=0; //needs a fix here, but omit for now
+select=0; //needs a fix here, but omit for now
 @(posedge clk) 
 	select=1; 
+	reset = 0 ;
 @(posedge clk) 
 	select=2;
 @(posedge clk) 
 	select=3;
 end
 
-imm_select sign_test(in1,in2,in3,in4,out,select);
+sign_ext sign_test(clk,reset,in1,in2,in3,in4,out,select);
 
 endmodule 

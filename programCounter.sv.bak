@@ -1,5 +1,5 @@
 
-module ProgramCounter(PCNext,PCout,reset,PCenable); // Program counter with adder included
+module ProgramCounter(PCNext,PCout,reset,clk,PCenable); // Program counter with adder included
 
  parameter bitsize = 32;
  
