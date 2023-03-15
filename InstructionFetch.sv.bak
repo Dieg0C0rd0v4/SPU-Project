@@ -1,8 +1,6 @@
 
 module InstructionFetch(reset,clk,PC_jump,PC_adderOut,PC_source,PC_enable,instruction1,instruction2);
 
-
-
 parameter bitsize= 32;
 
 input clk,reset,PC_enable,PC_source;

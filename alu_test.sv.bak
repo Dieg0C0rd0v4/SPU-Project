@@ -1,7 +1,7 @@
 module ALU(a, b, ALUctr, out,zero_signal);
 
 input [127:0] a; 
-input [127:0] b; 
+input [127:0] b;
 input [3:0] ALUctr;
 output logic [127:0] out;
 output logic zero_signal;

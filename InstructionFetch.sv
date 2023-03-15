@@ -10,8 +10,6 @@ output [31:0] instruction1, instruction2;
 output [bitsize-1:0] PC_adderOut;
 
 
-
-
 program_counter pc(PC_next,PC_out,clk,reset,PCenable);
 PCAdder(PC_out,PC_adderOut);
 mux2_to_1_32BIT Jump_or_Pc4(PC_next,PC_adderOut,PC_jump,PC_source);
