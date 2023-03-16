@@ -1,11 +1,12 @@
 
-module InstructionFetch(reset,clk,PC_jump,PC_adderOut,PC_source,PC_enable,instruction1,instruction2);
+module InstructionFetch(reset,clk,PC_source,PC_enable,PC_jump,instruction1,instruction2,PC_adderOut);
 
 parameter bitsize= 11;
 
-input clk,reset,PC_enable,PC_source;
+input clk,reset;
+input PC_enable,PC_source;
+input [bitsize-1:0] PC_jump;
 
-input [bitsize-1:0] PC_jump; 
 output [31:0] instruction1, instruction2;
 output [bitsize-1:0] PC_adderOut;
 
