@@ -1,6 +1,7 @@
 
 
-module memory(clk,reset,branch,zero,memWrite,memRead,ALU_Result,readData2,registerRT_in,,PC_Source,Mem_readData,ALUResult_WB,registerRT_out);
+module Memory(clk,reset,branch,zero,memWrite,memRead,ALU_Result,readData2,registerRT_in,
+PC_Source,Mem_readData,ALUResult_WB,registerRT_out);
 
 input clk, reset; 
 
@@ -21,6 +22,7 @@ output [6:0] registerRT_out;
 assign PC_Source = branch & zero; 
 assign ALUResult_WB =  ALU_Result;  
 assign registerRT_out = registerRT_in; 
+
 DataMemory DM(ALU_Result, readData2 ,clk, memWrite, memRead, Mem_readData);
 
 

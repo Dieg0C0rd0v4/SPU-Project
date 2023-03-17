@@ -1,7 +1,8 @@
-module ALU(a, b, ALUctr, out,zero_signal);
+module ALU(a, b,c, ALUctr, out,zero_signal);
 
 input [127:0] a; 
 input [127:0] b; 
+input [127:0] c; 
 input [3:0] ALUctr;
 output logic [127:0] out;
 output logic zero_signal;
@@ -33,14 +34,18 @@ always_comb begin
                      
 		default : out = out; // no operation
 	endcase
-if(out==0) begin 
-zero_signal=1;//zero flag is on, result is 0 
-end 	
-else begin
-zero_signal=0; //the result is not 0 
-end
+
+	if(out==0) begin 
+		zero_signal=1;//zero flag is on, result is 0 
+	end 	
+	else begin
+		zero_signal=0; //the result is not 0 
+	end
 end
 endmodule 
+
+
+
 module ALU_tb();
 
 logic [127:0] a,b,out ; 

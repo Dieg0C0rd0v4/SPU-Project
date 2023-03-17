@@ -3,43 +3,65 @@ module controller(clk,reset);
 
 /////CONTROL SIGNALS /////
 input clk,reset;         // from control module
-logic regWrite_enable,regWrite_enable_EX;    // from control module
-logic mem_to_reg,mem_to_reg_EX;        // from control module
-logic branch,branch_EX;          // from control module
-logic memRead,memRead_EX;       // from control module
-logic memWrite,memWrite_EX;        // from control module
+logic regWrite_enable,regWrite_enable_EX,regWrite_enable_MEM,regWrite_enable_WB;    // from control module
+logic mem_to_reg,mem_to_reg_EX,mem_to_reg_MEM,mem_to_reg_WB;        // from control module
+logic branch,branch_EX,branch_MEM;          // from control module
+logic memRead,memRead_EX,memRead_MEM;       // from control module
+logic memWrite,memWrite_EX,memWrite_MEM;        // from control module
 logic ALU_Source,ALU_Source_EX;      // from control module
 logic [3:0] ALU_control,ALU_control_EX;    // from control module
 logic DestinationRegister,DestinationRegister_EX; // from control module
 logic PC_enable; // from control module
 logic immediate_select; // from control module
-wire zero_ID,zero_MEM; // from datapath 
-wire PC_source; // from datapath 
+wire zero_EX,zero_MEM; // from datapath 
+wire PC_source,PC_Source_MEM; // from datapath 
 ////////////////////////////
 
 wire [31:0] Instruction1_IF,Instruction2_IF,Instruction1_ID,Instruction2_ID;
 wire [10:0] PCadderOut_IF,PC_plusEight_in_ID,PC_plusEight_out_ID,PC_plusEight_out_EX;
-wire [10:0] PC_Jump;
+wire [10:0] Jump_PC_EX,Jump_PC_MEM;
 
-wire [127:0] writeData;
-wire [6:0] RegisterRT;
-wire [127:0] readDataRB_ID,readDataRB_EX;
-wire [127:0] readDataRA_ID,readDataRA_EX;
+wire [127:0] writeData,writeData_WB;
+wire [127:0] readDataRB_ID,readDataRB_EX; // Read Data 1 
+wire [127:0] readDataRA_ID,readDataRA_EX,readDataRA_EX2,ReadDataRA_MEM;
 wire [127:0] readDataRC_ID,readDataRC_EX;
+wire [6:0] RegisterRT,RegisterRT_EX,RegisterRT_MEM,registerRT_MEM2,RegisterRT_WB;
 wire [127:0] immediate_ID,immediate_EX;
-wire [7:0] DestinationRegister_RT_ID,DestinationRegister_RT_EX;
-wire [7:0] DestinationRegister_RRR_ID,DestinationRegister_RRR_EX;
+wire [6:0] DestinationRegister_RT_ID,DestinationRegister_RT_EX;
+wire [6:0] DestinationRegister_RRR_ID,DestinationRegister_RRR_EX;
+wire [127:0] ALUResult_EX,ALUResult_MEM,ALUResult_MEM2,ALUResult_WB;
+wire [127:0] Mem_readData_MEM,Mem_readData_WB;
 
-InstructionFetch IF(reset,clk,PC_source,PC_enable,PC_jump,Instruction1_IF,Instruction2_IF,PCadderOut_IF);
+
+assign PC_source = PC_Source_MEM;
+assign regWrite_enable_final = regWrite_enable_WB;
+assign RegisterRT = RegisterRT_WB;
+assign writeData= writeData_WB;
+
+InstructionFetch iF(reset,clk,PC_source,PC_enable,PC_jump,Instruction1_IF,Instruction2_IF,PCadderOut_IF);
 
 IF_ID if_id(clk,reset, PCadderOut_IF,Instruction1_IF,Instruction2_IF,PC_plusEight_in_ID,Instruction1_ID,Instruction2_ID);
 
-InstructionDecoder ID(PC_plusEight_in_ID,Instruction1_ID,registerRT,writeData,regWriteEnable,immediate_select,PC_plusEight_out_ID,DestinationRegister_RT_ID,DestinationRegister_RRR_ID,readDataRB_ID,readDataRA_ID,readDataRC_ID,immediate_ID);
+InstructionDecoder id(PC_plusEight_in_ID,Instruction1_ID,registerRT,writeData,regWriteEnable,immediate_select,PC_plusEight_out_ID,DestinationRegister_RT_ID,DestinationRegister_RRR_ID,readDataRB_ID,readDataRA_ID,readDataRC_ID,immediate_ID);
 
-ID_EX id_ex(clk,reset,mem_to_reg,regWriteEnable,branch,memRead,memWrite,ALU_Source,DestinationRegister,ALU_control,
+ID_EX id_ex(clk,reset,mem_to_reg,regWrite_enable_final,branch,memRead,memWrite,ALU_Source,DestinationRegister,ALU_control,
 readDataRB_ID,readDataRA_ID,readDataRC_ID,immediate_ID,PC_plusEight_out_ID,DestinationRegister_RT_ID,DestinationRegister_RRR_ID,
 mem_to_reg_EX,regWrite_enable_EX,branch_EX,memRead_EX,memWrite_EX,ALU_Source_EX,DestinationRegister_EX,ALU_control_EX,
 readDataRB_EX,readDataRA_EX,readDataRC_EX,immediate_EX,PC_plusEight_out_EX,DestinationRegister_RT_EX,DestinationRegister_RRR_EX);
+
+Execute ex(PC_plusEight_out_EX,immediate_EX,readDataRB_EX,readDataRA_EX,readDataRC_EX,DestinationRegister_RT_EX,DestinationRegister_RRR_EX,DestinationRegister_EX,ALU_control_EX,ALU_Source_EX,
+Jump_PC_EX,zero_EX,ALUResult_EX,readDataRA_EX2,RegisterRT_EX);
+
+EX_MEM ex_mem(reset, clk, mem_to_reg_EX, regWrite_enable_EX, branch_EX, memRead_EX, memWrite_EX,
+Jump_PC_EX,zero_EX,ALUResult_EX,readDataRA_EX2,RegisterRT_EX,
+mem_to_reg_MEM, regWrite_enable_MEM, branch_MEM, memRead_MEM, memWrite_MEM,
+Jump_PC_MEM,zero_MEM,ALUResult_MEM,ReadDataRA_MEM,RegisterRT_MEM);
+
+Memory mem(clk,reset,branch_MEM,zero_MEM,memWrite_MEM,memRead_MEM,ALUResult_MEM,ReadDataRA_MEM,RegisterRT_MEM,
+PC_Source_MEM,Mem_readData_MEM,ALUResult_MEM2,registerRT_MEM2);
+
+MEM_WB memwb(clk,reset, mem_to_reg_MEM,regWrite_enable_MEM, Mem_readData_MEM, ALUResult_MEM2, registerRT_MEM2,
+mem_to_reg_WB, regWrite_enable_WB, Mem_readData_WB, ALUResult_WB, RegisterRT_WB,writeData_WB);
 
 wire [10:0] opcode_RR;
 wire [3:0] opcode_RRR;

@@ -1,6 +1,6 @@
 
 
-module memory(clk,reset);
+module Memory(clk,reset,branch,zero,memWrite,memRead,ALU_Result,readData2,registerRT_in,,PC_Source,Mem_readData,ALUResult_WB,registerRT_out);
 
 input clk, reset; 
 
