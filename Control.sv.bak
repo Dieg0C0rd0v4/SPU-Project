@@ -25,7 +25,7 @@ wire [127:0] writeData;
 wire [6:0] RegisterRT;
 wire [127:0] readDataRB_ID,readDataRB_EX;
 wire [127:0] readDataRA_ID,readDataRA_EX;
-wire [127:0] readDataRC_ID,readDataRC_EX,
+wire [127:0] readDataRC_ID,readDataRC_EX;
 wire [127:0] immediate_ID,immediate_EX;
 wire [7:0] DestinationRegister_RT_ID,DestinationRegister_RT_EX;
 wire [7:0] DestinationRegister_RRR_ID,DestinationRegister_RRR_EX;
@@ -39,7 +39,7 @@ InstructionDecoder ID(PC_plusEight_in_ID,Instruction1_ID,registerRT,writeData,re
 ID_EX id_ex(clk,reset,mem_to_reg,regWriteEnable,branch,memRead,memWrite,ALU_Source,DestinationRegister,ALU_control,
 readDataRB_ID,readDataRA_ID,readDataRC_ID,immediate_ID,PC_plusEight_out_ID,DestinationRegister_RT_ID,DestinationRegister_RRR_ID,
 mem_to_reg_EX,regWrite_enable_EX,branch_EX,memRead_EX,memWrite_EX,ALU_Source_EX,DestinationRegister_EX,ALU_control_EX,
-readDataRB_EX,readDataRA_EX,readDataRC_EX,immediate_EX,PC_plusEight_out_EX,DestinationRegister_RT_out,DestinationRegister_RRR_out);
+readDataRB_EX,readDataRA_EX,readDataRC_EX,immediate_EX,PC_plusEight_out_EX,DestinationRegister_RT_EX,DestinationRegister_RRR_EX);
 
 wire [10:0] opcode_RR;
 wire [3:0] opcode_RRR;
@@ -67,7 +67,7 @@ always_ff @(posedge clk) begin
 		memRead <= 0; 
 		memWrite<= 0;	
 		ALU_Source <=0;
-		ALU_control <= 0;
+		ALU_control <=0;
 		DestinationRegister <= 0; 
 		PC_enable <=0; 
 		immediate_select<=0;
