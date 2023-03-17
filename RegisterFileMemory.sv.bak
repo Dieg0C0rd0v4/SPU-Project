@@ -1,5 +1,5 @@
 
-module RegisterFileMemory(readRegisterRB, readRegisterRA, readRegisterRT, readRegisterRC, writeData, regWriteEnable, clk, readDataRB, readDataRA, readDataRC);
+module RegisterFileMemory(readRegisterRB, readRegisterRA, readRegisterRT, readRegisterRC, writeData, regWriteEnable, clk,reset, readDataRB, readDataRA, readDataRC);
 
 input [6:0] readRegisterRB, readRegisterRA, readRegisterRT, readRegisterRC;
 input [127:0] writeData;

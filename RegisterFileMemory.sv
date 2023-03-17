@@ -5,6 +5,7 @@ input [6:0] readRegisterRB, readRegisterRA, readRegisterRT, readRegisterRC;
 input [127:0] writeData;
 input regWriteEnable, clk,reset;
 
+
 output reg [127:0] readDataRB, readDataRA, readDataRC;
 
 reg [127:0] Memory_Register [0:127];

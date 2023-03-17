@@ -5,14 +5,6 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	mux2_to_1_7BIT
 
-} {} {}} {C:/intelFPGA/SPU Project/RegisterFileMemory.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/RegisterFileMemory.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module RegisterFileMemory
--- Compiling module RegisterFileMemory_TestBench
-
-Top level modules:
-	RegisterFileMemory_TestBench
-
 } {} {}} {C:/intelFPGA/SPU Project/JumpPCAdder.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/JumpPCAdder.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module JumpPCAdder
@@ -85,29 +77,6 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	InstructionDecoder
 
-} {} {}} {C:/intelFPGA/SPU Project/alu_test.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/alu_test.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module ALU
--- Compiling module ALU_tb
-
-Top level modules:
-	ALU_tb
-
-} {} {}} {C:/intelFPGA/SPU Project/sign_ext.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/sign_ext.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module sign_ext
--- Compiling module sign_ext_tb
-
-Top level modules:
-	sign_ext_tb
-
-} {} {}} {C:/intelFPGA/SPU Project/mux2_to_1_11bits.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/mux2_to_1_11bits.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module mux2_to_1_11BIT
-
-Top level modules:
-	mux2_to_1_11BIT
-
 } {} {}} {C:/intelFPGA/SPU Project/ID_EX.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/ID_EX.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module ID_EX
@@ -122,12 +91,35 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	memory
 
-} {} {}} {C:/intelFPGA/SPU Project/Instruction Memory.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/Instruction Memory.sv}
+} {} {}} {C:/intelFPGA/SPU Project/mux2_to_1_11bits.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/mux2_to_1_11bits.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module instruction_memory
+-- Compiling module mux2_to_1_11BIT
 
 Top level modules:
-	instruction_memory
+	mux2_to_1_11BIT
+
+} {} {}} {C:/intelFPGA/SPU Project/sign_ext.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/sign_ext.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module sign_ext
+-- Compiling module sign_ext_tb
+
+Top level modules:
+	sign_ext_tb
+
+} {} {}} {C:/intelFPGA/SPU Project/alu_test.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/alu_test.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module ALU
+-- Compiling module ALU_tb
+
+Top level modules:
+	ALU_tb
+
+} {} {}} {C:/intelFPGA/SPU Project/IF_ID.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/IF_ID.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module IF_ID
+
+Top level modules:
+	IF_ID
 
 } {} {}} {C:/intelFPGA/SPU Project/PCAdder.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/PCAdder.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -136,12 +128,12 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	PCAdder
 
-} {} {}} {C:/intelFPGA/SPU Project/IF_ID.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/IF_ID.sv}
+} {} {}} {C:/intelFPGA/SPU Project/Instruction Memory.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/Instruction Memory.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module IF_ID
+-- Compiling module instruction_memory
 
 Top level modules:
-	IF_ID
+	instruction_memory
 
 } {} {}} {C:/intelFPGA/SPU Project/shiftLeft3.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/shiftLeft3.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016

@@ -3,7 +3,7 @@ module InstructionFetch(reset,clk,PC_source,PC_enable,PC_jump,instruction1,instr
 
 parameter bitsize= 11;
 
-input clk,reset
+input clk,reset;
 input PC_enable,PC_source;
 input [bitsize-1:0] PC_jump;
 
