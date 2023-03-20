@@ -1,5 +1,6 @@
 
-module IF_ID (clk,reset, PC_adderOut,instruction1,instruction2,PC_plusEight,first_instruction,second_instruction);
+module IF_ID (clk,reset, PC_adderOut,instruction1,instruction2,
+PC_plusEight,first_instruction,second_instruction);
 
 parameter PCbitsize=11;
 
@@ -14,7 +15,7 @@ output logic [31:0] first_instruction, second_instruction;
 
 
 always_ff @(posedge clk) begin 
-	if (reset==0) begin
+	if (reset==1) begin
 		PC_plusEight <= 0;
 		first_instruction <= 0;
 		second_instruction <= 0; 

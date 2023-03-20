@@ -24,14 +24,12 @@ always_comb begin
 		4'b0110 : out = a >> b; //shift Right
                 4'b0111  :  out=a*b; //multiply 
                 4'b1000:  if(a==b) begin
-                     out=1;
-                  end
-                 else begin
-                 out=0; 
-                 end
-               
-
-                     
+                     		out=1;
+                  	  end
+                 		else begin
+                 		out=0; 
+               		  end
+		4'b1111: out = a; 
 		default : out = out; // no operation
 	endcase
 

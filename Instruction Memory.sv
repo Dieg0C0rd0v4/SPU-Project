@@ -1,7 +1,7 @@
 
 module instruction_memory(addr,Instruction1,Instruction2); // Memory read for all instruction in a text file
 
-input [11:0] addr;
+input [10:0] addr;
 output [31:0] Instruction1;
 output [31:0] Instruction2; 
 

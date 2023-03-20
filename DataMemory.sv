@@ -2,7 +2,8 @@
 
 module DataMemory(address, writeData,clk, memWrite, memRead, readData);
 
-input [31:0] address; 
+
+input [127:0] address; 
 input [127:0] writeData;
 input clk, memWrite,memRead;
 output reg [127:0] readData; 

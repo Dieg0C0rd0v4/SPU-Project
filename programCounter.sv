@@ -4,8 +4,9 @@ module ProgramCounter(PCNext,PCout,reset,clk,PCenable); // Program counter with 
  parameter bitsize = 11;
  
  input clk,reset,PCenable;	
-
  input [bitsize-1:0] PCNext;
+
+
  output reg [bitsize-1:0] PCout;
 
 

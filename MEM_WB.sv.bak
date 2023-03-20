@@ -1,4 +1,4 @@
-module MEM_WB(clk,reset, mem_to_reg_in, regWrite_enable_in, readData_in, ALUResult_in, RegisterRT_in
+module MEM_WB(clk,reset, mem_to_reg_in, regWrite_enable_in, readData_in, ALUResult_in, RegisterRT_in,
 mem_to_reg_out, regWrite_enable_out, readData_out, ALUResult_out, RegisterRT_out,writeData_out);
 
 input clk,reset;
