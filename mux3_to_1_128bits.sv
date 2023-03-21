@@ -1,7 +1,7 @@
 
 
 
-module mux2_to_1_128BIT(out,selection0,selection1,selection2,sel); // signal multiplexing between 2 128-Bit words.
+module mux3_to_1_128BIT(out,selection0,selection1,selection2,sel); // signal multiplexing between 3 128-Bit words.
 
 output logic [127:0] out;
 input [127:0] selection0;

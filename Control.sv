@@ -1,4 +1,3 @@
-
 module controller(clk,reset);
 
 /////CONTROL SIGNALS /////
@@ -41,7 +40,7 @@ assign regWrite_enable_final = regWrite_enable_WB;
 assign RegisterRT = RegisterRT_WB;
 assign writeData= writeData_WB;
 
-InstructionFetch InstructionFetch_IF(reset,clk,PC_source,PC_enable,Jump_PC_MEM,
+Ins1uctionFetch InstructionFetch_IF(reset,clk,PC_source,PC_enable,Jump_PC_MEM,
                     Instruction1_IF,Instruction2_IF,PCadderOut_IF);
 
 IF_ID if_id(clk,reset, PCadderOut_IF,Instruction1_IF,Instruction2_IF,
@@ -69,7 +68,7 @@ PC_Source_MEM,Mem_readData_MEM);
 MEM_WB MEM_WB_With_WB(clk,reset, mem_to_reg_MEM,regWrite_enable_MEM, Mem_readData_MEM, ALUResult_MEM, registerRT_MEM,
 mem_to_reg_WB, regWrite_enable_WB, Mem_readData_WB, ALUResult_WB, RegisterRT_WB,writeData_WB);
 
-//Forward Control 
+//*Forward Control 
 
 ForwardingControl(readRegister_RB_ID,readRegister_RB_EX,readRegister_RA_ID,readRegister_RA_EX,regWrite_enable_MEM,RegisterRT_MEM,mem_to_reg_WB,RegisterRT_WB,
 				ReadData1Sel_ID,ReadData2Sel_ID,ReadData1Sel_EX,ReadData2Sel_EX);

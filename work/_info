@@ -10,7 +10,7 @@ cModel Technology
 dC:/intelFPGA
 vALU
 Z0 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
-Z1 !s110 1679270949
+Z1 !s110 1679354519
 !i10b 1
 !s100 G5KDDgSc=1Uz75SPn]fac3
 IoSiQ;Tj0GTKc_E>IkaK:M3
@@ -26,7 +26,7 @@ Z8 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z9 !s108 1679270949.000000
+Z9 !s108 1679354519.000000
 Z10 !s107 C:/intelFPGA/SPU Project/alu_test.sv|
 Z11 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/alu_test.sv|
 !i113 1
@@ -60,7 +60,7 @@ R13
 n@a@l@u_tb
 vBranchGate
 R0
-Z14 !s110 1679270948
+Z14 !s110 1679354518
 !i10b 1
 !s100 c:8ZgXkO;c:=7I@]b?S8o0
 IATfF=bFi1TkJdC52V627I1
@@ -76,7 +76,7 @@ R8
 r1
 !s85 0
 31
-Z16 !s108 1679270948.000000
+Z16 !s108 1679354518.000000
 !s107 C:/intelFPGA/SPU Project/Branch_Gate.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/Branch_Gate.sv|
 !i113 1
@@ -87,16 +87,16 @@ vcontroller
 R0
 R1
 !i10b 1
-!s100 ajUJP^EnQ7Fe7QPWf_fcn0
-IhnB?6R><T^NU8a:3TXgHR2
+!s100 zPB?5=CZb:=K^3Tl=SajO1
+IoIJK5C@jbAedVKfmTme6G2
 R2
 Z17 !s105 Control_sv_unit
 S1
 R4
-Z18 w1679270756
+Z18 w1679354030
 Z19 8C:/intelFPGA/SPU Project/Control.sv
 Z20 FC:/intelFPGA/SPU Project/Control.sv
-L0 2
+L0 1
 R8
 r1
 !s85 0
@@ -111,8 +111,8 @@ vController_tb
 R0
 R1
 !i10b 1
-!s100 zJEZBZK>P^jQV54;Dhz@h3
-INdG;ko`eEkYDI8K[gjd9;0
+!s100 j0FXQ>cX<KgRClO6=oBa83
+IDQWn>j=<>]7Az;XUA4W5C2
 R2
 R17
 S1
@@ -120,7 +120,7 @@ R4
 R18
 R19
 R20
-L0 134
+L0 133
 R8
 r1
 !s85 0
@@ -235,13 +235,13 @@ vExecute
 R0
 R1
 !i10b 1
-!s100 aciXcQ;`jVij6?<4[?`9]1
-IE:V=DM>XndbIGMa;DNWDg3
+!s100 lM6P6`dRCCiIK464@XYn00
+I>dNB>_Wa`FU8AkhR?zXce0
 R2
 !s105 Execute_sv_unit
 S1
 R4
-w1679270777
+w1679354215
 8C:/intelFPGA/SPU Project/Execute.sv
 FC:/intelFPGA/SPU Project/Execute.sv
 L0 2
@@ -260,13 +260,13 @@ vForwardingControl
 R0
 R1
 !i10b 1
-!s100 f;KTgZ:E`ncSgA>Eal9FP1
-I?QFSAYK0>Z6=@;f=@6jQ31
+!s100 Q5BBhHKU;d>?8E>NTVISb3
+IN5;0L6nReVQ@aeoF1oo^T0
 R2
 !s105 ForwardingControl_sv_unit
 S1
 R4
-w1679263193
+w1679354019
 8C:/intelFPGA/SPU Project/ForwardingControl.sv
 FC:/intelFPGA/SPU Project/ForwardingControl.sv
 L0 2
@@ -422,7 +422,7 @@ R8
 r1
 !s85 0
 31
-R9
+R16
 !s107 C:/intelFPGA/SPU Project/InstructionDecoder.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/InstructionDecoder.sv|
 !i113 1
@@ -506,7 +506,7 @@ R13
 nmain_@t@b
 vMEM_WB
 R0
-R1
+R14
 !i10b 1
 !s100 ;i[0E3D4j@mZY`;HZ27C:2
 IEIbnLnfLQ>=N_Qo[bS2=J2
@@ -529,6 +529,30 @@ R16
 R12
 R13
 n@m@e@m_@w@b
+vmemory
+R0
+!s110 1679080933
+!i10b 1
+!s100 :fad]7h8mlE9=@D_6N>4a1
+I0lA2[=kK^Da3<IQ]g66[i3
+R2
+Z34 !s105 Memory_sv_unit
+S1
+R4
+w1678878643
+8C:\intelFPGA\SPU Project\Memory.sv
+FC:\intelFPGA\SPU Project\Memory.sv
+L0 3
+R8
+r1
+!s85 0
+31
+!s108 1679080933.000000
+!s107 C:\intelFPGA\SPU Project\Memory.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:\intelFPGA\SPU Project\Memory.sv|
+!i113 1
+R12
+R13
 vMemory
 R0
 R1
@@ -536,7 +560,7 @@ R1
 !s100 5<6GNS742_F??[<V:V7_:3
 I42cI@UQ:0@04:k9Z_R<Jh1
 R2
-Z34 !s105 Memory_sv_unit
+R34
 S1
 R4
 w1679270944
@@ -554,30 +578,6 @@ R9
 R12
 R13
 n@memory
-vmemory
-R0
-!s110 1679080933
-!i10b 1
-!s100 :fad]7h8mlE9=@D_6N>4a1
-I0lA2[=kK^Da3<IQ]g66[i3
-R2
-R34
-S1
-R4
-w1678878643
-8C:\intelFPGA\SPU Project\Memory.sv
-FC:\intelFPGA\SPU Project\Memory.sv
-L0 3
-R8
-r1
-!s85 0
-31
-!s108 1679080933.000000
-!s107 C:\intelFPGA\SPU Project\Memory.sv|
-!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:\intelFPGA\SPU Project\Memory.sv|
-!i113 1
-R12
-R13
 vmux2_to_1_11BIT
 R0
 R1
@@ -605,25 +605,25 @@ R13
 nmux2_to_1_11@b@i@t
 vmux2_to_1_128BIT
 R0
-R1
+R14
 !i10b 1
-!s100 znd9DHY14TPzK`dKKm<Ji0
-IOEMVb>;PgKbd5jL^ln5F?2
+!s100 mAhdb6SXV^I2Ma[kRa1S21
+I@zfNIHC3ZPPO6GmMe`kXn0
 R2
-!s105 mux3_to_1_128bits_sv_unit
+!s105 mux2_to_1_128bits_sv_unit
 S1
 R4
-w1679266601
-8C:/intelFPGA/SPU Project/mux3_to_1_128bits.sv
-FC:/intelFPGA/SPU Project/mux3_to_1_128bits.sv
-L0 4
+R15
+8C:/intelFPGA/SPU Project/mux2_to_1_128bits.sv
+FC:/intelFPGA/SPU Project/mux2_to_1_128bits.sv
+L0 3
 R8
 r1
 !s85 0
 31
-R9
-!s107 C:/intelFPGA/SPU Project/mux3_to_1_128bits.sv|
-!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/mux3_to_1_128bits.sv|
+R16
+!s107 C:/intelFPGA/SPU Project/mux2_to_1_128bits.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/mux2_to_1_128bits.sv|
 !i113 1
 R12
 R13
@@ -678,6 +678,31 @@ R16
 R12
 R13
 nmux2_to_1_7@b@i@t
+vmux3_to_1_128BIT
+R0
+R1
+!i10b 1
+!s100 SDL9hHPYH`7@Vn:KLHHe02
+IYhJfEBEB;g@W0Fb^9l=G^2
+R2
+!s105 mux3_to_1_128bits_sv_unit
+S1
+R4
+w1679354321
+8C:/intelFPGA/SPU Project/mux3_to_1_128bits.sv
+FC:/intelFPGA/SPU Project/mux3_to_1_128bits.sv
+L0 4
+R8
+r1
+!s85 0
+31
+R9
+!s107 C:/intelFPGA/SPU Project/mux3_to_1_128bits.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/mux3_to_1_128bits.sv|
+!i113 1
+R12
+R13
+nmux3_to_1_128@b@i@t
 vPCAdder
 R0
 R14
