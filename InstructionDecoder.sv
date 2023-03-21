@@ -23,7 +23,8 @@ logic [9:0] in_10bits ;
 logic [15:0]in_16bits ;
 logic [17:0]in_18bits;
 logic [127:0] out; 
-logic  branch_fowarding_select;
+logic  branch_fowarding_selectC;
+logic branch_fowarding_selectD; 
 
 output [10:0] pcpluseight_out;
 output [6:0] DestinationRegister_RT;
@@ -64,9 +65,10 @@ logic compare_flag;
 RegisterFileMemory RFM(readRegisterRB, readRegisterRA, readRegisterRT, readRegisterRC, writeData, regWriteEnable, clk,reset, readDataRB, readDataRA, readDataRC);
 sign_ext se(clk,reset,in_7bits,in_10bits,in_16bits,in_18bits,out,immediate_select);
 shift3 shift_three(out[10:0], Jump_add); //shifts immediate by 3 to get Jump Add result  
-JumpPCAdder branch_address_result(pcpluseight_in, Jump_add,branch_address); //calcs branch address using the PC counter from the output of the IF/ID flip flop and shifted address
-mux2_to_1_128BIT branch_fowardC(output_branch_registerA,readDataRA,memory_data_address,branch_fowarding_select);//chooses to foward previous result or current result based on branch issues  
-mux2_to_1_128BIT branch_fowardD(output_branch_registerB,memory_data_address,readDataRB,branch_fowarding_select); 
+JumpPCAdder branch_address_result(pcpluseight_in, Jump_add,branch_address); //calcs branch address using the PC counter from the output of the IF/ID flip flop and shifted address	   
+branch_fowarding determine_branch_mux(branch_control, memory_data_address, readDataRa,readDataRB,branch_fowarding_selectC,branch_fowarding_selectD);
+mux2_to_1_128BIT branch_fowardC(output_branch_registerA,readDataRA,memory_data_address,branch_fowarding_selectC);//chooses to foward previous result or current result based on branch issues  
+mux2_to_1_128BIT branch_fowardD(output_branch_registerB,memory_data_address,readDataRB,branch_fowarding_selectD); 
 compare_equal check_branch_condition(output_branch_registerA,output_branch_registerB, compare_flag); //if equal branch 
 BranchGate start_branch(branch_control,	compare_flag, branch_result);
 
