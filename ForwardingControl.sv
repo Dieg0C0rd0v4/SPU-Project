@@ -27,8 +27,6 @@ module ForwardingControl(RB_ID,RB_EX,RA_ID,RA_EX,RegWrite_MEM,WriteRegAddress_ME
 			ReadData1Sel_EX <= 0;
 		end
 	
-
-
 		if (RA_EX == WriteRegAddress_MEM && RegWrite_MEM == 1) begin
 
 			ReadData2Sel_EX <= 1;

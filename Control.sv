@@ -2,8 +2,8 @@ module controller(clk,reset);
 
 /////CONTROL SIGNALS /////
 input clk,reset;         // from control module
-logic regWrite_enable,regWrite_enable_final,regWrite_enable_EX,regWrite_enable_MEM,regWrite_enable_WB;    // from control module
-logic mem_to_reg,mem_to_reg_EX,mem_to_reg_MEM,mem_to_reg_WB;        // from control module
+logic regWrite_enable,regWrite_enable_EX,regWrite_enable_MEM,regWrite_enable_ST3,regWrite_enable_ST4,regWrite_enable_ST5,regWrite_enable_ST6,regWrite_enable_ST7,regWrite_enable_WB;    // from control module
+logic mem_to_reg,mem_to_reg_EX,mem_to_reg_MEM,mem_to_reg_ST3,mem_to_reg_ST4,mem_to_reg_ST5,mem_to_reg_ST6,mem_to_reg_ST7,mem_to_reg_WB;        // from control module
 logic branch,branch_EX,branch_MEM;          // from control module
 logic memRead,memRead_EX,memRead_MEM;       // from control module
 logic memWrite,memWrite_EX,memWrite_MEM;        // from control module
@@ -26,49 +26,65 @@ wire [6:0] readRegister_RA_ID,readRegister_RA_EX;
 wire [127:0] readDataRB_ID,readDataRB_EX; // Read Data 1 
 wire [127:0] readDataRA_ID,readDataRA_EX,ReadDataRA_MEM;
 wire [127:0] readDataRC_ID,readDataRC_EX;
-wire [6:0] RegisterRT,RegisterRT_EX,RegisterRT_MEM,RegisterRT_WB;
+wire [6:0] RegisterRT,RegisterRT_EX,RegisterRT_MEM,RegisterRT_ST3,RegisterRT_ST4,RegisterRT_ST5,RegisterRT_ST6,RegisterRT_ST7,RegisterRT_WB;
 wire [127:0] immediate_ID,immediate_EX;
 wire [6:0] DestinationRegister_RT_ID,DestinationRegister_RT_EX;
 wire [6:0] DestinationRegister_RRR_ID,DestinationRegister_RRR_EX;
-wire [127:0] ALUResult_EX,ALUResult_MEM,ALUResult_WB;
-wire [127:0] Mem_readData_MEM,Mem_readData_WB;
-wire ReadData1Sel_ID,ReadData2Sel_ID;
+wire [127:0] ALUResult_EX,ALUResult_MEM,ALUResult_ST3,ALUResult_ST4,ALUResult_ST5,ALUResult_ST6,ALUResult_ST7,ALUResult_WB;
+wire [127:0] memReadData_MEM,memReadData_WB;
+wire 	ReadData1Sel_ID,ReadData2Sel_ID;
 wire [1:0] ReadData1Sel_EX,ReadData2Sel_EX;
 
 assign PC_source = PC_Source_MEM;
-assign regWrite_enable_final = regWrite_enable_WB;
 assign RegisterRT = RegisterRT_WB;
 assign writeData= writeData_WB;
 
-Ins1uctionFetch InstructionFetch_IF(reset,clk,PC_source,PC_enable,Jump_PC_MEM,
-                    Instruction1_IF,Instruction2_IF,PCadderOut_IF);
+InstructionFetch InstructionFetch_if(reset,clk,PC_source,PC_enable,Jump_PC_MEM,
+                    			Instruction1_IF,Instruction2_IF,PCadderOut_IF);
 
 IF_ID if_id(clk,reset, PCadderOut_IF,Instruction1_IF,Instruction2_IF,
             PC_plusEight_in_ID,Instruction1_ID,Instruction2_ID);
 
-InstructionDecoder InstructionDecoder_id(clk, reset, PC_plusEight_in_ID, Instruction1_ID,RegisterRT,writeData,regWrite_enable_final,immediate_select,
+InstructionDecoder InstructionDecoder_id(clk, reset, PC_plusEight_in_ID, Instruction1_ID,RegisterRT,writeData,regWrite_enable_WB,immediate_select,
                       PC_plusEight_out_ID,DestinationRegister_RT_ID,DestinationRegister_RRR_ID,readDataRB_ID,readDataRA_ID,readDataRC_ID,readRegister_RB_ID,readRegister_RA_ID);
 
 ID_EX id_ex(clk,reset,mem_to_reg,regWrite_enable,branch,memRead,memWrite,ALU_Source,DestinationRegister,ALU_control,
-readDataRB_ID,readDataRA_ID,readDataRC_ID,immediate_ID,PC_plusEight_out_ID,DestinationRegister_RT_ID,DestinationRegister_RRR_ID,readRegister_RA_ID,readRegister_RB_ID,
-mem_to_reg_EX,regWrite_enable_EX,branch_EX,memRead_EX,memWrite_EX,ALU_Source_EX,DestinationRegister_EX,ALU_control_EX,
-readDataRB_EX,readDataRA_EX,readDataRC_EX,immediate_EX,PC_plusEight_out_EX,DestinationRegister_RT_EX,DestinationRegister_RRR_EX,readRegister_RA_EX,readRegister_RB_EX);
+		readDataRB_ID,readDataRA_ID,readDataRC_ID,immediate_ID,PC_plusEight_out_ID,DestinationRegister_RT_ID,DestinationRegister_RRR_ID,readRegister_RA_ID,readRegister_RB_ID,
+		mem_to_reg_EX,regWrite_enable_EX,branch_EX,memRead_EX,memWrite_EX,ALU_Source_EX,DestinationRegister_EX,ALU_control_EX,
+		readDataRB_EX,readDataRA_EX,readDataRC_EX,immediate_EX,PC_plusEight_out_EX,DestinationRegister_RT_EX,DestinationRegister_RRR_EX,readRegister_RA_EX,readRegister_RB_EX);
 
 Execute Execute_ex(PC_plusEight_out_EX,immediate_EX,readDataRB_EX,readDataRA_EX,readDataRC_EX,DestinationRegister_RT_EX,DestinationRegister_RRR_EX,DestinationRegister_EX,ALU_control_EX,ALU_Source_EX,
-Jump_PC_EX,zero_EX,ALUResult_EX,RegisterRT_EX);
+			Jump_PC_EX,zero_EX,ALUResult_EX,RegisterRT_EX);
 
 EX_MEM ex_mem(reset, clk, mem_to_reg_EX, regWrite_enable_EX, branch_EX, memRead_EX, memWrite_EX,
-Jump_PC_EX,zero_EX,ALUResult_EX,readDataRC_EX,RegisterRT_EX,
-mem_to_reg_MEM, regWrite_enable_MEM, branch_MEM, memRead_MEM, memWrite_MEM,
-Jump_PC_MEM,zero_MEM,ALUResult_MEM,ReadDataRC_MEM,RegisterRT_MEM);
+		Jump_PC_EX,zero_EX,ALUResult_EX,readDataRC_EX,RegisterRT_EX,
+		mem_to_reg_MEM, regWrite_enable_MEM, branch_MEM, memRead_MEM, memWrite_MEM,
+		Jump_PC_MEM,zero_MEM,ALUResult_MEM,ReadDataRC_MEM,RegisterRT_MEM);
 
 Memory Memory_mem(clk,reset,branch_MEM,zero_MEM,memWrite_MEM,memRead_MEM,ALUResult_MEM,ReadDataRC_MEM,RegisterRT_MEM,
-PC_Source_MEM,Mem_readData_MEM);
+			PC_Source_MEM,memReadData_MEM);
 
-MEM_WB MEM_WB_With_WB(clk,reset, mem_to_reg_MEM,regWrite_enable_MEM, Mem_readData_MEM, ALUResult_MEM, registerRT_MEM,
-mem_to_reg_WB, regWrite_enable_WB, Mem_readData_WB, ALUResult_WB, RegisterRT_WB,writeData_WB);
+STAGES MEM_STAGE3(clk,reset, mem_to_reg_MEM,regWrite_enable_MEM, memReadData_MEM, ALUResult_MEM, registerRT_MEM,
+			mem_to_reg_ST3, regWrite_enable_ST3, memReadData_ST3, ALUResult_ST3, RegisterRT_ST3);
 
-//*Forward Control 
+STAGES STAGE3_STAGE4(clk,reset, mem_to_reg_ST3,regWrite_enable_ST3, memReadData_ST3, ALUResult_ST3, registerRT_ST3,
+			mem_to_reg_ST4, regWrite_enable_ST4, memReadData_ST4, ALUResult_ST4, RegisterRT_ST4);
+
+STAGES STAGE4_STAGE5(clk,reset, mem_to_reg_ST4,regWrite_enable_ST4, memReadData_ST4, ALUResult_ST4, registerRT_ST4,
+			mem_to_reg_ST5, regWrite_enable_ST5, memReadData_ST5, ALUResult_ST5, RegisterRT_ST5);
+
+STAGES STAGE5_STAGE6(clk,reset, mem_to_reg_ST5,regWrite_enable_ST5, memReadData_ST5, ALUResult_ST5, registerRT_ST5,
+			mem_to_reg_ST6, regWrite_enable_ST6, memReadData_ST6, ALUResult_ST6, RegisterRT_ST6);
+
+STAGES STAGE6_STAGE7(clk,reset, mem_to_reg_ST6,regWrite_enable_ST6, memReadData_ST6, ALUResult_ST6, registerRT_ST6,
+			mem_to_reg_ST7, regWrite_enable_ST7, memReadData_ST7, ALUResult_ST7, RegisterRT_ST7);
+
+STAGES STAGE7_WB(clk,reset, mem_to_reg_ST7,regWrite_enable_ST7, memReadData_ST7, ALUResult_ST7, registerRT_ST7,
+			mem_to_reg_WB, regWrite_enable_WB, memReadData_WB, ALUResult_WB, RegisterRT_WB);
+
+mux2_to_1_128BIT writeData_WB_SELECT(writeData_WB,ALUResult_WB,memReadData_WB,mem_to_reg_WB); // WB Stage
+
+//*Forward Control//
 
 ForwardingControl(readRegister_RB_ID,readRegister_RB_EX,readRegister_RA_ID,readRegister_RA_EX,regWrite_enable_MEM,RegisterRT_MEM,mem_to_reg_WB,RegisterRT_WB,
 				ReadData1Sel_ID,ReadData2Sel_ID,ReadData1Sel_EX,ReadData2Sel_EX);

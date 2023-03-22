@@ -1,5 +1,5 @@
-module MEM_WB(clk,reset, mem_to_reg_in, regWrite_enable_in, readData_in, ALUResult_in, RegisterRT_in,
-mem_to_reg_out, regWrite_enable_out, readData_out, ALUResult_out, RegisterRT_out,writeData_out);
+module STAGES(clk,reset, mem_to_reg_in, regWrite_enable_in, readData_in, ALUResult_in, RegisterRT_in,
+mem_to_reg_out, regWrite_enable_out, readData_out, ALUResult_out, RegisterRT_out);
 
 input clk,reset;
 
@@ -14,8 +14,6 @@ output logic regWrite_enable_out;
 output logic[127:0] readData_out; 
 output logic[127:0] ALUResult_out; 	
 output logic[6:0] RegisterRT_out;
-output logic[127:0] writeData_out;
-
 
 always_ff @(posedge clk) begin
 
@@ -39,6 +37,5 @@ always_ff @(posedge clk) begin
 
 end
 
-mux2_to_1_128BIT mem2reg(writeData_out,ALUResult_out,readData_out,mem_to_reg_out); // signal multiplexing between 2 128-Bit words.
 
 endmodule
