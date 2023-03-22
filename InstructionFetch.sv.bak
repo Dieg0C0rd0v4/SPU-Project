@@ -7,6 +7,7 @@ input clk,reset;
 input PC_enable,PC_source;
 input [bitsize-1:0] PC_jump;
 logic [bitsize-1:0] PC_out; 
+logic [bitsize-1:0] PC_next; 
 
 output [31:0] instruction1, instruction2;
 output [bitsize-1:0] PC_adderOut;
