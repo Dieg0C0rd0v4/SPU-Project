@@ -1,7 +1,8 @@
 
 
-module InstructionDecoder(clk,reset,pcpluseight_in,instruction,registerRT,writeData,regWriteEnable,immediate_select,
+module Registers128_128Bits(clk,reset,pcpluseight_in,instruction,registerRT,writeData,regWriteEnable,immediate_select,
                           pcpluseight_out,DestinationRegister_RT,DestinationRegister_RRR,readDataRB,readDataRA,readDataRC, immediate,readRegister_RB_ID,readRegister_RA_ID,branch_address,memory_data_address,branch_control,branch_result);
+parameter PC_bitSize =11; 
 
 input clk,reset ;
 input [10:0] pcpluseight_in;
@@ -31,10 +32,9 @@ output [6:0] DestinationRegister_RRR;
 output [127:0] readDataRB;
 output [127:0] readDataRA;
 output [127:0] readDataRC;
-
 output [127:0] immediate; 
 output [6:0] readRegister_RB_ID,readRegister_RA_ID;	 
-parameter PC_bitSize =11; 
+
 output [PC_bitSize-1:0] branch_address;
 output branch_result; 
 

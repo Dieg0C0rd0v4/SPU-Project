@@ -9,16 +9,11 @@ module ProgramCounter(PCNext,PCout,reset,clk,PCenable); // Program counter with 
 
  output reg [bitsize-1:0] PCout;
 
-
- always @(posedge clk) begin 
+always_comb begin
 	
-	if (reset == 1) begin
-	 	PCout <= 0;
-	end
-	else begin
-         	if(PCenable==1) begin 
-	  		PCout <= PCNext; 
-         	end 
-        end
+        if(PCenable==1) begin 
+	  	PCout <= PCNext; 
+        end 
+ 
 end
 endmodule

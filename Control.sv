@@ -32,7 +32,7 @@ wire [6:0] DestinationRegister_RT_ID,DestinationRegister_RT_EX;
 wire [6:0] DestinationRegister_RRR_ID,DestinationRegister_RRR_EX;
 wire [127:0] ALUResult_EX,ALUResult_MEM,ALUResult_ST3,ALUResult_ST4,ALUResult_ST5,ALUResult_ST6,ALUResult_ST7,ALUResult_WB;
 wire [127:0] memReadData_MEM,memReadData_WB;
-wire 	ReadData1Sel_ID,ReadData2Sel_ID;
+wire ReadData1Sel_ID,ReadData2Sel_ID;
 wire [1:0] ReadData1Sel_EX,ReadData2Sel_EX;
 
 assign PC_source = PC_Source_MEM;

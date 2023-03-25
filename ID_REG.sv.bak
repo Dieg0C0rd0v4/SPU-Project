@@ -1,0 +1,66 @@
+
+module ID_REG_STAGE(memToReg_ID1, regWriteEnable_ID1, memRead_ID1, memWrite_ID1, source_ID1, control_ID1,// control inputs2
+                    memToReg_ID2, regWriteEnable_ID2, memRead_ID2, memWrite_ID2, source_ID2, control_ID2,// control inputs1
+		    readRegisterRA_ID1, readRegisterRB_ID1, readRegisterRC_ID1, readRegisterRT_ID1, immediate7BIT_ID1, immediate10BIT_ID1, immediate16BIT_ID1, immediate18BIT_ID1, //Datapath inputs1
+                    readRegisterRA_ID2, readRegisterRB_ID2, readRegisterRC_ID2, readRegisterRT_ID2, immediate7BIT_ID2, immediate10BIT_ID2, immediate16BIT_ID2, immediate18BIT_ID2,
+		    memToReg_REG1, regWrite_enable_REG1, memRead_REG1, memWrite_REG1, source_REG1, control_REG1,
+		    memToReg_REG2, regWrite_enable_REG2, memRead_REG2, memWrite_REG2, source_REG2, control_REG2,
+		    readRegisterRA_REG1, readRegisterRB_REG1, readRegisterRC_REG1, readRegisterRT_REG1,immediate7BIT_REG1, immediate10BIT_REG1, immediate16BIT_REG1, immediate18BIT_REG1,
+         	    readRegisterRA_REG2, readRegisterRB_REG2, readRegisterRC_REG2, readRegisterRT_REG2,immediate7BIT_REG2, immediate10BIT_REG2, immediate16BIT_REG2, immediate18BIT_REG2,
+		    clk,reset);
+
+		
+
+input clk,reset;
+input memToReg_ID1,regWrite_enable_ID1,memRead_ID1,memWrite_ID1,source_ID1;	//Control Signals Input from Instruction decoder
+input memToReg_ID2,regWrite_enable_ID2,memRead_ID2,memWrite_ID2,source_ID2; //Control Signals Input from Instruction decoder
+input [3:0] control_ID1; //Control Signal for Execution 1
+input [3:0] control_ID2; //Control Signal for Execution
+input [6:0] readRegisterRA_ID1, readRegisterRB_ID1, readRegisterRC_ID1, readRegisterRT_ID1; // ReadRegisters inputs
+input [6:0] readRegisterRA_ID2, readRegisterRB_ID2, readRegisterRC_ID2, readRegisterRT_ID2; // ReadRegisters inputs
+input [6:0] immediate7BIT_ID1; // Immediates inputs for # bits  
+input [6:0] immediate7BIT_ID2;  
+input [9:0] immediate10BIT_ID1;  
+input [9:0] immediate10BIT_ID2;
+input [15:0] immediate16BIT_ID1;
+input [15:0] immediate16BIT_ID2;
+input [17:0] immediate18BIT_ID1;
+input [17:0] immediate18BIT_ID2;
+
+output logic memToReg_REG1,regWrite_enable_REG1,memRead_REG1,memWrite_REG1,source_REG1;	//Control Signals Input from Instruction decoder
+output logic  memToReg_REG2,regWrite_enable_REG2,memRead_REG2,memWrite_REG2,source_REG2; //Control Signals Input from Instruction decoder
+output logic  [3:0] control_REG1; //Control Signal for Execution 1
+output logic  [3:0] control_REG2; //Control Signal for Execution
+output logic  [6:0] readRegisterRA_REG1, readRegisterRB_REG1, readRegisterRC_REG1, readRegisterRT_REG1; // ReadRegisters inputs
+output logic  [6:0] readRegisterRA_REG2, readRegisterRB_REG2, readRegisterRC_REG2, readRegisterRT_REG2; // ReadRegisters inputs
+output logic  [6:0] immediate7BIT_REG1; // Immediates outputs for # bits  
+output logic  [6:0] immediate7BIT_REG2;  
+output logic  [9:0] immediate10BIT_REG1;  
+output logic  [9:0] immediate10BIT_REG2;
+output logic  [15:0] immediate16BIT_REG1;
+output logic  [15:0] immediate16BIT_REG2;
+output logic  [17:0] immediate18BIT_REG1;
+output logic  [17:0] immediate18BIT_REG2;
+
+always_ff @(posedge clk) begin
+
+	if (reset==1) begin 
+		memToReg_REG1<=0; regWrite_enable_REG1<=0; memRead_REG1<=0; memWrite_REG1<=0; source_REG1<=0; control_REG1<=0;
+		memToReg_REG2<=0; regWrite_enable_REG2<=0; memRead_REG2<=0; memWrite_REG2<=0; source_REG2<=0; control_REG2<=0;
+		readRegisterRA_REG1<=0; readRegisterRB_REG1<=0; readRegisterRC_REG1<=0; readRegisterRT_REG1<=0;
+		readRegisterRA_REG2<=0; readRegisterRB_REG2<=0; readRegisterRC_REG2<=0; readRegisterRT_REG2<=0;
+		immediate7BIT_REG1<=0; immediate10BIT_REG1<=0; immediate16BIT_REG1<=0; immediate18BIT_REG1<=0;
+		immediate7BIT_REG2<=0; immediate10BIT_REG2<=0; immediate16BIT_REG2<=0; immediate18BIT_REG2<=0;
+	end	
+	else begin
+		memToReg_REG1<=memToReg_ID1; regWrite_enable_REG1<=regWrite_enable_ID1; memRead_REG1<=memRead_ID1; memWrite_REG1<=memWrite_ID1; source_REG1<=source_ID1; control_REG1<=control_ID1;
+		memToReg_REG2<=memToReg_ID2; regWrite_enable_REG2<=regWrite_enable_ID2; memRead_REG2<=memRead_ID2; memWrite_REG2<=memWrite_ID2; source_REG2<=source_ID2; control_REG2<=control_ID2;
+		readRegisterRA_REG1<=readRegisterRA_ID1; readRegisterRB_REG1<=readRegisterRB_ID1; readRegisterRC_REG1<=readRegisterRC_ID1; readRegisterRT_REG1<=readRegisterRT_ID1;
+		readRegisterRA_REG2<=readRegisterRA_ID2; readRegisterRB_REG2<=readRegisterRB_ID2; readRegisterRC_REG2<=readRegisterRC_ID2; readRegisterRT_REG2<=readRegisterRT_ID2;
+		immediate7BIT_REG1<=immediate7BIT_ID1; immediate10BIT_REG1<=immediate10BIT_ID1; immediate16BIT_REG1<=immediate16BIT_ID1; immediate18BIT_REG1<=immediate18BIT_ID1;
+		immediate7BIT_REG2<=immediate7BIT_ID2; immediate10BIT_REG2<=immediate10BIT_ID2; immediate16BIT_REG2<=immediate16BIT_ID2; immediate18BIT_REG2<=immediate18BIT_ID2;
+		
+	end
+end
+
+endmodule

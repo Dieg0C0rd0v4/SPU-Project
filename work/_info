@@ -10,7 +10,7 @@ cModel Technology
 dC:/intelFPGA
 vALU
 Z0 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
-Z1 !s110 1679450768
+Z1 !s110 1679720149
 !i10b 1
 !s100 4OEi8jdaPbY<_=j:eV4i23
 Ia>2d06TnE:CNSi4CXfg1g1
@@ -26,7 +26,7 @@ Z8 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z9 !s108 1679450768.000000
+Z9 !s108 1679720149.000000
 Z10 !s107 C:/intelFPGA/SPU Project/ALU.sv|
 Z11 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/ALU.sv|
 !i113 1
@@ -135,7 +135,7 @@ R13
 n@a@l@u_word_op
 vBranchGate
 R0
-Z14 !s110 1679450767
+R1
 !i10b 1
 !s100 c:8ZgXkO;c:=7I@]b?S8o0
 IATfF=bFi1TkJdC52V627I1
@@ -143,7 +143,7 @@ R2
 !s105 Branch_Gate_sv_unit
 S1
 R4
-Z15 w1678837335
+Z14 w1678837335
 8C:/intelFPGA/SPU Project/Branch_Gate.sv
 FC:/intelFPGA/SPU Project/Branch_Gate.sv
 L0 2
@@ -151,32 +151,56 @@ R8
 r1
 !s85 0
 31
-Z16 !s108 1679450767.000000
+R9
 !s107 C:/intelFPGA/SPU Project/Branch_Gate.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/Branch_Gate.sv|
 !i113 1
 R12
 R13
 n@branch@gate
-vcontroller
+vcompare_equal
 R0
 R1
 !i10b 1
-!s100 0B;YT5974;hWk_AnKY9j30
-Ij7eM?cglDS6?c2>2dY=eS1
+!s100 ojef3DeG2`iLb9Ig>0m4F3
+I_6[Q`cGdQSC<PjT^KoB>>3
 R2
-Z17 !s105 Control_sv_unit
+!s105 compare_equal_sv_unit
 S1
 R4
-Z18 w1679443677
-Z19 8C:/intelFPGA/SPU Project/Control.sv
-Z20 FC:/intelFPGA/SPU Project/Control.sv
-L0 1
+w1679450796
+8C:/intelFPGA/SPU Project/compare_equal.sv
+FC:/intelFPGA/SPU Project/compare_equal.sv
+L0 2
 R8
 r1
 !s85 0
 31
 R9
+!s107 C:/intelFPGA/SPU Project/compare_equal.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/compare_equal.sv|
+!i113 1
+R12
+R13
+vcontroller
+R0
+Z15 !s110 1679770317
+!i10b 1
+!s100 0B;YT5974;hWk_AnKY9j30
+Ij7eM?cglDS6?c2>2dY=eS1
+R2
+Z16 !s105 Control_sv_unit
+S1
+R4
+Z17 w1679720416
+Z18 8C:/intelFPGA/SPU Project/Control.sv
+Z19 FC:/intelFPGA/SPU Project/Control.sv
+L0 1
+R8
+r1
+!s85 0
+31
+Z20 !s108 1679770317.000000
 Z21 !s107 C:/intelFPGA/SPU Project/Control.sv|
 Z22 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/Control.sv|
 !i113 1
@@ -184,23 +208,23 @@ R12
 R13
 vController_tb
 R0
-R1
+R15
 !i10b 1
 !s100 Z:>Ok?1WX@mz0AT030hzD1
 IL^4I=3DVTj2?UiGN:[of?0
 R2
-R17
+R16
 S1
 R4
+R17
 R18
 R19
-R20
 L0 149
 R8
 r1
 !s85 0
 31
-R9
+R20
 R21
 R22
 !i113 1
@@ -209,25 +233,25 @@ R13
 n@controller_tb
 vDataMemory
 R0
-R14
+Z23 !s110 1679720148
 !i10b 1
 !s100 U9Z@D1GaVQLkF37h9bKC81
 I9U]6Vf89bfV@gIS7oP6oh1
 R2
-Z23 !s105 DataMemory_sv_unit
+Z24 !s105 DataMemory_sv_unit
 S1
 R4
-Z24 w1679105596
-Z25 8C:/intelFPGA/SPU Project/DataMemory.sv
-Z26 FC:/intelFPGA/SPU Project/DataMemory.sv
+Z25 w1679105596
+Z26 8C:/intelFPGA/SPU Project/DataMemory.sv
+Z27 FC:/intelFPGA/SPU Project/DataMemory.sv
 L0 3
 R8
 r1
 !s85 0
 31
-R16
-Z27 !s107 C:/intelFPGA/SPU Project/DataMemory.sv|
-Z28 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/DataMemory.sv|
+Z28 !s108 1679720148.000000
+Z29 !s107 C:/intelFPGA/SPU Project/DataMemory.sv|
+Z30 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/DataMemory.sv|
 !i113 1
 R12
 R13
@@ -245,53 +269,53 @@ INSPaWX@8VgRi=MPi3=96K3
 S1
 R4
 w1678393468
-R25
 R26
+R27
 L0 14
 R8
 !s108 1678393469.000000
-R27
-R28
+R29
+R30
 !i113 1
 R12
 R13
 n@data@memory_sv_unit
 vDataMemory_TestBench
 R0
-R14
+R23
 !i10b 1
 !s100 <A^N@0a[LVRN`SZ>RHY=^2
 IUb]h>I556N53bH5;G3=H:1
 R2
-R23
+R24
 S1
 R4
-R24
 R25
 R26
+R27
 L0 39
 R8
 r1
 !s85 0
 31
-R16
-R27
 R28
+R29
+R30
 !i113 1
 R12
 R13
 n@data@memory_@test@bench
 vEX_MEM
 R0
-R14
+!s110 1679772015
 !i10b 1
-!s100 5XREUichgN0]W<BQcJc3k3
-Io:bJX51mmH>DL4FXFOQD>1
+!s100 8?z2BGNX`[=zLEZ0o5cZC2
+Ibj_Lk9lzHNSi3n>R;X7aJ3
 R2
 !s105 EX_MEM_sv_unit
 S1
 R4
-w1679270175
+w1679772013
 8C:/intelFPGA/SPU Project/EX_MEM.sv
 FC:/intelFPGA/SPU Project/EX_MEM.sv
 L0 2
@@ -299,7 +323,7 @@ R8
 r1
 !s85 0
 31
-R16
+!s108 1679772015.000000
 !s107 C:/intelFPGA/SPU Project/EX_MEM.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/EX_MEM.sv|
 !i113 1
@@ -308,7 +332,7 @@ R13
 n@e@x_@m@e@m
 vExecute
 R0
-R14
+R1
 !i10b 1
 !s100 SeDz;c6dzgkE7mTCA42GW3
 Ii]h;TWU_fm^Zj]h1BjLH>2
@@ -324,7 +348,7 @@ R8
 r1
 !s85 0
 31
-R16
+R9
 !s107 C:/intelFPGA/SPU Project/Execute.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/Execute.sv|
 !i113 1
@@ -383,7 +407,7 @@ R13
 n@hazard@detector
 vID_EX
 R0
-R14
+R23
 !i10b 1
 !s100 8]CaOh`z7;>7SU_8o5BzZ2
 Ibf<5^k:]]WLA>9S:bTOoC0
@@ -399,16 +423,41 @@ R8
 r1
 !s85 0
 31
-R16
+R28
 !s107 C:/intelFPGA/SPU Project/ID_EX.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/ID_EX.sv|
 !i113 1
 R12
 R13
 n@i@d_@e@x
+vID_REG_STAGE
+R0
+R1
+!i10b 1
+!s100 QJLCQ8`]zkF^EQ@TL3KWW1
+Iz>>E58SUX?4l69I9:<3Yn2
+R2
+!s105 ID_REG_sv_unit
+S1
+R4
+w1679720031
+8C:/intelFPGA/SPU Project/ID_REG.sv
+FC:/intelFPGA/SPU Project/ID_REG.sv
+L0 2
+R8
+r1
+!s85 0
+31
+R9
+!s107 C:/intelFPGA/SPU Project/ID_REG.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/ID_REG.sv|
+!i113 1
+R12
+R13
+n@i@d_@r@e@g_@s@t@a@g@e
 vIF_ID
 R0
-R14
+R23
 !i10b 1
 !s100 l0f7ZhLRe>71j2dQSFQ5O3
 I^LBUJ4zne<mS;8SAm<SI?0
@@ -424,7 +473,7 @@ R8
 r1
 !s85 0
 31
-R16
+R28
 !s107 C:/intelFPGA/SPU Project/IF_ID.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/IF_ID.sv|
 !i113 1
@@ -438,26 +487,26 @@ R0
 !s100 MddX:km:Edn^@5RnB<?h53
 IYeH^b@Am==O[`41M_@[4=2
 R2
-Z29 !s105 sign_ext_sv_unit
+Z31 !s105 sign_ext_sv_unit
 S1
 R4
 w1678862068
-Z30 8C:/intelFPGA/SPU Project/sign_ext.sv
-Z31 FC:/intelFPGA/SPU Project/sign_ext.sv
+Z32 8C:/intelFPGA/SPU Project/sign_ext.sv
+Z33 FC:/intelFPGA/SPU Project/sign_ext.sv
 L0 1
 R8
 r1
 !s85 0
 31
 !s108 1678862071.000000
-Z32 !s107 C:/intelFPGA/SPU Project/sign_ext.sv|
-Z33 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/sign_ext.sv|
+Z34 !s107 C:/intelFPGA/SPU Project/sign_ext.sv|
+Z35 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/sign_ext.sv|
 !i113 1
 R12
 R13
 vinstruction_memory
 R0
-R14
+R23
 !i10b 1
 !s100 eFE^3j]i7<6:O]PmURUiB0
 IIlIN=RJA_n;^lTozN[A3H0
@@ -465,7 +514,7 @@ R2
 !s105 Instruction20Memory_sv_unit
 S1
 R4
-w1679102043
+w1679604242
 8C:/intelFPGA/SPU Project/Instruction Memory.sv
 FC:/intelFPGA/SPU Project/Instruction Memory.sv
 L0 2
@@ -473,7 +522,7 @@ R8
 r1
 !s85 0
 31
-Z34 !s108 1679450766.000000
+R28
 !s107 C:/intelFPGA/SPU Project/Instruction Memory.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/Instruction Memory.sv|
 !i113 1
@@ -481,48 +530,48 @@ R12
 R13
 vInstructionDecoder
 R0
-R14
+!s110 1679528807
 !i10b 1
-!s100 XJ5:744[1<i=>`?0IGbmm3
-IZ4l<XAn^Q?ILoBz@]@B_i1
+!s100 B=@1h]^^ViAK;eW9P[1nz2
+IIPP0QT^<J>2mWNdk=Xm<g3
 R2
-!s105 InstructionDecoder_sv_unit
+Z36 !s105 InstructionDecoder_sv_unit
 S1
 R4
-w1679450736
-8C:/intelFPGA/SPU Project/InstructionDecoder.sv
-FC:/intelFPGA/SPU Project/InstructionDecoder.sv
+w1679459110
+Z37 8C:/intelFPGA/SPU Project/InstructionDecoder.sv
+Z38 FC:/intelFPGA/SPU Project/InstructionDecoder.sv
 L0 3
 R8
 r1
 !s85 0
 31
-R16
-!s107 C:/intelFPGA/SPU Project/InstructionDecoder.sv|
-!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/InstructionDecoder.sv|
+!s108 1679528807.000000
+Z39 !s107 C:/intelFPGA/SPU Project/InstructionDecoder.sv|
+Z40 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/InstructionDecoder.sv|
 !i113 1
 R12
 R13
 n@instruction@decoder
 vInstructionFetch
 R0
-R14
+R23
 !i10b 1
-!s100 >6l>KQ6kFgfTifULl6BnN0
-IV7_R>TbUn]b`MXi[LJ<D62
+!s100 1a?_3cZSD6aKeMTe]h=8i1
+I]a];:DMl[i>O@L3[c[YoH3
 R2
 !s105 InstructionFetch_sv_unit
 S1
 R4
-w1679450687
+w1679528828
 8C:/intelFPGA/SPU Project/InstructionFetch.sv
 FC:/intelFPGA/SPU Project/InstructionFetch.sv
-L0 3
+L0 31
 R8
 r1
 !s85 0
 31
-R16
+R28
 !s107 C:/intelFPGA/SPU Project/InstructionFetch.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/InstructionFetch.sv|
 !i113 1
@@ -531,7 +580,7 @@ R13
 n@instruction@fetch
 vJumpPCAdder
 R0
-R14
+R1
 !i10b 1
 !s100 4@n90X9M8>F>nlJhF1j0Y0
 II6Gh`6UbQUO<FbifiA0I51
@@ -547,13 +596,37 @@ R8
 r1
 !s85 0
 31
-R16
+R9
 !s107 C:/intelFPGA/SPU Project/JumpPCAdder.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/JumpPCAdder.sv|
 !i113 1
 R12
 R13
 n@jump@p@c@adder
+vmain
+R0
+!s110 1679771998
+!i10b 1
+!s100 <?<S;:kUm``cHo>UOad=30
+Ilf:mCcA42N:Qgd2J7e2XW0
+R2
+Z41 !s105 Main_sv_unit
+S1
+R4
+w1679770532
+Z42 8C:/intelFPGA/SPU Project/Main.sv
+Z43 FC:/intelFPGA/SPU Project/Main.sv
+L0 2
+R8
+r1
+!s85 0
+31
+!s108 1679771998.000000
+Z44 !s107 C:/intelFPGA/SPU Project/Main.sv|
+Z45 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/Main.sv|
+!i113 1
+R12
+R13
 vmain_TB
 R0
 !s110 1678664652
@@ -561,20 +634,20 @@ R0
 !s100 BM^3^Qac5oZLP1BI@bc;a2
 Il==nG5gPY@0T1_d:illOn1
 R2
-!s105 Main_sv_unit
+R41
 S1
 R4
 w1678658161
-8C:/intelFPGA/SPU Project/Main.sv
-FC:/intelFPGA/SPU Project/Main.sv
+R42
+R43
 L0 4
 R8
 r1
 !s85 0
 31
 !s108 1678664652.000000
-!s107 C:/intelFPGA/SPU Project/Main.sv|
-!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/Main.sv|
+R44
+R45
 !i113 1
 R12
 R13
@@ -586,20 +659,20 @@ R0
 !s100 ;i[0E3D4j@mZY`;HZ27C:2
 IEIbnLnfLQ>=N_Qo[bS2=J2
 R2
-Z35 !s105 MEM_WB_sv_unit
+Z46 !s105 MEM_WB_sv_unit
 S1
 R4
 w1679189045
-Z36 8C:/intelFPGA/SPU Project/MEM_WB.sv
-Z37 FC:/intelFPGA/SPU Project/MEM_WB.sv
+Z47 8C:/intelFPGA/SPU Project/MEM_WB.sv
+Z48 FC:/intelFPGA/SPU Project/MEM_WB.sv
 L0 1
 R8
 r1
 !s85 0
 31
 !s108 1679354518.000000
-Z38 !s107 C:/intelFPGA/SPU Project/MEM_WB.sv|
-Z39 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/MEM_WB.sv|
+Z49 !s107 C:/intelFPGA/SPU Project/MEM_WB.sv|
+Z50 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/MEM_WB.sv|
 !i113 1
 R12
 R13
@@ -611,7 +684,7 @@ R1
 !s100 5<6GNS742_F??[<V:V7_:3
 I42cI@UQ:0@04:k9Z_R<Jh1
 R2
-Z40 !s105 Memory_sv_unit
+Z51 !s105 Memory_sv_unit
 S1
 R4
 w1679270944
@@ -636,7 +709,7 @@ R0
 !s100 :fad]7h8mlE9=@D_6N>4a1
 I0lA2[=kK^Da3<IQ]g66[i3
 R2
-R40
+R51
 S1
 R4
 w1678878643
@@ -655,7 +728,7 @@ R12
 R13
 vmux2_to_1_11BIT
 R0
-R14
+R1
 !i10b 1
 !s100 `HMNoGXXCW<cBh[ReMg]=2
 I2FV@LSZ8f6V9QBj301Fz^1
@@ -671,7 +744,7 @@ R8
 r1
 !s85 0
 31
-R16
+R9
 !s107 C:/intelFPGA/SPU Project/mux2_to_1_11bits.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/mux2_to_1_11bits.sv|
 !i113 1
@@ -680,7 +753,7 @@ R13
 nmux2_to_1_11@b@i@t
 vmux2_to_1_128BIT
 R0
-R14
+R23
 !i10b 1
 !s100 mAhdb6SXV^I2Ma[kRa1S21
 I@zfNIHC3ZPPO6GmMe`kXn0
@@ -688,7 +761,7 @@ R2
 !s105 mux2_to_1_128bits_sv_unit
 S1
 R4
-R15
+R14
 8C:/intelFPGA/SPU Project/mux2_to_1_128bits.sv
 FC:/intelFPGA/SPU Project/mux2_to_1_128bits.sv
 L0 3
@@ -696,7 +769,7 @@ R8
 r1
 !s85 0
 31
-R16
+R28
 !s107 C:/intelFPGA/SPU Project/mux2_to_1_128bits.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/mux2_to_1_128bits.sv|
 !i113 1
@@ -705,7 +778,7 @@ R13
 nmux2_to_1_128@b@i@t
 vmux2_to_1_32BIT
 R0
-R14
+R23
 !i10b 1
 !s100 F3OiLEMGWFg_DbmIi92lz3
 Ifd3hbWila;7F4Q`:OOTfX1
@@ -721,7 +794,7 @@ R8
 r1
 !s85 0
 31
-R16
+R28
 !s107 C:/intelFPGA/SPU Project/mux2_to_1_32bits.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/mux2_to_1_32bits.sv|
 !i113 1
@@ -730,7 +803,7 @@ R13
 nmux2_to_1_32@b@i@t
 vmux2_to_1_7BIT
 R0
-R14
+R23
 !i10b 1
 !s100 <n6O_gD[@?WIXR1Aa_aU`0
 IoaaZA<1IPeB1?V88Ti9MK1
@@ -738,7 +811,7 @@ R2
 !s105 mux2_to_1_7bits_sv_unit
 S1
 R4
-R15
+R14
 8C:/intelFPGA/SPU Project/mux2_to_1_7bits.sv
 FC:/intelFPGA/SPU Project/mux2_to_1_7bits.sv
 L0 3
@@ -746,7 +819,7 @@ R8
 r1
 !s85 0
 31
-R16
+R28
 !s107 C:/intelFPGA/SPU Project/mux2_to_1_7bits.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/mux2_to_1_7bits.sv|
 !i113 1
@@ -830,7 +903,7 @@ R13
 n@o@r_four
 vPCAdder
 R0
-R14
+R23
 !i10b 1
 !s100 hz<GVz8n0zEDa669=gkV43
 I>D2UKl23Y1TaO;WEUoh]72
@@ -846,7 +919,7 @@ R8
 r1
 !s85 0
 31
-R16
+R28
 !s107 C:/intelFPGA/SPU Project/PCAdder.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/PCAdder.sv|
 !i113 1
@@ -860,69 +933,119 @@ R0
 !s100 =QkOVD>Ie=O>dMdWmTz4c1
 IfK23BaTLZKdZR=VbFI:Wz2
 R2
-Z41 !s105 programCounter_sv_unit
+Z52 !s105 programCounter_sv_unit
 S1
 R4
 w1678324884
-Z42 8C:/intelFPGA/SPU Project/programCounter.sv
-Z43 FC:/intelFPGA/SPU Project/programCounter.sv
+Z53 8C:/intelFPGA/SPU Project/programCounter.sv
+Z54 FC:/intelFPGA/SPU Project/programCounter.sv
 L0 2
 R8
 r1
 !s85 0
 31
 !s108 1678655434.000000
-Z44 !s107 C:/intelFPGA/SPU Project/programCounter.sv|
-Z45 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/programCounter.sv|
+Z55 !s107 C:/intelFPGA/SPU Project/programCounter.sv|
+Z56 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/programCounter.sv|
 !i113 1
 R12
 R13
 vProgramCounter
 R0
-!s110 1679450766
+R23
 !i10b 1
-!s100 M>;HmkA@D2RhEYdf77m:P3
-I_fgE6AF`^Hb;0KzFeQR7^2
+!s100 3cF3YI7WO:=Xl6n26goIU3
+I8S8>N5i7QWg06QD3ACE;z0
 R2
-R41
+R52
 S1
 R4
-w1679101995
-R42
-R43
+w1679527838
+R53
+R54
 L0 2
 R8
 r1
 !s85 0
 31
-R34
-R44
-R45
+R28
+R55
+R56
 !i113 1
 R12
 R13
 n@program@counter
-vRegisterFileMemory
+vREG_EX_STAGE
 R0
-R14
+!s110 1679770383
 !i10b 1
-!s100 c<blA2lL1111dCLljf69T0
-IJF64_8QRBoPJld0B[WMIT1
+!s100 VEI6L;Z2PHT2AS6[M<h5k0
+ITh2dRJ=I3BjR<7lC8DKnl3
 R2
-Z46 !s105 RegisterFileMemory_sv_unit
+!s105 REG_EX_sv_unit
 S1
 R4
-Z47 w1679010312
-Z48 8C:/intelFPGA/SPU Project/RegisterFileMemory.sv
-Z49 FC:/intelFPGA/SPU Project/RegisterFileMemory.sv
+w1679770382
+8C:/intelFPGA/SPU Project/REG_EX.sv
+FC:/intelFPGA/SPU Project/REG_EX.sv
+L0 3
+R8
+r1
+!s85 0
+31
+!s108 1679770383.000000
+!s107 C:/intelFPGA/SPU Project/REG_EX.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/REG_EX.sv|
+!i113 1
+R12
+R13
+n@r@e@g_@e@x_@s@t@a@g@e
+vRegisterFetchStage
+R0
+R15
+!i10b 1
+!s100 laVn0_49B962>P[Wl1;eg2
+IADi[FW>8[gKhgi:3MOL=c3
+R2
+Z57 !s105 Registers_sv_unit
+S1
+R4
+w1679762926
+Z58 8C:/intelFPGA/SPU Project/Registers.sv
+Z59 FC:/intelFPGA/SPU Project/Registers.sv
 L0 2
 R8
 r1
 !s85 0
 31
-R16
-Z50 !s107 C:/intelFPGA/SPU Project/RegisterFileMemory.sv|
-Z51 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/RegisterFileMemory.sv|
+R20
+Z60 !s107 C:/intelFPGA/SPU Project/Registers.sv|
+Z61 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/Registers.sv|
+!i113 1
+R12
+R13
+n@register@fetch@stage
+vRegisterFileMemory
+R0
+R23
+!i10b 1
+!s100 c<blA2lL1111dCLljf69T0
+IJF64_8QRBoPJld0B[WMIT1
+R2
+Z62 !s105 RegisterFileMemory_sv_unit
+S1
+R4
+Z63 w1679010312
+Z64 8C:/intelFPGA/SPU Project/RegisterFileMemory.sv
+Z65 FC:/intelFPGA/SPU Project/RegisterFileMemory.sv
+L0 2
+R8
+r1
+!s85 0
+31
+R28
+Z66 !s107 C:/intelFPGA/SPU Project/RegisterFileMemory.sv|
+Z67 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/RegisterFileMemory.sv|
 !i113 1
 R12
 R13
@@ -938,48 +1061,98 @@ VdAk7PR5MJfCTU:^NT5fA[0
 S1
 R4
 w1678138425
-R48
-R49
+R64
+R65
 L0 18
 R8
 r1
 !s85 0
 31
 !s108 1678138449.000000
-R50
-R51
+R66
+R67
 !i113 1
 R12
 R13
 n@register@file@memory_sv_unit
 vRegisterFileMemory_TestBench
 R0
-R14
+R23
 !i10b 1
 !s100 R=G4eCYR7C<03c5>N844T0
 IJibYo[[YllOd2^>06X29c3
 R2
-R46
+R62
 S1
 R4
-R47
-R48
-R49
+R63
+R64
+R65
 L0 36
 R8
 r1
 !s85 0
 31
-R16
-R50
-R51
+R28
+R66
+R67
 !i113 1
 R12
 R13
 n@register@file@memory_@test@bench
+vRegisters128_128Bits
+R0
+R1
+!i10b 1
+!s100 3H1R^ZEXALmbGf5EmhdC21
+INEYZA5Lln53TANO4BFZHk0
+R2
+R36
+S1
+R4
+w1679604182
+R37
+R38
+L0 3
+R8
+r1
+!s85 0
+31
+R9
+R39
+R40
+!i113 1
+R12
+R13
+n@registers128_128@bits
+vRegisterStage
+R0
+!s110 1679686828
+!i10b 1
+!s100 Ui_S]P_AnU^jQKH^`27S22
+IC==<Wh?_o]EYXcEdA3mhK1
+R2
+R57
+S1
+R4
+w1679686826
+R58
+R59
+L0 2
+R8
+r1
+!s85 0
+31
+!s108 1679686828.000000
+R60
+R61
+!i113 1
+R12
+R13
+n@register@stage
 vshift3
 R0
-R14
+R1
 !i10b 1
 !s100 i78Zg:VTYR_IZBIXhln_E3
 IiYj@JKnoLU7CTKhbGQGaB3
@@ -995,7 +1168,7 @@ R8
 r1
 !s85 0
 31
-R16
+R28
 !s107 C:/intelFPGA/SPU Project/shiftLeft3.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/intelFPGA/SPU Project/shiftLeft3.sv|
 !i113 1
@@ -1003,73 +1176,73 @@ R12
 R13
 vsign_ext
 R0
-R14
+R1
 !i10b 1
 !s100 WGjVmVT27^g@64HlU]fHZ2
 IB^cCBFVeM7o<H@JkTk9QK1
 R2
-R29
+R31
 S1
 R4
-Z52 w1678865589
-R30
-R31
+Z68 w1678865589
+R32
+R33
 L0 1
 R8
 r1
 !s85 0
 31
-R16
-R32
-R33
+R9
+R34
+R35
 !i113 1
 R12
 R13
 vsign_ext_tb
 R0
-R14
+R1
 !i10b 1
 !s100 gY89dCFf>CYl1VW::G?2U1
 IWV>BN5P>C9U?Egb=P@iI`1
 R2
-R29
+R31
 S1
 R4
-R52
-R30
-R31
+R68
+R32
+R33
 L0 78
 R8
 r1
 !s85 0
 31
-R16
-R32
-R33
+R9
+R34
+R35
 !i113 1
 R12
 R13
 vSTAGES
 R0
-R14
+R1
 !i10b 1
 !s100 o1Kc2kNHJ?6d5]4O5zGSd0
 Im7bTjPaI^JIk^>0WdD^kQ2
 R2
-R35
+R46
 S1
 R4
 w1679439305
-R36
-R37
+R47
+R48
 L0 1
 R8
 r1
 !s85 0
 31
-R16
-R38
-R39
+R9
+R49
+R50
 !i113 1
 R12
 R13
@@ -1081,20 +1254,20 @@ R0
 !s100 ^X`4i3W<Hnm]8aZUhPL280
 Igla=5cGNf5EMIcF=11XKG0
 R2
-R23
+R24
 S1
 R4
 w1678657574
-R25
 R26
+R27
 L0 2
 R8
 r1
 !s85 0
 31
 !s108 1678667134.000000
-R27
-R28
+R29
+R30
 !i113 1
 R12
 R13

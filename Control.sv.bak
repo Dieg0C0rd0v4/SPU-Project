@@ -84,7 +84,7 @@ STAGES STAGE7_WB(clk,reset, mem_to_reg_ST7,regWrite_enable_ST7, memReadData_ST7,
 
 mux2_to_1_128BIT writeData_WB_SELECT(writeData_WB,ALUResult_WB,memReadData_WB,mem_to_reg_WB); // WB Stage
 
-//*Forward Control 
+//*Forward Control//
 
 ForwardingControl(readRegister_RB_ID,readRegister_RB_EX,readRegister_RA_ID,readRegister_RA_EX,regWrite_enable_MEM,RegisterRT_MEM,mem_to_reg_WB,RegisterRT_WB,
 				ReadData1Sel_ID,ReadData2Sel_ID,ReadData1Sel_EX,ReadData2Sel_EX);
