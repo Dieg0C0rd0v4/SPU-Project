@@ -8,13 +8,13 @@ output logic [127:0] register_RT;
 always_comb begin 
 imm_extended={ {11{imm7[6]}},imm7[6:0]};//sign extension from imm7 from 7 bits to 16 bits 
 s_temp=imm_extended&16'h1F; 
-for(int j=0;j<15;j+=2) begin 
+for(int j=0;j<16;j+=2) begin 
  
 t_temp=register_RA[(j*8)+:16];//halfword access +:16 
 
 for(int b=0;b<15;b++) begin 
-if((b+s_temp)<16) begin 
- r_temp[b]=t_temp[b+s_temp];
+if((b+s_temp)<16) begin
+r_temp[b]=t_temp[b+s_temp];
 
 end 
 else begin 
