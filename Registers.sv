@@ -13,6 +13,7 @@ reg [127:0] Memory_Register [0:127]; // 128 registers with 128 bits
 
 // 1 = First instruction, 2 = Second Instruction 
 always_comb begin 
+
     	readDataRA_REG1 = Memory_Register[readRegisterRA_REG1];
 	readDataRA_REG2 = Memory_Register[readRegisterRA_REG2];
         readDataRB_REG1 = Memory_Register[readRegisterRB_REG1];
