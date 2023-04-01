@@ -34,14 +34,14 @@ wire [127:0] readDataRB_REG1, readDataRB_EX1;
 wire [127:0] readDataRB_REG2, readDataRB_EX2;
 wire [127:0] readDataRC_REG1, readDataRC_EX1;
 wire [127:0] readDataRC_REG2, readDataRC_EX2, readDataRC_ST22, readDataRC_ST32, readDataRC_ST42, readDataRC_ST52, readDataRC_ST62, readDataRC_ST72;
-wire [6:0] immediate7BIT_ID1, immediate7BIT_REG1, immediate7BIT_EX1;
-wire [6:0] immediate7BIT_ID2, immediate7BIT_REG2, immediate7BIT_EX2;
-wire [9:0] immediate10BIT_ID1, immediate10BIT_EX1;
-wire [9:0] immediate10BIT_ID2, immediate10BIT_EX2;
-wire [15:0] immediate16BIT_ID1, immediate16BIT_EX1;
-wire [15:0] immediate16BIT_ID2, immediate16BIT_EX2;
-wire [17:0]immediate18BIT_ID1, immediate18BIT_EX1;
-wire [17:0] immediate18BIT_ID2, immediate18BIT_EX2;
+wire [6:0]   immediate7BIT_ID1, immediate7BIT_REG1, immediate7BIT_EX1;
+wire [6:0]   immediate7BIT_ID2, immediate7BIT_REG2, immediate7BIT_EX2;
+wire [9:0]   immediate10BIT_ID1, immediate10BIT_EX1;
+wire [9:0]   immediate10BIT_ID2, immediate10BIT_EX2;
+wire [15:0]  immediate16BIT_ID1, immediate16BIT_EX1;
+wire [15:0]  immediate16BIT_ID2, immediate16BIT_EX2;
+wire [17:0]  immediate18BIT_ID1, immediate18BIT_EX1;
+wire [17:0]  immediate18BIT_ID2, immediate18BIT_EX2;
 
 ID_REG_STAGE id_reg(regWriteEnable_ID1, source_ID1, control_ID1,// control inputs2
                     regWriteEnable_ID2, source_ID2, control_ID2,// control inputs1
@@ -127,7 +127,7 @@ always_comb begin
 end 
 
 STAGES STAGE7_WB(regWriteEnable_ST71, result_ST71, registerRT_ST71, unitID_ST71, latency_ST71,
-		 regWriteEnable_ST72, regOrMem, registerRT_ST72, unitID_ST72, latency_ST72,
+		 regWriteEnable_ST72, regOrMem   , registerRT_ST72, unitID_ST72, latency_ST72,
 		 regWriteEnable_WB1,  result_WB1,  registerRT_WB1, unitID_WB1, latency_WB1,
 		 regWriteEnable_WB2,  result_WB2,  registerRT_WB2, unitID_WB2, latency_WB2,
 		 readDataRC_ST72, readDataRC_WB2, clk,reset);

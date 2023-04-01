@@ -126,10 +126,8 @@ always_comb begin
 	else regOrMem = result_ST72;
 end 
 
-endmodule 
-
 STAGES STAGE7_WB(regWriteEnable_ST71, result_ST71, registerRT_ST71, unitID_ST71, latency_ST71,
-		 regWriteEnable_ST72, regOrMem, registerRT_ST72, unitID_ST72, latency_ST72,
+		 regWriteEnable_ST72, regOrMem   , registerRT_ST72, unitID_ST72, latency_ST72,
 		 regWriteEnable_WB1,  result_WB1,  registerRT_WB1, unitID_WB1, latency_WB1,
 		 regWriteEnable_WB2,  result_WB2,  registerRT_WB2, unitID_WB2, latency_WB2,
 		 readDataRC_ST72, readDataRC_WB2, clk,reset);

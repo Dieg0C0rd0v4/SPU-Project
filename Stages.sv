@@ -5,6 +5,8 @@ module STAGES (regWriteEnable_in1, result_in1, registerRT_in1, unitID_in1, laten
 	       regWriteEnable_out2, result_out2, registerRT_out2, latency_out1, latency_out2,	       
                readDataRC_in2, readDataRC_out2, clk, reset);
 
+
+
 input clk,reset; 
 
 input regWriteEnable_in1;
@@ -52,10 +54,17 @@ always_ff @(posedge clk) begin
 	registerRT_out1<=registerRT_in1;
 	registerRT_out2<=registerRT_in2;
 	unitID_out1<=unitID_in1; unitID_out2<=unitID_in2;
-	latency_out1<=latency_in1; latency_out2<=latency_in2;
 	
-	end
+	if (latency_in1 != 0)
+		latency_out1<=(latency_in1 - 1);
+	else 
+		latency_out1<=latency_in1;
+	if (latency_in2 != 0)
+		latency_out2<=(latency_in2-1);
+	else
+		latency_out2<=latency_in2;
 
+	end
 end
 
 
