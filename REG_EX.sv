@@ -29,10 +29,8 @@ input [6:0] immediate7BIT_REG1, immediate7BIT_REG2;
 input [9:0] immediate10BIT_REG1, immediate10BIT_REG2;
 input [15:0] immediate16BIT_REG1, immediate16BIT_REG2;
 input [17:0] immediate18BIT_REG1, immediate18BIT_REG2;
-input [2:0] latency_REG1, latency
 
 	      
-
 output logic regWriteEnable_EX1, source_EX1;
 output logic regWriteEnable_EX2, source_EX2;
 output logic [3:0] control_EX1;
@@ -46,7 +44,6 @@ output logic [6:0]  immediate7BIT_EX1, immediate7BIT_EX2;
 output logic [9:0]  immediate10BIT_EX1, immediate10BIT_EX2;
 output logic [15:0] immediate16BIT_EX1, immediate16BIT_EX2;
 output logic [17:0] immediate18BIT_EX1, immediate18BIT_EX2; 
-
 
 
 always_ff @(posedge clk) begin
