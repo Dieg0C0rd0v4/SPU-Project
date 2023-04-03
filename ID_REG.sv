@@ -14,8 +14,8 @@ module ID_REG_STAGE(regWriteEnable_ID1, source_ID1, control_ID1,// control input
 input clk,reset;
 input regWriteEnable_ID1, source_ID1;	//Control Signals Input from Instruction decoder
 input regWriteEnable_ID2, source_ID2; //Control Signals Input from Instruction decoder
-input [3:0] control_ID1; //Control Signal for Execution 1
-input [3:0] control_ID2; //Control Signal for Execution
+input [6:0] control_ID1; //Control Signal for Execution 1
+input [6:0] control_ID2; //Control Signal for Execution
 input [6:0] readRegisterRA_ID1, readRegisterRB_ID1, readRegisterRC_ID1, readRegisterRT_ID1; // ReadRegisters inputs
 input [6:0] readRegisterRA_ID2, readRegisterRB_ID2, readRegisterRC_ID2, readRegisterRT_ID2; // ReadRegisters inputs
 input [6:0] immediate7BIT_ID1; // Immediates inputs for # bits  
@@ -29,8 +29,8 @@ input [17:0] immediate18BIT_ID2;
 
 output logic  regWriteEnable_REG1, source_REG1;	//Control Signals Input from Instruction decoder
 output logic  regWriteEnable_REG2, source_REG2; //Control Signals Input from Instruction decoder
-output logic  [3:0] control_REG1; //Control Signal for Execution 1
-output logic  [3:0] control_REG2; //Control Signal for Execution
+output logic  [6:0] control_REG1; //Control Signal for Execution 1
+output logic  [6:0] control_REG2; //Control Signal for Execution
 output logic  [6:0] readRegisterRA_REG1, readRegisterRB_REG1, readRegisterRC_REG1, readRegisterRT_REG1; // ReadRegisters inputs
 output logic  [6:0] readRegisterRA_REG2, readRegisterRB_REG2, readRegisterRC_REG2, readRegisterRT_REG2; // ReadRegisters inputs
 output logic  [6:0] immediate7BIT_REG1; // Immediates outputs for # bits  

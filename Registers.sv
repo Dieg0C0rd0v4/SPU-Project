@@ -12,8 +12,16 @@ output reg [127:0] readDataRA_REG1, readDataRA_REG2, readDataRB_REG1, readDataRB
 reg [127:0] Memory_Register [0:127]; // 128 registers with 128 bits
 
 // 1 = First instruction, 2 = Second Instruction 
+logic [127:0] data; 
 always_comb begin 
-
+	//Simulate Load Condition Testing
+	data = 128'd5000;
+	for ( int j=0; j<30;j++) begin	
+		
+		Memory_Register[j] = data;
+		data = data +128'd300;
+	end
+	//
     	readDataRA_REG1 = Memory_Register[readRegisterRA_REG1];
 	readDataRA_REG2 = Memory_Register[readRegisterRA_REG2];
         readDataRB_REG1 = Memory_Register[readRegisterRB_REG1];

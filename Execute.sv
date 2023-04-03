@@ -1,18 +1,17 @@
 
-module Execute(readDataRA_EX,readDataRB_EX,readDataRC_EX,control_EX,opcode,
-	       result_EX                                                   );
+module Execute(readDataRA_EX,readDataRB_EX,readDataRC_EX,control_EX,
+	       result_EX, latency_EX                              );
 
 //Jump Branch datapath 
 input [127:0] readDataRA_EX; 
 input [127:0] readDataRB_EX;
 input [127:0] readDataRC_EX;
-input [3:0]   control_EX;
-input [10:0]  opcode; 
+input [6:0]   control_EX;
 
 
 output [127:0] result_EX; //perhaps not needed, if we have 
+output logic [2:0] latency_EX; 
 
-logic         result;
 logic [127:0] RT;
 logic [127:0] RA;
 logic [127:0] RB; 
@@ -20,15 +19,15 @@ logic [127:0] RC;
 
 
 assign result_EX     = RT; 
-assign readDataRA_EX = RA; 
-assign readDataRB_EX = RB; 
-assign readDataRC_EX = RC; 
+assign RA = readDataRA_EX; 
+assign RB = readDataRB_EX; 
+assign RC = readDataRC_EX; 
 
 
 always_comb begin
-	case(opcode) 
-		11'b00011001000: begin 
-		
+	case(control_EX) 
+		7'd1: begin
+			latency_EX= 3-1; 
 			RT[0+:16] = RA[0+:16]+RB[0+:16]; //bytes 0 and 1
 			RT[16+:16]=RA[16+:16]+RB[16+:16]; //bytes 2 and 3
 			RT[32+:16]=RA[32+:16]+RB[32+:16]; //bytes 4 and 5

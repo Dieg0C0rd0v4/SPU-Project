@@ -1,4 +1,4 @@
-module ALU(a, b,c, ALUctr, out,zero_signal);
+module ALU(a,b,c, ALUctr, out,zero_signal);
 
 
 input [127:0] a; 
