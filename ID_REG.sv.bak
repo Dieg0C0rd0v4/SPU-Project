@@ -29,8 +29,8 @@ input [17:0] immediate18BIT_ID2;
 
 output logic  regWriteEnable_REG1, source_REG1;	//Control Signals Input from Instruction decoder
 output logic  regWriteEnable_REG2, source_REG2; //Control Signals Input from Instruction decoder
-output logic  [3:0] control_REG1; //Control Signal for Execution 1
-output logic  [3:0] control_REG2; //Control Signal for Execution
+output logic  [6:0] control_REG1; //Control Signal for Execution 1
+output logic  [6:0] control_REG2; //Control Signal for Execution
 output logic  [6:0] readRegisterRA_REG1, readRegisterRB_REG1, readRegisterRC_REG1, readRegisterRT_REG1; // ReadRegisters inputs
 output logic  [6:0] readRegisterRA_REG2, readRegisterRB_REG2, readRegisterRC_REG2, readRegisterRT_REG2; // ReadRegisters inputs
 output logic  [6:0] immediate7BIT_REG1; // Immediates outputs for # bits  

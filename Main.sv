@@ -11,8 +11,8 @@ logic regWriteEnable_ID2, regWriteEnable_REG2, regWriteEnable_EX2, regWriteEnabl
 logic source_ID1,source_REG1,source_EX1; // Remove source @@@ Reason: we already using control signal to determine wheter to use operands from register or immediates. 
 logic source_ID2,source_REG2,source_EX2; // Remove source @@@
       
-logic [6:0] control_ID1,control_REG1,control_EX1;   // Tells the Execute stage what operation to do. 
-logic [6:0] control_ID2,control_REG2,control_EX2;   // Tells the Execute stage what operation to do. 
+logic [10:0] opcode_ID1,opcode_REG1,opcode_EX1;   // Tells the Execute stage what operation to do. 
+logic [10:0] opcode_ID2,opcode_REG2,opcode_EX2;   // Tells the Execute stage what operation to do. 
 
 logic [2:0] unitID_EX1, unitID_ST21, unitID_ST31, unitID_ST41, unitID_ST51, unitID_ST61, unitID_ST71, unitID_WB1; // Is the unit in which the the operands and operation is being used. (even)
 logic [2:0] unitID_EX2, unitID_ST22, unitID_ST32, unitID_ST42, unitID_ST52, unitID_ST62, unitID_ST72, unitID_WB2; // Is the unit in which the the operands and operation is being used. (odd)
@@ -56,7 +56,6 @@ wire [15:0]  immediate16BIT_ID2, immediate16BIT_REG2, immediate16BIT_EX2;
 wire [17:0]  immediate18BIT_ID1, immediate18BIT_REG1, immediate18BIT_EX1;
 wire [17:0]  immediate18BIT_ID2, immediate18BIT_REG2, immediate18BIT_EX2;
 
-
 //Testing 
 
 assign control_ID1= 7'd1;
@@ -65,34 +64,36 @@ assign readRegisterRB_ID1 = 2;
 assign readRegisterRT_ID1 = 3;
 assign regWriteEnable_ID1 = 1; 
 
+
 //assign regWriteEnable_WB1 = 1; 
 //assign readRegisterRT_WB1 = 1;
 //assign result_WB1 = 50000000;
 //
 
 
-ID_REG_STAGE id_reg(regWriteEnable_ID1, source_ID1, control_ID1,
-                    regWriteEnable_ID2, source_ID2, control_ID2,
+ID_REG_STAGE id_reg(regWriteEnable_ID1, source_ID1, opcode_ID1,
+                    regWriteEnable_ID2, source_ID2, opcode_ID2,
 		    readRegisterRA_ID1, readRegisterRB_ID1, readRegisterRC_ID1, readRegisterRT_ID1, immediate7BIT_ID1, immediate10BIT_ID1, immediate16BIT_ID1, immediate18BIT_ID1, //Datapath inputs1
                     readRegisterRA_ID2, readRegisterRB_ID2, readRegisterRC_ID2, readRegisterRT_ID2, immediate7BIT_ID2, immediate10BIT_ID2, immediate16BIT_ID2, immediate18BIT_ID2,
-		    regWriteEnable_REG1, source_REG1, control_REG1,
-		    regWriteEnable_REG2, source_REG2, control_REG2,
+		    regWriteEnable_REG1, source_REG1, opcode_REG1,
+		    regWriteEnable_REG2, source_REG2, opcode_REG2,
 		    readRegisterRA_REG1, readRegisterRB_REG1, readRegisterRC_REG1, readRegisterRT_REG1, immediate7BIT_REG1, immediate10BIT_REG1, immediate16BIT_REG1, immediate18BIT_REG1,
          	    readRegisterRA_REG2, readRegisterRB_REG2, readRegisterRC_REG2, readRegisterRT_REG2 ,immediate7BIT_REG2, immediate10BIT_REG2, immediate16BIT_REG2, immediate18BIT_REG2,
 		    clk,reset);
 
 RegisterFetchStage regist(readRegisterRA_REG1, readRegisterRA_REG2, readRegisterRB_REG1, readRegisterRB_REG2, readRegisterRC_REG1, readRegisterRC_REG2, readRegisterRT_WB1, readRegisterRT_WB2,
 			  writeData_WB1, writeData_WB2, regWriteEnable_WB1, regWriteEnable_WB2,
-			  readDataRA_REG1, readDataRA_REG2, readDataRB_REG1, readDataRB_REG2, readDataRC_REG1, readDataRC_REG2);
+			  readDataRA_REG1, readDataRA_REG2, readDataRB_REG1, readDataRB_REG2, readDataRC_REG1, readDataRC_REG2,
+			  reset);
 
-REG_EX_STAGE reg_ex(regWriteEnable_REG1, source_REG1, control_REG1,
-	            regWriteEnable_REG2, source_REG2, control_REG2,
+REG_EX_STAGE reg_ex(regWriteEnable_REG1, source_REG1, opcode_REG1,
+	            regWriteEnable_REG2, source_REG2, opcode_REG2,
                     readDataRA_REG1, readDataRB_REG1, readDataRC_REG1, readRegisterRA_REG1, readRegisterRB_REG1, readRegisterRT_REG1,
 	            readDataRA_REG2, readDataRB_REG2, readDataRC_REG2, readRegisterRA_REG2, readRegisterRB_REG2, readRegisterRT_REG2,
 	            immediate7BIT_REG1, immediate10BIT_REG1, immediate16BIT_REG1, immediate18BIT_REG1,
 	            immediate7BIT_REG2, immediate10BIT_REG2, immediate16BIT_REG2, immediate18BIT_REG2,
-	            regWriteEnable_EX1, source_EX1, control_EX1,
-	            regWriteEnable_EX2, source_EX2, control_EX2,
+	            regWriteEnable_EX1, source_EX1, opcode_EX1,
+	            regWriteEnable_EX2, source_EX2, opcode_EX2,
                     readDataRA_EX1, readDataRB_EX1, readDataRC_EX1, readRegisterRA_EX1, readRegisterRB_EX1, readRegisterRT_EX1,
 	            readDataRA_EX2, readDataRB_EX2, readDataRC_EX2, readRegisterRA_EX2, readRegisterRB_EX2, readRegisterRT_EX2,
 	            immediate7BIT_EX1, immediate10BIT_EX1, immediate16BIT_EX1, immediate18BIT_EX1,
@@ -120,9 +121,9 @@ mux2_to_1_128BIT forwardB1(operandB1,readDataRB_EX1,forwardDataRB_EX1,selectForw
 mux2_to_1_128BIT forwardA2(operandA2,readDataRA_EX2,forwardDataRA_EX2,selectForwardRA_EX2); //Select the value of register RA2 or se*lect the forward value for RA2. 
 mux2_to_1_128BIT forwardB2(operandB2,readDataRB_EX2,forwardDataRB_EX2,selectForwardRB_EX2); //Select the value of register RB2 or select the forward value for RB2. 
 
-Execute exEven(operandA1, operandB1, readDataRC_EX1, control_EX1,
+Execute exEven(operandA1, operandB1, readDataRC_EX1, opcode_EX1,
 	       result_EX1, latency_EX1);
-Execute exOdd (operandA2, operandB2, readDataRC_EX2, control_EX2,
+Execute exOdd (operandA2, operandB2, readDataRC_EX2, opcode_EX2,
 	       result_EX2, latency_EX2);
 
 STAGES EX_STAGE2    (regWriteEnable_EX1, result_EX1, readRegisterRT_EX1, unitID_EX1, latency_EX1,

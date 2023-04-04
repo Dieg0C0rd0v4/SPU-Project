@@ -2,8 +2,8 @@
 
 module REG_EX_STAGE(regWriteEnable_REG1, source_REG1, control_REG1,
 	            regWriteEnable_REG2, source_REG2, control_REG2,
-                    readDataRA_REG1, readDataRB_REG1, readDataRC_REG1, readRegisterRA_REG1, readRegisterRB_REG1,
-	            readDataRA_REG2,readDataRB_REG2,readDataRC_REG2,readRegisterRA_REG2,readRegisterRB_REG2,
+                    readDataRA_REG1, readDataRB_REG1, readDataRC_REG1, readRegisterRA_REG1, readRegisterRB_REG1, readRegisterRT_REG1,
+	            readDataRA_REG2, readDataRB_REG2, readDataRC_REG2, readRegisterRA_REG2, readRegisterRB_REG2, readRegisterRT_REG2,
 	            immediate7BIT_REG1, immediate10BIT_REG1, immediate16BIT_REG1, immediate18BIT_REG1,
 	            immediate7BIT_REG2, immediate10BIT_REG2, immediate16BIT_REG2, immediate18BIT_REG2,
 	            regWriteEnable_EX1, source_EX1, control_EX1,

@@ -1,13 +1,13 @@
 
 
-module REG_EX_STAGE(regWriteEnable_REG1, source_REG1, control_REG1,
-	            regWriteEnable_REG2, source_REG2, control_REG2,
+module REG_EX_STAGE(regWriteEnable_REG1, source_REG1, opcode_REG1,
+	            regWriteEnable_REG2, source_REG2, opcode_REG2,
                     readDataRA_REG1, readDataRB_REG1, readDataRC_REG1, readRegisterRA_REG1, readRegisterRB_REG1, readRegisterRT_REG1,
 	            readDataRA_REG2, readDataRB_REG2, readDataRC_REG2, readRegisterRA_REG2, readRegisterRB_REG2, readRegisterRT_REG2,
 	            immediate7BIT_REG1, immediate10BIT_REG1, immediate16BIT_REG1, immediate18BIT_REG1,
 	            immediate7BIT_REG2, immediate10BIT_REG2, immediate16BIT_REG2, immediate18BIT_REG2,
-	            regWriteEnable_EX1, source_EX1, control_EX1,
-	            regWriteEnable_EX2, source_EX2, control_EX2,
+	            regWriteEnable_EX1, source_EX1, opcode_EX1,
+	            regWriteEnable_EX2, source_EX2, opcode_EX2,
                     readDataRA_EX1, readDataRB_EX1, readDataRC_EX1, readRegisterRA_EX1, readRegisterRB_EX1, readRegisterRT_EX1,
 	            readDataRA_EX2, readDataRB_EX2, readDataRC_EX2, readRegisterRA_EX2, readRegisterRB_EX2, readRegisterRT_EX2,
 	            immediate7BIT_EX1, immediate10BIT_EX1, immediate16BIT_EX1, immediate18BIT_EX1,
@@ -18,8 +18,8 @@ input clk;
 input reset; 
 input regWriteEnable_REG1, source_REG1;
 input regWriteEnable_REG2, source_REG2;
-input [6:0] control_REG1;
-input [6:0] control_REG2;
+input [10:0] opcode_REG1;
+input [10:0] opcode_REG2;
 input [127:0] readDataRA_REG1, readDataRB_REG1, readDataRC_REG1;
 input [127:0] readDataRA_REG2, readDataRB_REG2, readDataRC_REG2;
 input [6:0] readRegisterRA_REG1, readRegisterRB_REG1, readRegisterRT_REG1;
@@ -34,8 +34,8 @@ input [17:0] immediate18BIT_REG1, immediate18BIT_REG2;
 	      
 output logic regWriteEnable_EX1, source_EX1;
 output logic regWriteEnable_EX2, source_EX2;
-output logic [6:0] control_EX1;
-output logic [6:0] control_EX2;
+output logic [10:0] opcode_EX1;
+output logic [10:0] opcode_EX2;
 output logic [127:0] readDataRA_EX1, readDataRB_EX1, readDataRC_EX1;
 output logic [127:0] readDataRA_EX2, readDataRB_EX2, readDataRC_EX2;
 output logic [6:0] readRegisterRA_EX1, readRegisterRB_EX1, readRegisterRT_EX1;
@@ -53,7 +53,7 @@ always_ff @(posedge clk) begin
 	
 		regWriteEnable_EX1<=0; source_EX1<=0;
 		regWriteEnable_EX2<=0; source_EX2<=0;
-		control_EX1<=0; control_EX2<=0;
+		opcode_EX1<=0; opcode_EX2<=0;
 		readDataRA_EX1<=0; readDataRB_EX1<=0; readDataRC_EX1<=0;
 		readDataRA_EX2<=0; readDataRB_EX2<=0; readDataRC_EX2<=0;
 		readRegisterRA_EX1<=0; readRegisterRB_EX1<=0; readRegisterRT_EX1<=0;
@@ -66,7 +66,7 @@ always_ff @(posedge clk) begin
 	else begin
 		regWriteEnable_EX1<=regWriteEnable_REG1; source_EX1<=source_REG1;
 		regWriteEnable_EX2<=regWriteEnable_REG2; source_EX2<=source_REG2;
-		control_EX1<=control_REG1; control_EX2<=control_REG2;
+		opcode_EX1<=opcode_REG1; opcode_EX2<=opcode_REG2;
 		readDataRA_EX1<=readDataRA_REG1; readDataRB_EX1<=readDataRB_REG1; readDataRC_EX1<=readDataRC_REG1;
 		readDataRA_EX2<=readDataRA_REG2; readDataRB_EX2<=readDataRB_REG2; readDataRC_EX2<=readDataRC_REG2;
 		readRegisterRA_EX1<=readRegisterRA_REG1; readRegisterRB_EX1<=readRegisterRB_REG1; readRegisterRT_EX1<=readRegisterRT_REG1;
