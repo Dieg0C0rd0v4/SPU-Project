@@ -1,5 +1,5 @@
 
-module Execute(readDataRA_EX,readDataRB_EX,readDataRC_EX,control_EX,
+module Execute(readDataRA_EX,readDataRB_EX,readDataRC_EX,opcode_EX,
 	       result_EX, latency_EX                              );
 
 //Jump Branch datapath 
@@ -19,9 +19,9 @@ logic [127:0] RC;
 
 
 assign result_EX     = RT; 
-assign readDataRA_EX = RA; 
-assign readDataRB_EX = RB; 
-assign readDataRC_EX = RC; 
+assign RA = readDataRA_EX; 
+assign RB = readDataRB_EX; 
+assign RC = readDataRC_EX; 
 
 
 always_comb begin

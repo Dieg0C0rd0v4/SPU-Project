@@ -1,12 +1,12 @@
 
-module Execute(readDataRA_EX,readDataRB_EX,readDataRC_EX,control_EX,
+module Execute(readDataRA_EX,readDataRB_EX,readDataRC_EX,opcode_EX,
 	       result_EX, latency_EX                              );
 
 //Jump Branch datapath 
 input [127:0] readDataRA_EX; 
 input [127:0] readDataRB_EX;
 input [127:0] readDataRC_EX;
-input [6:0]   control_EX;
+input [10:0]   opcode_EX;
 
 
 output [127:0] result_EX; //perhaps not needed, if we have 
@@ -25,7 +25,7 @@ assign RC = readDataRC_EX;
 
 
 always_comb begin
-	case(control_EX) 
+	case(opcode_EX) 
 		7'd1: begin
 			latency_EX= 3-1; 
 			RT[0+:16] = RA[0+:16]+RB[0+:16]; //bytes 0 and 1
@@ -54,7 +54,7 @@ logic [127:0] readDataRA_EX;
 logic [127:0] readDataRB_EX;
 logic [127:0] readDataRC_EX;
 //where's register RT??????
-logic [3:0] control_EX;
+logic [3:0] opcode_EX;
 logic [127:0] result;
 logic [10:0] opcode; 
 logic [127:0] result_EX; //perhaps not needed, if we have  
@@ -65,7 +65,7 @@ assign readDataRA_EX= 128'd543534534452345043;
 assign readDataRB_EX= 128'd234234234545610253; 
 
 
-Execute ex(readDataRA_EX,readDataRB_EX,readDataRC_EX,result,opcode,control_EX,result_EX);
+Execute ex(readDataRA_EX,readDataRB_EX,readDataRC_EX,result,opcode,opcode_EX,result_EX);
 
 endmodule
 */
