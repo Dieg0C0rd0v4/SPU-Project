@@ -132,7 +132,8 @@ always_comb begin
 		
 		
 	end	 
-		11'b01010100101: begin //count leading zeros 
+	11'b01010100101: begin //count leading zeros   
+		latency_EX= 3-1; 
 				for(int j=0;j<16;j+=4) begin 
 					temp_32=32'd0;
 					temp_u=RA[(j*8)+:32];
@@ -152,14 +153,140 @@ always_comb begin
 				end// end for j loop
 				
 			end	 //end instr 
+		11'b00011000001: begin 	//and
+			latency_EX= 3-1; 
+		    RT[0+:32] = RA[0+:32]&RB[0+:32]; //bytes 0 and 3
+			RT[32+:32]=RA[32+:32]&RB[32+:32]; //bytes 4 and 7
+			RT[64+:32]=RA[64+:32]&RB[64+:32]; //bytes 8 and 11
+			RT[96+:32]=RA[96+:32]&RB[96+:32]; //bytes 12 and 15
+				
 			
-	   
-	
+			
+		end	 
+		11'b01011000001: begin //and with compliment
+			latency_EX= 3-1; 
+		    RT[0+:32] = RA[0+:32]&(~RB[0+:32]); //bytes 0 and 3
+			RT[32+:32]=RA[32+:32]&(~RB[32+:32]); //bytes 4 and 7
+			RT[64+:32]=RA[64+:32]&(~RB[64+:32]); //bytes 8 and 11
+			RT[96+:32]=RA[96+:32]&(~RB[96+:32]); //bytes 12 and 15
+				
+	    end 
+	   	11'b00010101: begin  //and halfword immediate 
+			latency_EX= 3-1; 	 
+			imm_extended={ {11{imm7[6]}},imm7[6:0]};
+			RT[0+:16] = RA[0+:16]&imm_extended;
+			RT[16+:16]=RA[16+:16]&imm_extended;
+			RT[32+:16]=RA[32+:16]&imm_extended;
+			RT[48+:16]=RA[48+:16]&imm_extended;
+			RT[64+:16]=RA[64+:16]&imm_extended;
+			RT[80+:16]=RA[80+:16]&imm_extended;
+			RT[96+:16]=RA[96+:16]&imm_extended;
+			RT[112+:16]=RA[112+:16]&imm_extended;    
+			   
+	    end
+		11'b00010100: begin //and word immediate
+		    latency_EX= 3-1;   
+	 		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
+			RT[0+:32] = RA[0+:32]&imm_extended_32;
+			RT[32+:32]=RA[32+:32]&imm_extended_32;
+			RT[64+:32]=RA[64+:32]&imm_extended_32;
+			RT[96+:32]=RA[96+:32]&imm_extended_32; 	
+			
+		end	  
+		11'b00001000001: begin //or 
+			latency_EX= 3-1; 
+		    RT[0+:32] = RA[0+:32]|RB[0+:32]; //bytes 0 and 3
+			RT[32+:32]=RA[32+:32]|RB[32+:32]; //bytes 4 and 7
+			RT[64+:32]=RA[64+:32]|RB[64+:32]; //bytes 8 and 11
+			RT[96+:32]=RA[96+:32]|RB[96+:32]; //bytes 12 and 15
+			
+		end 
+		11'b01011001001: begin 	//or with complement 
+			latency_EX= 3-1; 
+		    RT[0+:32] = RA[0+:32]|(~RB[0+:32]); //bytes 0 and 3
+			RT[32+:32]=RA[32+:32]|(~RB[32+:32]); //bytes 4 and 7
+			RT[64+:32]=RA[64+:32]|(~RB[64+:32]); //bytes 8 and 11
+			RT[96+:32]=RA[96+:32]|(~RB[96+:32]); //bytes 12 and 15
+				
+			
+		end 			
+		11'b00000101: begin   //or halfword immediate 
+					latency_EX= 3-1; 	 
+			imm_extended={ {11{imm7[6]}},imm7[6:0]};
+			RT[0+:16] = RA[0+:16]|imm_extended;
+			RT[16+:16]=RA[16+:16]|imm_extended;
+			RT[32+:16]=RA[32+:16]|imm_extended;
+			RT[48+:16]=RA[48+:16]|imm_extended;
+			RT[64+:16]=RA[64+:16]|imm_extended;
+			RT[80+:16]=RA[80+:16]|imm_extended;
+			RT[96+:16]=RA[96+:16]|imm_extended;
+			RT[112+:16]=RA[112+:16]|imm_extended;    
+			
+		end 
+		11'b00000100: begin    //or word immediate 
+		    latency_EX= 3-1;   
+	 		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
+			RT[0+:32] = RA[0+:32]|imm_extended_32;
+			RT[32+:32]=RA[32+:32]|imm_extended_32;
+			RT[64+:32]=RA[64+:32]|imm_extended_32;
+			RT[96+:32]=RA[96+:32]|imm_extended_32; 	
+			
+			
+		end 
+		11'b01001000001: begin //exclusive or 
+			latency_EX= 3-1; 
+		    RT[0+:32] = RA[0+:32]^RB[0+:32]; //bytes 0 and 3
+			RT[32+:32]=RA[32+:32]^RB[32+:32]; //bytes 4 and 7
+			RT[64+:32]=RA[64+:32]^RB[64+:32]; //bytes 8 and 11
+			RT[96+:32]=RA[96+:32]^RB[96+:32]; //bytes 12 and 15
+			
+		end  
+		11'b01000101: begin    //exclusive or halfword immediate 
+			latency_EX= 3-1; 	 
+			imm_extended={ {11{imm7[6]}},imm7[6:0]};
+			RT[0+:16] = RA[0+:16]^imm_extended;
+			RT[16+:16]=RA[16+:16]^imm_extended;
+			RT[32+:16]=RA[32+:16]^imm_extended;
+			RT[48+:16]=RA[48+:16]^imm_extended;
+			RT[64+:16]=RA[64+:16]^imm_extended;
+			RT[80+:16]=RA[80+:16]^imm_extended;
+			RT[96+:16]=RA[96+:16]^imm_extended;
+			RT[112+:16]=RA[112+:16]^imm_extended;  	
+			
+		end 
+		11'b01000100: begin //exclusive or word immediate 
+			 latency_EX= 3-1;   
+	 		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
+			RT[0+:32] = RA[0+:32]^imm_extended_32;
+			RT[32+:32]=RA[32+:32]^imm_extended_32;
+			RT[64+:32]=RA[64+:32]^imm_extended_32;
+			RT[96+:32]=RA[96+:32]^imm_extended_32; 	
+			
+			
+		end 
+		11'b00011001001: begin 	 //nand 
+		   	latency_EX= 3-1; 
+		    RT[0+:32] = ~(RA[0+:32]&RB[0+:32]); //bytes 0 and 3
+			RT[32+:32]=~(RA[32+:32]&RB[32+:32]); //bytes 4 and 7
+			RT[64+:32]=~(RA[64+:32]&RB[64+:32]); //bytes 8 and 11
+			RT[96+:32]=~(RA[96+:32]&RB[96+:32]); //bytes 12 and 15
+				
+			
+			
+		end
+		11'b00001001001: begin 	 //nor 
+			latency_EX= 3-1; 
+		    RT[0+:32] = ~(RA[0+:32]|RB[0+:32]); //bytes 0 and 3
+			RT[32+:32]=~(RA[32+:32]|RB[32+:32]); //bytes 4 and 7
+			RT[64+:32]=~(RA[64+:32]|RB[64+:32]); //bytes 8 and 11
+			RT[96+:32]=~(RA[96+:32]|RB[96+:32]); //bytes 12 and 15
+			
+		end 
 	
 	endcase 
-end 
-
-
+ 
+   end 
+										   
 // ALU aluexecute(ALU_A,ALU_B,ALU_C,ALUControl,ALUResult,zero); // ALU Module
 endmodule 
 
