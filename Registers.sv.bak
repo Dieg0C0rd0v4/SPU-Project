@@ -35,7 +35,7 @@ always_comb begin
 	
 		if(regWriteEnable_WB1) Memory_Register[readRegisterRT_WB1] = writeData_WB1; 
 		if(regWriteEnable_WB2) Memory_Register[readRegisterRT_WB2] = writeData_WB2;
-
+	end
 end
 
 // 

@@ -16,7 +16,6 @@ reg [127:0] Memory_Register [0:127]; // 128 registers with 128 bits
 logic [127:0] data; 
 always_comb begin 
 	//Simulate Load Condition Testing
-
 	if (reset==1) begin
 		data = 128'd5000;
 		for (int j=0; j<30;j++) begin	
@@ -24,6 +23,7 @@ always_comb begin
 			Memory_Register[j] = data;
 			data = data +128'd300;
 		end
+	//Simulate Load Condition Testing
 	end
 	else begin
     		readDataRA_REG1 = Memory_Register[readRegisterRA_REG1];
