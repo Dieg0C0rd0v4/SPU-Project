@@ -66,6 +66,10 @@ wire [15:0]  immediate16BIT_ID2, immediate16BIT_REG2, immediate16BIT_EX2;
 wire [17:0]  immediate18BIT_ID1, immediate18BIT_REG1, immediate18BIT_EX1;
 wire [17:0]  immediate18BIT_ID2, immediate18BIT_REG2, immediate18BIT_EX2;
 
+
+
+
+
 //Testing purposes, delete after, same in register memory
 assign control_ID1= 7'd1;
 assign readRegisterRA_ID1 = 1;
@@ -73,9 +77,13 @@ assign readRegisterRB_ID1 = 2;
 assign readRegisterRT_ID1 = 3;
 assign regWriteEnable_ID1 = 1; 
 
+// Instruction Fetch
 
+InstructionFetch InsFetch(clk, reset, enablePC_IF, instruction1_IF,instruction2_IF);
 
-
+IF_ID if_id(instruction1_IF, instruction2_IF,
+            instruction1_ID, instruction2_ID,
+	    clk, reset, flush);
 
 //Stage Instruction Decoder
 ForwardingControl forwControlEven(readRegisterRA_ID1,  readRegisterRB_ID1, readRegisterRC_ID1,
@@ -89,13 +97,13 @@ ForwardingControl forwControlEven(readRegisterRA_ID1,  readRegisterRB_ID1, readR
 
 
 ForwardingControl forwControlOdd(readRegisterRA_ID,  readRegisterRB_ID, readRegisterRC_ID,
-			 readRegisterRT_ST3, readRegisterRT_ST4, readRegisterRT_ST5, readRegisterRT_ST6, readRegisterRT_ST7,
-			 regWriteEnable_ST3, regWriteEnable_ST4, regWriteEnable_ST5, regWriteEnable_ST6, regWriteEnable_ST7,
-			 latency_ST3, latency_ST4, latency_ST5, latency_ST6, latency_ST7,
-			 result_ST3, result_ST4, result_ST5, result_ST6, result_ST7,
-			 forwardDataRA_ID, forwardDataRB_ID, forwardDataRC_ID,
-			 selectForwardRA_ID, selectForwardRB_ID, selectForwardRC_ID,
-		         nop2);
+			         readRegisterRT_ST3, readRegisterRT_ST4, readRegisterRT_ST5, readRegisterRT_ST6, readRegisterRT_ST7,
+			         regWriteEnable_ST3, regWriteEnable_ST4, regWriteEnable_ST5, regWriteEnable_ST6, regWriteEnable_ST7,
+			         latency_ST3, latency_ST4, latency_ST5, latency_ST6, latency_ST7,
+			         result_ST3, result_ST4, result_ST5, result_ST6, result_ST7,
+			         forwardDataRA_ID, forwardDataRB_ID, forwardDataRC_ID,
+			         selectForwardRA_ID, selectForwardRB_ID, selectForwardRC_ID,
+		                 nop2);
 assign nop = nop1 | nop2; 
 
 ID_REG_STAGE id_reg(regWriteEnable_ID1, source_ID1, opcode_ID1,
