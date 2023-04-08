@@ -56,12 +56,12 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	EX_MEM
 
-} {} {}} {C:/intelFPGA/SPU Project/ForwardingControl.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/ForwardingControl.sv}
+} {} {}} {C:/intelFPGA/SPU Project/InstructionFetch.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/InstructionFetch.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module ForwardingControl
+-- Compiling module InstructionFetch
 
 Top level modules:
-	ForwardingControl
+	InstructionFetch
 
 } {} {}} {C:/intelFPGA/SPU Project/mux2_to_1_32bits.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/mux2_to_1_32bits.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -69,6 +69,14 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 
 Top level modules:
 	mux2_to_1_32BIT
+
+} {} {}} {C:/intelFPGA/SPU Project/Main.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/Main.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module main_cpu
+-- Compiling module main_TestBench
+
+Top level modules:
+	main_TestBench
 
 } {} {}} {C:/intelFPGA/SPU Project/Registers.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/Registers.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016

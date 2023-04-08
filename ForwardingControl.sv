@@ -80,7 +80,7 @@ always_comb begin
 	end
 	
 //forwardRB
-		if     (regWriteEnable_ST3 & (readRegisterRB_ID == readRegisterRT_ST3)) begin 
+	if     (regWriteEnable_ST3 & (readRegisterRB_ID == readRegisterRT_ST3)) begin 
 		if (latency_ST3 == 0) begin
 			forwardDataRB_ID = result_ST3;
 			selectForwardRB_ID = 1; 

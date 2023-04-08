@@ -111,6 +111,7 @@ ForwardingControl forwControlOdd(readRegisterRA_ID,  readRegisterRB_ID, readRegi
 			         selectForwardRA_ID, selectForwardRB_ID, selectForwardRC_ID,
 		                 nop2);
 assign nop = nop1 | nop2; 
+assign enablePC_IF = ~nop;
 
 ID_REG_STAGE id_reg(regWriteEnable_ID1, source_ID1, opcode_ID1,
                     regWriteEnable_ID2, source_ID2, opcode_ID2,

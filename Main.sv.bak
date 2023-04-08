@@ -18,7 +18,7 @@ logic [2:0] latency_EX1, latency_ST21, latency_ST31, latency_ST41, latency_ST51,
 logic [2:0] latency_EX2, latency_ST22, latency_ST32, latency_ST42, latency_ST52, latency_ST62, latency_ST72, latency_WB2; // The delay at which the result becomes available to forward (odd)
 //Inststructions
 wire [31:0] instruction1_IF, instruction1_ID;
-wire [31:0] instruction1_IF, instruction1_IF;
+wire [31:0] instruction2_IF, instruction2_ID;
 wire        flush; 
 wire        nop, nop1, nop2; //Nop Singals 
 wire        enablePC_IF;
