@@ -6,9 +6,9 @@ module IF_ID (instruction1_IF, instruction2_IF,
 
 
 input clk,reset,flush;
-input [31:0] instruction1,instruction2;
+input [31:0] instruction1_IF,instruction2_IF;
 
-output logic [31:0] first_instruction, second_instruction; 
+output logic [31:0] instruction1_ID, instruction2_ID; 
 
 always_ff @(posedge clk) begin 
 	if (reset == 1 | flush == 1) begin
