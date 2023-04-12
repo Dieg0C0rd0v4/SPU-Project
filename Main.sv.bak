@@ -92,25 +92,41 @@ IF_ID if_id(instruction1_IF, instruction2_IF,
 	    clk, reset, flush);
 
 //Stage Instruction Decoder
-ForwardingControl forwControlEven(readRegisterRA_ID1,  readRegisterRB_ID1, readRegisterRC_ID1,
-			          readRegisterRT_ST31, readRegisterRT_ST41, readRegisterRT_ST51, readRegisterRT_ST61, readRegisterRT_ST71,
-			          regWriteEnable_ST31, regWriteEnable_ST41, regWriteEnable_ST51, regWriteEnable_ST61, regWriteEnable_ST71,
-			          latency_ST31, latency_ST41, latency_ST51, latency_ST6, latency_ST7,
-			 	  result_ST3, result_ST4, result_ST5, result_ST6, result_ST7,
-				  forwardDataRA_ID, forwardDataRB_ID, forwardDataRC_ID,
-			 	  selectForwardRA_ID, selectForwardRB_ID, selectForwardRC_ID,
-				  nop1);
-
-
-ForwardingControl forwControlOdd(readRegisterRA_ID,  readRegisterRB_ID, readRegisterRC_ID,
-			         readRegisterRT_ST3, readRegisterRT_ST4, readRegisterRT_ST5, readRegisterRT_ST6, readRegisterRT_ST7,
-			         regWriteEnable_ST3, regWriteEnable_ST4, regWriteEnable_ST5, regWriteEnable_ST6, regWriteEnable_ST7,
-			         latency_ST3, latency_ST4, latency_ST5, latency_ST6, latency_ST7,
-			         result_ST3, result_ST4, result_ST5, result_ST6, result_ST7,
-			         forwardDataRA_ID, forwardDataRB_ID, forwardDataRC_ID,
-			         selectForwardRA_ID, selectForwardRB_ID, selectForwardRC_ID,
-		                 nop2);
-assign nop = nop1 | nop2; 
+//ForwardingControl forwControlEven(readRegisterRA_ID1,  readRegisterRB_ID1, readRegisterRC_ID1,
+//			          readRegisterRT_ST31, readRegisterRT_ST41, readRegisterRT_ST51, readRegisterRT_ST61, readRegisterRT_ST71,
+//			          regWriteEnable_ST31, regWriteEnable_ST41, regWriteEnable_ST51, regWriteEnable_ST61, regWriteEnable_ST71,
+//			          latency_ST31, latency_ST41, latency_ST51, latency_ST6, latency_ST7,
+//			 	  result_ST3, result_ST4, result_ST5, result_ST6, result_ST7,
+//				  forwardDataRA_ID, forwardDataRB_ID, forwardDataRC_ID,
+//			 	  selectForwardRA_ID, selectForwardRB_ID, selectForwardRC_ID,
+//				  nop);
+//
+//
+//ForwardingControl forwControlOdd(readRegisterRA_ID,  readRegisterRB_ID, readRegisterRC_ID,
+//			         readRegisterRT_ST3, readRegisterRT_ST4, readRegisterRT_ST5, readRegisterRT_ST6, readRegisterRT_ST7,
+//			         regWriteEnable_ST3, regWriteEnable_ST4, regWriteEnable_ST5, regWriteEnable_ST6, regWriteEnable_ST7,
+//			         latency_ST3, latency_ST4, latency_ST5, latency_ST6, latency_ST7,
+//			         result_ST3, result_ST4, result_ST5, result_ST6, result_ST7,
+//			         forwardDataRA_ID, forwardDataRB_ID, forwardDataRC_ID,
+//			         selectForwardRA_ID, selectForwardRB_ID, selectForwardRC_ID,
+//		                 nop2);
+ForwardingControl forwControl(readRegisterRA_ID1,  readRegisterRB_ID1, readRegisterRC_ID1,
+	   		      readRegisterRA_ID2, readRegisterRB_ID2, readRegisterRC_ID2,
+			      readRegisterRT_ST31, readRegisterRT_ST41, readRegisterRT_ST51, readRegisterRT_ST61, readRegisterRT_ST71,
+			      readRegisterRT_ST32, readRegisterRT_ST42, readRegisterRT_ST52, readRegisterRT_ST62, readRegisterRT_ST72,
+			      regWriteEnable_ST31, regWriteEnable_ST41, regWriteEnable_ST51, regWriteEnable_ST61, regWriteEnable_ST71,
+			      regWriteEnable_ST32, regWriteEnable_ST42, regWriteEnable_ST52, regWriteEnable_ST62, regWriteEnable_ST72,
+			      latency_ST31, latency_ST41, latency_ST51, latency_ST61, latency_ST71,
+			      latency_ST32, latency_ST42, latency_ST52, latency_ST62, latency_ST72,
+			      result_ST31, result_ST41, result_ST51, result_ST61, result_ST71,
+			      result_ST32, result_ST42, result_ST52, result_ST62, result_ST72,
+			      forwardDataRA_ID1, forwardDataRB_ID1, forwardDataRC_ID1,
+			      forwardDataRA_ID2, forwardDataRB_ID2, forwardDataRC_ID2, 
+			      selectForwardRA_ID1, selectForwardRB_ID1, selectForwardRC_ID1,
+			      selectForwardRA_ID2, selectForwardRB_ID2, selectForwardRC_ID2,
+			      nop);
+assign nop = nop1 || nop2; 
+assign enablePC_IF = ~nop;
 
 ID_REG_STAGE id_reg(regWriteEnable_ID1, source_ID1, opcode_ID1,
                     regWriteEnable_ID2, source_ID2, opcode_ID2,

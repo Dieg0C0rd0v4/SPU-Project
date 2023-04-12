@@ -14,7 +14,8 @@ module ID_REG_STAGE(regWriteEnable_ID1, source_ID1, opcode_ID1,// control inputs
 		    forwardDataRA_REG1, forwardDataRB_REG1, forwardDataRC_REG1,
 		    forwardDataRA_REG2, forwardDataRB_REG2, forwardDataRC_REG2,
                     selectForwardRA_REG1, selectForwardRB_REG1, selectForwardRC_REG1,
-			clk,reset,nop);
+                    selectForwardRA_REG2, selectForwardRB_REG2, selectForwardRC_REG2,
+	            clk,reset,nop);
 
 		
 

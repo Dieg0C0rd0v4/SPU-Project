@@ -61,7 +61,7 @@ output logic 	     selectForwardRA_REG2, selectForwardRB_REG2, selectForwardRC_R
 
 always_ff @(posedge clk) begin
 
-	if (reset==1 | nop == 1) begin 
+	if (reset==1 || nop == 1) begin 
 		regWriteEnable_REG1<=0; source_REG1<=0; opcode_REG1<=0;
 		regWriteEnable_REG2<=0; source_REG2<=0; opcode_REG2<=0;
 		readRegisterRA_REG1<=0; readRegisterRB_REG1<=0; readRegisterRC_REG1<=0; readRegisterRT_REG1<=0;
