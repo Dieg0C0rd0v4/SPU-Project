@@ -21,15 +21,25 @@ output logic [2:0] latency_EX;
 logic [127:0] RT;
 logic [127:0] RA;
 logic [127:0] RB; 
-logic [127:0] RC; 
+logic [127:0] RC;
+logic [127:0] unsigned_RA;
+logic [127:0] unsigned_RB;
+logic [127:0] unsigned_RC;
+
 logic [15:0] imm_extended;
-logic [31:0] imm_extended_32;
+logic [31:0] imm_extended_32; 
 logic [31:0] temp_32,temp_u;
 
 assign result_EX     = RT; 
 assign RA = readDataRA_EX; 
 assign RB = readDataRB_EX; 
 assign RC = readDataRC_EX; 
+assign unsigned_RA=	unsigned'(readDataRA_EX);
+
+assign unsigned_RB=	unsigned'(readDataRB_EX);
+
+assign unsigned_RC=	unsigned'(readDataRC_EX);
+
 
 
 always_comb begin
@@ -282,6 +292,170 @@ always_comb begin
 			RT[96+:32]=~(RA[96+:32]|RB[96+:32]); //bytes 12 and 15
 			
 		end 
+		11'b01111001000: begin 	//compare equal halfward
+		latency_EX= 3-1;
+		for(int j=0; j<16;j+=2) begin 
+			if(RA[(j*8)+:16]==RB[(j*8)+:16]) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+		end	   
+	11'b01111101: begin   //compare equal halfword immediate
+		imm_extended={ {6{imm10[9]}},imm10[9:0]};
+	for(int j=0; j<16;j+=2) begin 
+			if(RA[(j*8)+:16]==imm_extended) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+	end	
+	11'b01111000000: begin //compare equal word
+			
+	latency_EX= 3-1;
+		for(int j=0; j<16;j+=4) begin 
+			if(RA[(j*8)+:32]==RB[(j*8)+:32]) begin 
+				RT[(j*8)+:32]=11'hFFFFFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:32]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+	end	  
+	11'b01111100: begin  //compare equal word immediate
+		latency_EX= 3-1;
+		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
+	for(int j=0; j<16;j+=2) begin 
+			if(RA[(j*8)+:32]==imm_extended_32) begin 
+				RT[(j*8)+:32]=11'hFFFFFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:32]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+	end		
+		
+	 
+	11'b01001001000: begin 	  //compare greater than halfword
+	latency_EX= 3-1;
+		for(int j=0; j<16;j+=2) begin 
+			if(RA[(j*8)+:16]>RB[(j*8)+:16]) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+		end	
+		
+	11'b01001101: begin //compare greater than halfword immediate
+		latency_EX= 3-1;
+		imm_extended={ {6{imm10[9]}},imm10[9:0]};
+	for(int j=0; j<16;j+=2) begin 
+			if(RA[(j*8)+:16]>imm_extended) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+	end  
+	
+	end 
+	 11'b01001000000: begin //compare greater than word 
+		latency_EX= 3-1;
+		for(int j=0; j<16;j+=4) begin 
+			if(RA[(j*8)+:32]>RB[(j*8)+:32]) begin 
+				RT[(j*8)+:32]=11'hFFFFFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:32]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+	end	 
+	11'b01001100: begin //compare greater than word immediate
+			latency_EX= 3-1;
+		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
+	for(int j=0; j<16;j+=2) begin 
+			if(RA[(j*8)+:32]>imm_extended_32) begin 
+				RT[(j*8)+:32]=11'hFFFFFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:32]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+	end		
+	11'b01011001000: begin //compare logical greater than halfword
+
+	latency_EX= 3-1;
+		for(int j=0; j<16;j+=2) begin 
+			if(unsigned_RA[(j*8)+:16]>unsigned_RB[(j*8)+:16]) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+		end	 
+		
+		
+	
+	
 	
 	endcase 
  
