@@ -14,6 +14,9 @@ input [9:0] imm10;
 input [15:0] imm16;
 input [17:0] imm18; 
 
+logic [7:0] temp_b; // 8 bit temp number 		   
+logic [31:0] temp_bbbb;
+logic [15:0] temp_r,temp_s;	
 
 output [127:0] result_EX; //perhaps not needed, if we have 
 output logic [2:0] latency_EX; 
@@ -545,7 +548,112 @@ always_comb begin
 	
 	
 		
-	end  
+	end
+	11'b00010110: begin 
+	temp_b=imm10 & 16'hFF;
+	temp_bbbb[7:0]=temp_b;
+	temp_bbbb[15:8]=temp_b;
+	temp_bbbb[23:16]=temp_b;
+	temp_bbbb[31:24]=temp_b;
+	RT[0+:32]=RA[0+:24] &temp_bbbb;	  
+	RT[32+:32]=RA[0+:24] &temp_bbbb;
+	RT[64+:32]=RA[0+:24] &temp_bbbb;	 
+	RT[96+:32]=RA[0+:24] &temp_bbbb;
+		
+	end 
+	11'b00001011111: begin 	//shift left halfword	
+	for(int j=0;j<16;j+=2) begin 
+   temp_s=RB[(j*8)+:16]&16'h1F; //halfword access +:16  
+   temp_t=RA[(j*8)+:16];//halfword access +:16 
+	for(int b=0;b<16;b++) begin 
+   if((b+temp_s)<16) begin 
+   temp_r[b]=temp_t[b+temp_s];
+
+   end 
+   else begin 
+  temp_r[b]=0;
+
+   end 
+
+
+   end 
+
+  RT[(j*8)+:16]=temp_r; //set 16 bits of register RT to r_temp  
+  end 
+
+   end 
+		
+   11'b00001111111: begin //shift left halfword immediate 
+	for(int j=0;j<16;j+=2) begin 
+   imm_extended={ {11{imm7[6]}},imm7[6:0]};
+   temp_s=imm_extended&16'h1F; //halfword access +:16  
+   temp_t=RA[(j*8)+:16];//halfword access +:16 
+	for(int b=0;b<16;b++) begin 
+   if((b+temp_s)<16) begin 
+   temp_r[b]=temp_t[b+temp_s];
+
+   end 
+   else begin 
+  temp_r[b]=0;
+
+   end 
+
+
+   end    
+     RT[(j*8)+:16]=temp_r; //set 16 bits of register RT to r_temp  
+  end 
+
+   end    
+  11'b00001011011: begin //shift left word
+		for(int j=0;j<16;j+=4) begin 
+   temp_s=RB[(j*8)+:32]&16'h3F; //halfword access +:16  
+   temp_t=RA[(j*8)+:32];//halfword access +:16 
+	for(int b=0;b<32;b++) begin 
+   if((b+temp_s)<32) begin 
+   temp_r[b]=temp_t[b+temp_s];
+
+   end 
+   else begin 
+  temp_r[b]=0;
+
+   end 
+
+
+   end 
+
+  RT[(j*8)+:32]=temp_r; //set 16 bits of register RT to r_temp  
+  end 
+
+   end   
+	  
+  11'b00001111011: begin //shift left word immediate 
+  	for(int j=0;j<32;j+=4) begin 
+   imm_extended_32={ {25{imm7[6]}},imm7[6:0]};
+   temp_s=imm_extended_32&16'h3F; //halfword access +:16  
+   temp_t=RA[(j*8)+:32];//halfword access +:16 
+	for(int b=0;b<32;b++) begin 
+   if((b+temp_s)<32) begin 
+   temp_r[b]=temp_t[b+temp_s];
+
+   end 
+   else begin 
+  temp_r[b]=0;
+
+   end 
+
+
+   end    
+     RT[(j*8)+:32]=temp_r; //set 16 bits of register RT to r_temp  
+  end 
+
+   end    
+	  
+  
+  
+	   
+	  
+		
+	 
 	
 	endcase 
  
