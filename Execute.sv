@@ -28,7 +28,9 @@ logic [127:0] unsigned_RC;
 
 logic [15:0] imm_extended;
 logic [31:0] imm_extended_32; 
-logic [31:0] temp_32,temp_u;
+logic [31:0] temp_32,temp_u,temp_t;  
+logic [15:0] unsigned_imm_extended;
+logic [31:0] unsigned_imm_extended_32;
 
 assign result_EX     = RT; 
 assign RA = readDataRA_EX; 
@@ -40,6 +42,8 @@ assign unsigned_RB=	unsigned'(readDataRB_EX);
 
 assign unsigned_RC=	unsigned'(readDataRC_EX);
 
+//assign unsigned_imm_extended=unsigned'(imm_extended);  
+//assign unsigned_imm_extended_32=unsigned'(imm_extended_32);
 
 
 always_comb begin
@@ -452,10 +456,96 @@ always_comb begin
 			
 			
 		end	 
+	11'b01011101: begin  //compare logical greater than halfword immediate 
+	latency_EX= 3-1;
+	imm_extended={ {6{imm10[9]}},imm10[9:0]}; 
+	unsigned_imm_extended=unsigned'(imm_extended);
+	for(int j=0; j<16;j+=2) begin 
+			if(unsigned_RA[(j*8)+:16]>unsigned_imm_extended) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+	end  
+	
+	end 
+	
+	11'b01011000000:  begin //compare logical greater than word
+			latency_EX= 3-1;
+		for(int j=0; j<16;j+=4) begin 
+			if(unsigned_RA[(j*8)+:32]>unsigned_RB[(j*8)+:32]) begin 
+				RT[(j*8)+:32]=11'hFFFFFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:32]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+	end	 
+	11'b01011100: begin   //compare logical greater than word immediate 
+			latency_EX= 3-1;
+		imm_extended={ {6{imm10[9]}},imm10[9:0]};
+		unsigned_imm_extended=unsigned'(imm_extended);
+	for(int j=0; j<16;j+=2) begin 
+			if(unsigned_RA[(j*8)+:16]>unsigned_imm_extended) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+	end  
+	
+	end  
+	
+	11'b010000011:begin //immediate load halfword
+	latency_EX= 3-1;
+	
+	RT=imm16; 
 		
+	end 
+	11'b0010000010: begin //immediate load halfword upper
+		latency_EX= 3-1;
+			
+		temp_t=imm16<<16; //left shift by 16 to put in upper half
+		RT=temp_t; 
 		
+	end   
+	11'b010000001: begin //imm load word
+	latency_EX= 3-1;
+	imm_extended_32={ {22{imm10[9]}},imm10[9:0]};	
+	RT=imm_extended_32; 
+		
+	end 
+	11'b0100001: begin //immediate load address 
+	latency_EX= 3-1;
+	RT=imm18;
+	RT[31:18]=0; //set rest of the bits to 0
+		
+	end 
+	
+	11'b011000001: begin //immediate or halfword lower
+	latency_EX=3-1; 
+	temp_t=imm16;
+	temp_t[31:16]=0;  
+	RT=RT|temp_t;
 	
 	
+		
+	end  
 	
 	endcase 
  
