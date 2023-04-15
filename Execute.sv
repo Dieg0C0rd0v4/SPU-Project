@@ -1,6 +1,6 @@
 
 module Execute(readDataRA_EX,readDataRB_EX,readDataRC_EX,opcode_EX,
-	       result_EX, latency_EX,imm7, imm10, imm16,imm18);
+	       result_EX, latency_EX,imm7, imm10, imm16,imm18,branch_PC,branch_flag);
 
                           
 
@@ -12,15 +12,18 @@ input [10:0]   opcode_EX;
 input [6:0] imm7; 
 input [9:0] imm10;
 input [15:0] imm16;
-input [17:0] imm18; 
+input [17:0] imm18;
 
+output logic [31:0] branch_PC; //new PC address
+logic [17:0] branch_PC_p1; //add first two bits to PC address 
+logic [31:0] branch_PC_p2; 
 logic [7:0] temp_b; // 8 bit temp number 		   
 logic [31:0] temp_bbbb;
 logic [15:0] temp_r,temp_s;	
 
 output [127:0] result_EX; //perhaps not needed, if we have 
 output logic [2:0] latency_EX; 
-
+output logic branch_flag=0;	//set default to 0
 logic [127:0] RT;
 logic [127:0] RA;
 logic [127:0] RB; 
@@ -45,6 +48,9 @@ assign unsigned_RB=	unsigned'(readDataRB_EX);
 
 assign unsigned_RC=	unsigned'(readDataRC_EX);
 
+assign branch_PC_p1={imm16,{2{1'b0}}}; 	//add two extra bits 
+assign branch_PC_p2={{14{branch_PC_p1[17]}},branch_PC_p1}; 
+//assign branch_PC=branch_PC_p2&32'hFFFFFFFC; //extend to 32 bits  
 //assign unsigned_imm_extended=unsigned'(imm_extended);  
 //assign unsigned_imm_extended_32=unsigned'(imm_extended_32);
 
@@ -648,17 +654,75 @@ always_comb begin
 
    end    
 	  
-  
-  
-	   
-	  
+  11'b001000010: begin 	  //Branch If Not Zero Word
+	if(RT[0+:32]!=0) begin 
+		 branch_flag=1; 
+		 branch_PC=branch_PC_p2&32'hFFFFFFFC;
 		
-	 
-	
-	endcase 
- 
+	end 
+  else begin 
+	branch_flag=0;   
+	  
+  end 
+	  
+	  
    end 
-										   
+  11'b001000110: begin 	//branch if not zero halfword 
+	if(RT[8+:16]!=0) begin 
+		 branch_flag=1; 
+		 branch_PC=branch_PC_p2&32'hFFFFFFFC;
+		
+	end 
+  else begin 
+	branch_flag=0;   
+	  
+  end 
+	  
+	  
+   end 
+	   
+11'b001000000: begin  //branch if zero word 
+	if(RT[0+:32]==0) begin 
+		 branch_flag=1; 
+		 branch_PC=branch_PC_p2&32'hFFFFFFFC;
+		
+	end 
+  else begin 
+	branch_flag=0;   
+	  
+  end 
+	  
+	  
+   end 
+11'b001000100: begin //branch if zero halfword 
+	if(RT[8+:16]!=0) begin 
+		branch_flag=1;   
+		branch_PC=branch_PC_p2&32'hFFFFFFFC;
+		
+		
+	end 
+  else begin 
+	branch_flag=0;   
+	  
+  end 
+	  
+	  
+   end 
+  11'b001100000: begin 	//branch absolute
+  branch_flag=1; 
+	  
+	  
+end
+11'b001100100: begin //branch relative
+branch_flag=1;
+branch_PC=branch_PC_p2; //removes mask from address
+	
+	
+end 
+  		
+	endcase 
+end 
+								   
 // ALU aluexecute(ALU_A,ALU_B,ALU_C,ALUControl,ALUResult,zero); // ALU Module
 endmodule 
 
