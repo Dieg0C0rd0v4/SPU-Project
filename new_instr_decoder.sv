@@ -1,11 +1,12 @@
-module instruction_decoder(instr1_id,instr2_id,register_RA_addr,register_RB_addr,register_RT_addr,imm7_output, imm10_output, imm16_output,imm18_output,imm10_output,is_even,instruction_latency);
-input [31:0] instr1_id,instr2_id; 
-output logic [6:0] register_RA_addr,register_RB_addr,register_RT_addr,imm7_output;
+module instruction_decoder(instr1_id,register_RA_addr,register_RB_addr,register_RC_addr,register_RT_addr,use_RA,use_RB,use_RC,select_imm,imm7_output, imm10_output, imm16_output,imm18_output,is_even,instruction_latency);
+input [31:0] instr1_id;
+output logic [6:0] register_RA_addr,register_RB_addr,register_RC_addr,register_RT_addr,imm7_output;
 output logic [9:0] imm10_output;
 output logic [25:0] imm16_output;
 output logic [17:0] imm18_output;  
-
-output logic  [3:0] instruction_latency; 		
+output logic use_RA,use_RB,use_RC;
+output logic  [3:0] instruction_latency;
+output logic [1:0] select_imm; //which imm is being used not sure if needd for forwarding so might not be used 
 
 
 output logic is_even;		 
@@ -13,20 +14,62 @@ output logic is_even;
 logic is_four_checked, is_seven_checked, is_eight_checked, is_nine_checked, is_eleven_checked=0; //will check opcode by size in order    
 
 logic opcode_found=0;
-//As of 4/2/2023 immediate or halfword lower is what I got up to  
+//As of 4/2/2023 immediate or halfword lower is what I got up to
+//as of 4/18/2023 I got up to compare equal byte immediate
 
 
 always_comb begin 
-	if(is_four_checked==0) begin 
-		
+	if(is_four_checked==0&&opcode_found==0) begin  //multiply and add
+	case(instr1_id[3:0]) 
+		4'b1100: begin 
+		register_RT_addr=instr1_id[10:4]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RB_addr=instr1_id[17:11];
+		register_RC_addr=instr1_id[31:25];
+		is_four_checked=1;
+		opcode_found=1;					  
+		use_RA=1;
+		use_RB=1;
+		use_RC=1; 
+			
+	  end 
+	  4'b1110: begin //floating multiply and add
+		 register_RT_addr=instr1_id[10:4]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RB_addr=instr1_id[17:11];
+		register_RC_addr=instr1_id[31:25]; 
+			use_RA=1;
+		use_RB=1;
+		use_RC=1; 
+		is_four_checked=1;
+		opcode_found=1;
+		  
+		  
+	  end 
+	  4'b1111: begin //floating multiply and subtract 
+		register_RT_addr=instr1_id[10:4]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RB_addr=instr1_id[17:11];
+		register_RC_addr=instr1_id[31:25]; 
+		use_RA=1;
+		use_RB=1;
+		use_RC=1; 
+		is_four_checked=1;
+		opcode_found=1;  
+	 	  
+	end 
+	  endcase 
 		
 		
 	end 
 else if(is_seven_checked==0&&opcode_found==0) begin 
 	case(instr1_id[6:0])
-	7'b0100001: begin 
+	7'b0100001: begin 	 //load address 
 	imm18_output=instr1_id[24:7];
 	register_RT_addr=instr1_id[31:25];
+	    use_RA=0;
+		use_RB=0;
+		use_RC=0;
 		
 	end 
 	
@@ -47,7 +90,10 @@ else if(is_eight_checked==0&&opcode_found==0) begin
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eight_checked=1;
+		is_eight_checked=1;	  
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 		
 end   	 
 8'b00011100: begin //add word immediate 
@@ -55,7 +101,10 @@ end
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eight_checked=1;
+		is_eight_checked=1;	
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 	
 	
 end    
@@ -65,6 +114,9 @@ end
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eight_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 	
 end  
 8'b00001100: begin //subtract from word immediate
@@ -72,7 +124,10 @@ end
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eight_checked=1;
+		is_eight_checked=1;	
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 	
 end 	  
 8'b00010101: begin //and halfword immediate
@@ -81,6 +136,9 @@ end
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eight_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 		
 		
 	
@@ -90,7 +148,10 @@ end
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eight_checked=1;
+		is_eight_checked=1;	
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 		
 	
 end  
@@ -100,6 +161,9 @@ end
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eight_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 	
 end    
 8'b00000100: begin //or word immediate
@@ -108,6 +172,9 @@ end
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eight_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 	
 	
 end
@@ -117,7 +184,10 @@ end
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eight_checked=1;
+		is_eight_checked=1;	
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 	
 end
 8'b01000100: begin //exclusive or word immediate 
@@ -126,6 +196,9 @@ end
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eight_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 		
 end   
 8'b01111101: begin 	//compare equal halfword immediate 
@@ -133,7 +206,10 @@ end
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eight_checked=1;
+		is_eight_checked=1;	
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 end 	
 8'b01111100: begin //compare equal word immediate 
 	  imm10_output=instr1_id[17:8];
@@ -141,6 +217,9 @@ end
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eight_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 	
 	
 end 
@@ -150,6 +229,9 @@ end
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eight_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 	
 	
 end   
@@ -159,6 +241,9 @@ end
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eight_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 	
 end 
 8'b01011101: begin //Compare Logical Greater Than Halfword Immediate
@@ -166,7 +251,10 @@ end
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eight_checked=1;
+		is_eight_checked=1;	
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 	
 	
 end	
@@ -176,10 +264,59 @@ end
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eight_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
 	
 	
 	
-	end
+end	
+8'b00010110: begin  //and byte immediate 
+	 imm10_output=instr1_id[17:8];
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eight_checked=1;	
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
+		
+	
+end  
+8'b01110100: begin //multiply immediate
+	 imm10_output=instr1_id[17:8];
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eight_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
+	
+	
+end 
+8'b01110101: begin 	//multiply unsigned immediate
+	 imm10_output=instr1_id[17:8];
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eight_checked=1;	
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
+	
+end
+8'b01111110: begin //Compare Equal Byte Immediate
+       imm10_output=instr1_id[17:8];
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eight_checked=1;	
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;	
+	
+end 
 	
 	endcase 
  
@@ -190,23 +327,32 @@ else if(is_nine_checked==0&opcode_found==0) begin
 	9'b010000011: begin 
 	imm16_output=instr1_id[24:9]; 
 	register_RT_addr=instr1_id[31:25];
-		
+	    use_RA=0;
+		use_RB=0;
+		use_RC=0;	
 		
 	end
 	9'b010000010: begin 	 //immediate load halfword upper
 	imm16_output=instr1_id[24:9]; 
 	register_RT_addr=instr1_id[31:25]; 
-		
+	    use_RA=0;
+		use_RB=0;
+		use_RC=0;		
 		
 	end  
 	9'b010000001: begin   //immediate load word 
 	imm16_output=instr1_id[24:9]; 
 	register_RT_addr=instr1_id[31:25]; 	
-		
+	    use_RA=0;
+		use_RB=0;
+		use_RC=0;		
 	end  
 	9'b011000001: begin //immdiate or halfword lower
 	 imm16_output=instr1_id[24:9]; 
-	register_RT_addr=instr1_id[31:25]; 	
+	register_RT_addr=instr1_id[31:25];
+	    use_RA=0;
+		use_RB=0;
+		use_RC=0;	
 	end 
 	
 	
@@ -221,7 +367,10 @@ else if(is_eleven_checked==0&&opcode_found==0) begin
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_seven_checked=1;
+		is_eleven_checked=1;  
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;	
 		
 	end  
 	11'b00011000000: begin //add word 
@@ -230,6 +379,9 @@ else if(is_eleven_checked==0&&opcode_found==0) begin
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 		
 		
 	end 
@@ -238,14 +390,20 @@ else if(is_eleven_checked==0&&opcode_found==0) begin
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_seven_checked=1;
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 	end 
   11'b00001000000: begin //subtract from word  
 	    register_RB_addr=instr1_id[17:11];
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eleven_checked=1;
+		is_eleven_checked=1; 
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 	  
   end 
   11'b00011000010: begin   //carry generate
@@ -254,6 +412,9 @@ else if(is_eleven_checked==0&&opcode_found==0) begin
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 	  
   end 
   11'b01010100101: begin //count leading zeross 
@@ -262,6 +423,9 @@ else if(is_eleven_checked==0&&opcode_found==0) begin
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 	  
   end 
   11'b00011000001:	begin  //and 
@@ -269,14 +433,20 @@ else if(is_eleven_checked==0&&opcode_found==0) begin
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eleven_checked=1;  
+		is_eleven_checked=1; 
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 	end 	
 	11'b01011000001: begin //and with compliment  
 		 register_RB_addr=instr1_id[17:11]; 
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eleven_checked=1;  
+		is_eleven_checked=1; 
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 		
 	end 
 	
@@ -285,7 +455,10 @@ else if(is_eleven_checked==0&&opcode_found==0) begin
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eleven_checked=1;  
+		is_eleven_checked=1; 
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 		
 		
 	end  
@@ -296,6 +469,9 @@ else if(is_eleven_checked==0&&opcode_found==0) begin
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eleven_checked=1;  
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 		
 	
 		end 
@@ -305,6 +481,9 @@ else if(is_eleven_checked==0&&opcode_found==0) begin
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eleven_checked=1;  
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 		  
 		  
 		  
@@ -315,7 +494,10 @@ else if(is_eleven_checked==0&&opcode_found==0) begin
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eleven_checked=1;  
+		is_eleven_checked=1; 
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 	
 	
 end   
@@ -325,7 +507,10 @@ end
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eleven_checked=1;  
+		is_eleven_checked=1;   
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 	
 end
 11'b01111001000: begin //compare equal halfword 
@@ -334,6 +519,9 @@ end
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 	
 end 
 11'b01111000000: begin //compare equal word
@@ -341,7 +529,10 @@ end
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eleven_checked=1;
+		is_eleven_checked=1; 
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 	
 end 
 11'b01001001000: begin //compare greater than halfword 
@@ -350,6 +541,9 @@ end
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 	
 	
 end
@@ -360,6 +554,9 @@ end
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
 		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 	
 end
 11'b01011001000: begin //compare logical greater than halfword
@@ -367,24 +564,228 @@ end
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
-		is_eleven_checked=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
 end 
 11'b01011000000: begin 	//Compare Logical Greater Than Word
 	register_RB_addr=instr1_id[17:11]; 
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
+		is_eleven_checked=1; 
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
+	
+end  
+11'b00001011111: begin //shift left halfword 
+	    register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
 		is_eleven_checked=1;
+	   use_RA=1;
+		use_RB=1;
+		use_RC=0;
 	
 end 
-
-
-
+11'b00001111111: begin //shift left halfword immediate
+		//register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
+	
+	
+end 
+11'b00001011011: begin  //shift left word  
+	    register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
+	
+	
+end 
+11'b00001111011: begin 	//shift left word immediate
+	   // register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1; 
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
+	
+end 
+11'b00001011100: begin  //rotate halfword
+	    register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1; 
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
+end 
+11'b00001111100: begin //rotate halfword immediate 
+	   register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
+	
+end  
+11'b00001011000: begin //rotate word 
+	   register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
+	
+	
+end  
+11'b00001111000: begin 	//rotate word immediate
+   //register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
+	
+end	
+11'b01111000100: begin //multiply 
+	   register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1; 
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
+	
+end 
+11'b01111001100: begin 	//multiply unsigned
+       register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1; 
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
+		
+	
+end 
+11'b01011000100: begin //floating add
+    register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
+	
+end 
+11'b01011000101: begin 	 //floating subtract 
+ register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
+		
+	
+end 
+11'b01011000110: begin 	//floating multiply 
+       register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;	
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
+	
+end 
+11'b00011010011: begin 	//average bytes 
+        register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
+	
+end
+11'b01010110100:begin //count ones in bytes register B is not used
+        register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=0;
+		use_RC=0;
+	
+end 
+11'b00001010011: begin 	//absolute differences in bytes
+        register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;
+		
+	
+end 
+11'b01001010011: begin 	//sum bytes into halfwords
+        register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;	
+	
+end  
+11'b01111010000: begin //compare equal byte 
+        register_RB_addr=instr1_id[17:11]; 
+		register_RA_addr=instr1_id[24:18];
+		register_RT_addr=instr1_id[31:25]; 
+		opcode_found=1;	
+		is_eleven_checked=1;
+		use_RA=1;
+		use_RB=1;
+		use_RC=0;		
+	
+end 
 	
 	endcase 
 	end 
 	
 end
 
-endmodule 
-
+endmodule
