@@ -11,7 +11,7 @@ output logic [1:0] select_imm; //which imm is being used not sure if needd for f
 output logic [2:0] unit_id; 
 output logic is_even;		 
 
-logic is_four_checked, is_seven_checked, is_eight_checked, is_nine_checked, is_eleven_checked=0; //will check opcode by size in order    
+logic is_four_checked=0, is_seven_checked=0, is_eight_checked=0, is_nine_checked=0, is_eleven_checked=0; //will check opcode by size in order    
 
 logic opcode_found=0;
 //As of 4/2/2023 immediate or halfword lower is what I got up to
@@ -88,7 +88,7 @@ else if(is_seven_checked==0&&opcode_found==0) begin
 	
  
 
-else if(is_eight_checked==0&&opcode_found==0) begin 
+if(is_eight_checked==0&&opcode_found==0) begin 
 	case(instr1_id[7:0])
 8'b00011101: begin //add halfword-immediate
 	    imm10_output=instr1_id[17:8];
@@ -369,7 +369,7 @@ end
  
 end 
 
-else if(is_nine_checked==0&opcode_found==0) begin 
+if(is_nine_checked==0&opcode_found==0) begin 
 	case(instr1_id[8:0]) //immediate load halfowrd
 	9'b010000011: begin 
 	imm16_output=instr1_id[24:9]; 
@@ -469,7 +469,7 @@ else if(is_nine_checked==0&opcode_found==0) begin
 	
 end 
 
-else if(is_eleven_checked==0&&opcode_found==0) begin 
+if(is_eleven_checked==0&&opcode_found==0) begin 
 	case(instr1_id[10:0])  //add halfword 
 	11'b00011001000: begin 
 		register_RB_addr=instr1_id[17:11];
@@ -747,7 +747,8 @@ end
 	
 end 
 11'b00001111011: begin 	//shift left word immediate
-	   // register_RB_addr=instr1_id[17:11]; 
+	// register_RB_addr=instr1_id[17:11];   
+	    imm7_output=instr1_id[17:11];
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
@@ -770,7 +771,8 @@ end
 		unit_id=2;
 end 
 11'b00001111100: begin //rotate halfword immediate 
-	   register_RB_addr=instr1_id[17:11]; 
+	//register_RB_addr=instr1_id[17:11];
+	    imm7_output=instr1_id[17:11]; 
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
@@ -796,6 +798,7 @@ end
 end  
 11'b00001111000: begin 	//rotate word immediate
    //register_RB_addr=instr1_id[17:11]; 
+        imm7_output=instr1_id[17:11];
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
@@ -942,7 +945,8 @@ end
 	
 end 
 11'b00111111011: begin 	  //shift left by quadword immediate 
-       // register_RB_addr=instr1_id[17:11]; 
+	// register_RB_addr=instr1_id[17:11];
+	    imm7_output=instr1_id[17:11]; 
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
@@ -967,7 +971,8 @@ end
 		unit_id=5;
 	
 end 
-11'b00111111111: begin //Shift Left Quadword by Bytes Immediate
+11'b00111111111: begin //Shift Left Quadword by Bytes Immediate	 
+	    imm7_output=instr1_id[17:11];
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
@@ -1005,7 +1010,8 @@ end
 	
 	
 end 
-11'b00111111100: begin 		//Rotate Quadword by Bytes Immediate
+11'b00111111100: begin 		//Rotate Quadword by Bytes Immediate  
+	    imm7_output=instr1_id[17:11];
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
@@ -1032,7 +1038,7 @@ end
 	
 end
 11'b00111111000: begin //Rotate Quadword by Bits Immediate
-	    register_RB_addr=instr1_id[17:11]; 
+	    imm7_output=instr1_id[17:11]; 
 		register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
@@ -1082,6 +1088,7 @@ end
 	
 end 	 
 11'b00101000100: begin //store quadword x form  
+	    register_RB_addr=instr1_id[17:11];
 	    register_RA_addr=instr1_id[24:18];
 		register_RT_addr=instr1_id[31:25]; 
 		opcode_found=1;	
@@ -1125,3 +1132,39 @@ end
 end
 
 endmodule
+module decoder_test_tb;
+logic [31:0] instr1_id;		
+ logic [6:0] register_RA_addr,register_RB_addr,register_RC_addr,register_RT_addr,imm7_output;
+ logic [9:0] imm10_output;
+ logic [25:0] imm16_output;
+ logic [17:0] imm18_output;  
+ logic use_RA,use_RB,use_RC;
+ logic  [3:0] instruction_latency;
+ logic [1:0] select_imm; //which imm is being used not sure if needd for forwarding so might not be used 
+   
+	 
+ logic [2:0] unit_id; 
+ logic is_even;	
+ logic clk;    
+ //logic is_four_checked, is_seven_checked, is_eight_checked, is_nine_checked, is_eleven_checked; //will check opcode by size in order    
+
+//logic opcode_found;
+ initial clk = 0;
+always #5 clk = ~clk;
+instruction_decoder dut(instr1_id,register_RA_addr,register_RB_addr,register_RC_addr,register_RT_addr,use_RA,use_RB,use_RC,select_imm,imm7_output, imm10_output, imm16_output,imm18_output,is_even,instruction_latency,unit_id);
+initial begin
+	@(posedge clk)
+	instr1_id[7:0]=8'b00010100; //and byte immediate  
+	instr1_id[31:8]=0; 
+//	@(posedge clk)	
+//	instr1_id=11'b00110110001; //gather bits from halfwords 
+	 
+//	@(posedge clk)
+//	instr1_id=9'b010000011; //immediate load halfword 
+//	@(posedge clk) 
+//	instr1_id=4'b1100; //multiply and add
+@(posedge clk);	 
+@(posedge clk); 
+$finish;	
+end 
+endmodule 
