@@ -50,17 +50,6 @@ always_comb begin
 		useRC=1; 	 
 		unitID=3;
 			
-
-
-
-
-
-
-
-
-
-
-
 	  end 
 	  4'b1110: begin //floating multiply and add
 		readRegisterRT=instruction[10:4]; 

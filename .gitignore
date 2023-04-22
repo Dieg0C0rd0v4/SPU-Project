@@ -1,0 +1,31 @@
+# ignore ModelSim generated files and directories (temp files and so on)
+[_@]*
+
+# ignore compilation output of ModelSim
+*.mti
+*.dat
+*.dbs
+*.psm
+*.bak
+*.cmp
+*.jpg
+*.html
+*.bsf
+
+# ignore simulation output of ModelSim
+wlf*
+*.wlf
+*.vstf
+*.ucdb
+cov*/
+transcript*
+sc_dpiheader.h
+vsim.dbg
+work/_info
+work/_lib.qdb
+work/_lib1_251.qdb
+work/_lib1_251.qpg
+work/_lib1_251.qtl
+work/_lib1_253.qdb
+work/_lib1_253.qpg
+work/_lib1_253.qtl
