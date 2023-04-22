@@ -13,7 +13,7 @@ module ForwardingControl(readRegisterRA_ID1,  readRegisterRB_ID1, readRegisterRC
 			 forwardDataRA_ID2, forwardDataRB_ID2, forwardDataRC_ID2, 
 			 selectForwardRA_ID1, selectForwardRB_ID1, selectForwardRC_ID1,
 			 selectForwardRA_ID2, selectForwardRB_ID2, selectForwardRC_ID2,
-			 nop);
+			 stallEven, stallOdd);
 
 input [6:0] readRegisterRA_ID1, readRegisterRB_ID1, readRegisterRC_ID1;
 input [6:0] readRegisterRA_ID2, readRegisterRB_ID2, readRegisterRC_ID2;  
@@ -31,7 +31,7 @@ output logic [127:0] forwardDataRA_ID2, forwardDataRB_ID2, forwardDataRC_ID2;
 output logic selectForwardRA_ID1, selectForwardRB_ID1, selectForwardRC_ID1;
 output logic selectForwardRA_ID2, selectForwardRB_ID2, selectForwardRC_ID2;
 	
-output logic nop; 
+output logic stallEven, stallOdd; 
 
 	
 always_comb begin
@@ -42,20 +42,20 @@ always_comb begin
 				if (latency_ST31 == 0) begin
 					forwardDataRA_ID1 = result_ST31;
 					selectForwardRA_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRA_ID2 == readRegisterRT_ST31) begin 
 				if (latency_ST31 == 0) begin
 					forwardDataRA_ID2 = result_ST31;
 					selectForwardRA_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1;
+					stallOdd = 1;
 				end 
 			end
 	end
@@ -64,20 +64,20 @@ always_comb begin
 				if (latency_ST41 == 0) begin
 					forwardDataRA_ID1 = result_ST41;
 					selectForwardRA_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRA_ID2 == readRegisterRT_ST41) begin 
 				if (latency_ST41 == 0) begin
 					forwardDataRA_ID2 = result_ST41;
 					selectForwardRA_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -86,20 +86,20 @@ always_comb begin
 				if (latency_ST51 == 0) begin
 					forwardDataRA_ID1 = result_ST51;
 					selectForwardRA_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRA_ID2 == readRegisterRT_ST51) begin 
 				if (latency_ST51 == 0) begin
 					forwardDataRA_ID2 = result_ST51;
 					selectForwardRA_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -108,20 +108,20 @@ always_comb begin
 				if (latency_ST61 == 0) begin
 					forwardDataRA_ID1 = result_ST61;
 					selectForwardRA_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRA_ID2 == readRegisterRT_ST61) begin 
 				if (latency_ST61 == 0) begin
 					forwardDataRA_ID2 = result_ST61;
 					selectForwardRA_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -130,20 +130,20 @@ always_comb begin
 				if (latency_ST71 == 0) begin
 					forwardDataRA_ID1 = result_ST71;
 					selectForwardRA_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRA_ID2 == readRegisterRT_ST71) begin 
 				if (latency_ST71 == 0) begin
 					forwardDataRA_ID2 = result_ST71;
 					selectForwardRA_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -153,20 +153,20 @@ always_comb begin
 				if (latency_ST32 == 0) begin
 					forwardDataRA_ID1 = result_ST32;
 					selectForwardRA_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRA_ID2 == readRegisterRT_ST32) begin 
 				if (latency_ST32  == 0) begin
 					forwardDataRA_ID2 = result_ST32;
 					selectForwardRA_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -175,20 +175,20 @@ always_comb begin
 				if (latency_ST42 == 0) begin
 					forwardDataRA_ID1 = result_ST42;
 					selectForwardRA_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1;
+					stallEven = 1;
 				end  
 			end
 			if (readRegisterRA_ID2 == readRegisterRT_ST42) begin 
 				if (latency_ST42 == 0) begin
 					forwardDataRA_ID2 = result_ST42;
 					selectForwardRA_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -197,20 +197,20 @@ always_comb begin
 				if (latency_ST52 == 0) begin
 					forwardDataRA_ID1 = result_ST52;
 					selectForwardRA_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRA_ID2 == readRegisterRT_ST52) begin 
 				if (latency_ST52 == 0) begin
 					forwardDataRA_ID2 = result_ST52;
 					selectForwardRA_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -219,20 +219,20 @@ always_comb begin
 				if (latency_ST62 == 0) begin
 					forwardDataRA_ID1 = result_ST62;
 					selectForwardRA_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRA_ID2 == readRegisterRT_ST62) begin 
 				if (latency_ST62 == 0) begin
 					forwardDataRA_ID2 = result_ST62;
 					selectForwardRA_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -241,20 +241,20 @@ always_comb begin
 				if (latency_ST72 == 0) begin
 					forwardDataRA_ID1 = result_ST72;
 					selectForwardRA_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRA_ID2 == readRegisterRT_ST72) begin 
 				if (latency_ST72 == 0) begin
 					forwardDataRA_ID2 = result_ST72;
 					selectForwardRA_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -265,20 +265,20 @@ always_comb begin
 				if (latency_ST31 == 0) begin
 					forwardDataRB_ID1 = result_ST31;
 					selectForwardRB_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRB_ID2 == readRegisterRT_ST31) begin 
 				if (latency_ST31 == 0) begin
 					forwardDataRB_ID2 = result_ST31;
 					selectForwardRB_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -287,20 +287,20 @@ always_comb begin
 				if (latency_ST41 == 0) begin
 					forwardDataRB_ID1 = result_ST41;
 					selectForwardRB_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRB_ID2 == readRegisterRT_ST41) begin 
 				if (latency_ST41 == 0) begin
 					forwardDataRB_ID2 = result_ST41;
 					selectForwardRB_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1;
+					stallOdd = 1;
 				end  
 			end
 	end
@@ -309,20 +309,20 @@ always_comb begin
 				if (latency_ST51 == 0) begin
 					forwardDataRB_ID1 = result_ST51;
 					selectForwardRB_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRB_ID2 == readRegisterRT_ST51) begin 
 				if (latency_ST51 == 0) begin
 					forwardDataRB_ID2 = result_ST51;
 					selectForwardRB_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -331,20 +331,20 @@ always_comb begin
 				if (latency_ST61 == 0) begin
 					forwardDataRB_ID1 = result_ST61;
 					selectForwardRB_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRB_ID2 == readRegisterRT_ST61) begin 
 				if (latency_ST61 == 0) begin
 					forwardDataRB_ID2 = result_ST61;
 					selectForwardRB_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1;
+					stallOdd = 1;
 				end  
 			end
 	end
@@ -353,20 +353,20 @@ always_comb begin
 				if (latency_ST71 == 0) begin
 					forwardDataRB_ID1 = result_ST71;
 					selectForwardRB_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRB_ID2 == readRegisterRT_ST71) begin 
 				if (latency_ST71 == 0) begin
 					forwardDataRB_ID2 = result_ST71;
 					selectForwardRB_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -376,20 +376,20 @@ always_comb begin
 				if (latency_ST32 == 0) begin
 					forwardDataRB_ID1 = result_ST32;
 					selectForwardRB_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRB_ID2 == readRegisterRT_ST32) begin 
 				if (latency_ST32  == 0) begin
 					forwardDataRB_ID2 = result_ST32;
 					selectForwardRB_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -398,20 +398,20 @@ always_comb begin
 				if (latency_ST42 == 0) begin
 					forwardDataRB_ID1 = result_ST42;
 					selectForwardRB_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRB_ID2 == readRegisterRT_ST42) begin 
 				if (latency_ST42 == 0) begin
 					forwardDataRB_ID2 = result_ST42;
 					selectForwardRB_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -420,20 +420,20 @@ always_comb begin
 				if (latency_ST52 == 0) begin
 					forwardDataRB_ID1 = result_ST52;
 					selectForwardRB_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRB_ID2 == readRegisterRT_ST52) begin 
 				if (latency_ST52 == 0) begin
 					forwardDataRB_ID2 = result_ST52;
 					selectForwardRB_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -442,20 +442,20 @@ always_comb begin
 				if (latency_ST62 == 0) begin
 					forwardDataRB_ID1 = result_ST62;
 					selectForwardRB_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRB_ID2 == readRegisterRT_ST62) begin 
 				if (latency_ST62 == 0) begin
 					forwardDataRB_ID2 = result_ST62;
 					selectForwardRB_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -464,20 +464,20 @@ always_comb begin
 				if (latency_ST72 == 0) begin
 					forwardDataRB_ID1 = result_ST72;
 					selectForwardRB_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRB_ID2 == readRegisterRT_ST72) begin 
 				if (latency_ST72 == 0) begin
 					forwardDataRB_ID2 = result_ST72;
 					selectForwardRB_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -488,20 +488,20 @@ always_comb begin
 				if (latency_ST31 == 0) begin
 					forwardDataRC_ID1 = result_ST31;
 					selectForwardRC_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRC_ID2 == readRegisterRT_ST31) begin 
 				if (latency_ST31 == 0) begin
 					forwardDataRC_ID2 = result_ST31;
 					selectForwardRC_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1;
+					stallOdd = 1;
 				end 
 			end
 	end
@@ -510,20 +510,20 @@ always_comb begin
 				if (latency_ST41 == 0) begin
 					forwardDataRC_ID1 = result_ST41;
 					selectForwardRC_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRC_ID2 == readRegisterRT_ST41) begin 
 				if (latency_ST41 == 0) begin
 					forwardDataRC_ID2 = result_ST41;
 					selectForwardRC_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1;
+					stallOdd = 1;
 				end 
 			end
 	end
@@ -532,20 +532,20 @@ always_comb begin
 				if (latency_ST51 == 0) begin
 					forwardDataRC_ID1 = result_ST51;
 					selectForwardRC_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRC_ID2 == readRegisterRT_ST51) begin 
 				if (latency_ST51 == 0) begin
 					forwardDataRC_ID2 = result_ST51;
 					selectForwardRC_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -554,20 +554,20 @@ always_comb begin
 				if (latency_ST61 == 0) begin
 					forwardDataRC_ID1 = result_ST61;
 					selectForwardRC_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRC_ID2 == readRegisterRT_ST61) begin 
 				if (latency_ST61 == 0) begin
 					forwardDataRC_ID2 = result_ST61;
 					selectForwardRC_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -576,20 +576,20 @@ always_comb begin
 				if (latency_ST71 == 0) begin
 					forwardDataRC_ID1 = result_ST71;
 					selectForwardRC_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRC_ID2 == readRegisterRT_ST71) begin 
 				if (latency_ST71 == 0) begin
 					forwardDataRC_ID2 = result_ST71;
 					selectForwardRC_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -599,20 +599,20 @@ always_comb begin
 				if (latency_ST32 == 0) begin
 					forwardDataRC_ID1 = result_ST32;
 					selectForwardRC_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRC_ID2 == readRegisterRT_ST32) begin 
 				if (latency_ST32  == 0) begin
 					forwardDataRC_ID2 = result_ST32;
 					selectForwardRC_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -621,20 +621,20 @@ always_comb begin
 				if (latency_ST42 == 0) begin
 					forwardDataRC_ID1 = result_ST42;
 					selectForwardRC_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1;
+					stallEven = 1;
 				end  
 			end
 			if (readRegisterRC_ID2 == readRegisterRT_ST42) begin 
 				if (latency_ST42 == 0) begin
 					forwardDataRC_ID2 = result_ST42;
 					selectForwardRC_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -643,20 +643,20 @@ always_comb begin
 				if (latency_ST52 == 0) begin
 					forwardDataRC_ID1 = result_ST52;
 					selectForwardRC_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRC_ID2 == readRegisterRT_ST52) begin 
 				if (latency_ST52 == 0) begin
 					forwardDataRC_ID2 = result_ST52;
 					selectForwardRC_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -665,20 +665,20 @@ always_comb begin
 				if (latency_ST62 == 0) begin
 					forwardDataRC_ID1 = result_ST62;
 					selectForwardRC_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1;
+					stallEven = 1;
 				end  
 			end
 			if (readRegisterRC_ID2 == readRegisterRT_ST62) begin 
 				if (latency_ST62 == 0) begin
 					forwardDataRC_ID2 = result_ST62;
 					selectForwardRC_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
@@ -687,20 +687,20 @@ always_comb begin
 				if (latency_ST72 == 0) begin
 					forwardDataRC_ID1 = result_ST72;
 					selectForwardRC_ID1 = 1; 
-					nop = 0;
+					stallEven = 0;
 				end
 				else begin
-					nop = 1; 
+					stallEven = 1; 
 				end 
 			end
 			if (readRegisterRC_ID2 == readRegisterRT_ST72) begin 
 				if (latency_ST72 == 0) begin
 					forwardDataRC_ID2 = result_ST72;
 					selectForwardRC_ID2 = 1; 
-					nop = 0; 
+					stallOdd = 0; 
 				end
 				else begin
-					nop = 1; 
+					stallOdd = 1; 
 				end 
 			end
 	end
