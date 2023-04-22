@@ -1,79 +1,708 @@
 
-module ForwardingControl(readRegisterRA_EX, readRegisterRB_EX,
-			 readRegisterRT_ST3,readRegisterRT_ST4,readRegisterRT_ST5,readRegisterRT_ST6,readRegisterRT_ST7,
-			 regWriteEnable_ST3,regWriteEnable_ST4,regWriteEnable_ST5,regWriteEnable_ST6,regWriteEnable_ST7,
-			 latency_ST3,latency_ST4,latency_ST5,latency_ST6,latency_ST7,
-			 result_ST3,result_ST4,result_ST5,result_ST6,result_ST7,
-			 forwardDataRA_EX, forwardDataRB_EX,
-			 selectForwardRA_EX, selectForwardRB_EX);
+module ForwardingControl(readRegisterRA_ID1,  readRegisterRB_ID1, readRegisterRC_ID1,
+			 readRegisterRA_ID2, readRegisterRB_ID2, readRegisterRC_ID2,
+			 readRegisterRT_ST31, readRegisterRT_ST41, readRegisterRT_ST51, readRegisterRT_ST61, readRegisterRT_ST71,
+			 readRegisterRT_ST32, readRegisterRT_ST42, readRegisterRT_ST52, readRegisterRT_ST62, readRegisterRT_ST72,
+			 regWriteEnable_ST31, regWriteEnable_ST41, regWriteEnable_ST51, regWriteEnable_ST61, regWriteEnable_ST71,
+			 regWriteEnable_ST32, regWriteEnable_ST42, regWriteEnable_ST52, regWriteEnable_ST62, regWriteEnable_ST72,
+			 latency_ST31, latency_ST41, latency_ST51, latency_ST61, latency_ST71,
+			 latency_ST32, latency_ST42, latency_ST52, latency_ST62, latency_ST72,
+			 result_ST31, result_ST41, result_ST51, result_ST61, result_ST71,
+			 result_ST32, result_ST42, result_ST52, result_ST62, result_ST72,
+			 forwardDataRA_ID1, forwardDataRB_ID1, forwardDataRC_ID1,
+			 forwardDataRA_ID2, forwardDataRB_ID2, forwardDataRC_ID2, 
+			 selectForwardRA_ID1, selectForwardRB_ID1, selectForwardRC_ID1,
+			 selectForwardRA_ID2, selectForwardRB_ID2, selectForwardRC_ID2,
+			 stallEven, stallOdd);
 
-input [6:0] readRegisterRA_EX, readRegisterRB_EX; 
-input [6:0] readRegisterRT_ST3,readRegisterRT_ST4,readRegisterRT_ST5,readRegisterRT_ST6,readRegisterRT_ST7; 
-input regWriteEnable_ST3,regWriteEnable_ST4,regWriteEnable_ST5,regWriteEnable_ST6,regWriteEnable_ST7;
-input [2:0] latency_ST3,latency_ST4,latency_ST5,latency_ST6,latency_ST7;
-input [127:0] result_ST3,result_ST4,result_ST5,result_ST6,result_ST7;
+input [6:0] readRegisterRA_ID1, readRegisterRB_ID1, readRegisterRC_ID1;
+input [6:0] readRegisterRA_ID2, readRegisterRB_ID2, readRegisterRC_ID2;  
+input [6:0] readRegisterRT_ST31,readRegisterRT_ST41,readRegisterRT_ST51,readRegisterRT_ST61,readRegisterRT_ST71; 
+input [6:0] readRegisterRT_ST32,readRegisterRT_ST42,readRegisterRT_ST52,readRegisterRT_ST62,readRegisterRT_ST72; 
+input regWriteEnable_ST31,regWriteEnable_ST41,regWriteEnable_ST51,regWriteEnable_ST61,regWriteEnable_ST71;
+input regWriteEnable_ST32,regWriteEnable_ST42,regWriteEnable_ST52,regWriteEnable_ST62,regWriteEnable_ST72;
+input [2:0] latency_ST31,latency_ST41,latency_ST51,latency_ST61,latency_ST71;
+input [2:0] latency_ST32,latency_ST42,latency_ST52,latency_ST62,latency_ST72;
+input [127:0] result_ST31,result_ST41,result_ST51,result_ST61,result_ST71;
+input [127:0] result_ST32,result_ST42,result_ST52,result_ST62,result_ST72;
 	
-output logic [127:0] forwardDataRA_EX, forwardDataRB_EX; 
-output logic selectForwardRA_EX;
-output logic selectForwardRB_EX;  
+output logic [127:0] forwardDataRA_ID1, forwardDataRB_ID1, forwardDataRC_ID1; 
+output logic [127:0] forwardDataRA_ID2, forwardDataRB_ID2, forwardDataRC_ID2; 
+output logic selectForwardRA_ID1, selectForwardRB_ID1, selectForwardRC_ID1;
+output logic selectForwardRA_ID2, selectForwardRB_ID2, selectForwardRC_ID2;
+	
+output logic stallEven, stallOdd; 
 
 	
 always_comb begin
 	
-//fowardRA 
-	if ((latency_ST3 == 0) & regWriteEnable_ST3 & (readRegisterRA_EX == readRegisterRT_ST3)) begin 
-		forwardDataRA_EX = result_ST3;
-		selectForwardRA_EX = 1; 
+//fowardRA //EVEN PIPE
+	if     (regWriteEnable_ST31) begin
+			if (readRegisterRA_ID1 == readRegisterRT_ST31) begin 
+				if (latency_ST31 == 0) begin
+					forwardDataRA_ID1 = result_ST31;
+					selectForwardRA_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRA_ID2 == readRegisterRT_ST31) begin 
+				if (latency_ST31 == 0) begin
+					forwardDataRA_ID2 = result_ST31;
+					selectForwardRA_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1;
+				end 
+			end
 	end
-	else if ((latency_ST4 == 0) & regWriteEnable_ST4 & (readRegisterRA_EX == readRegisterRT_ST4)) begin 
-		forwardDataRA_EX = result_ST4;
-		selectForwardRA_EX = 1; 
-	end	
-	else if ((latency_ST5 == 0) & regWriteEnable_ST5 & (readRegisterRA_EX == readRegisterRT_ST5)) begin 
-		forwardDataRA_EX = result_ST5;
-		selectForwardRA_EX = 1; 
+	if     (regWriteEnable_ST41) begin
+			if (readRegisterRA_ID1 == readRegisterRT_ST41) begin 
+				if (latency_ST41 == 0) begin
+					forwardDataRA_ID1 = result_ST41;
+					selectForwardRA_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRA_ID2 == readRegisterRT_ST41) begin 
+				if (latency_ST41 == 0) begin
+					forwardDataRA_ID2 = result_ST41;
+					selectForwardRA_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
 	end
-	else if ((latency_ST6 == 0) & regWriteEnable_ST6 & (readRegisterRA_EX == readRegisterRT_ST6)) begin 
-		forwardDataRA_EX = result_ST6;
-		selectForwardRA_EX = 1; 
+	if     (regWriteEnable_ST51) begin
+			if (readRegisterRA_ID1 == readRegisterRT_ST51) begin 
+				if (latency_ST51 == 0) begin
+					forwardDataRA_ID1 = result_ST51;
+					selectForwardRA_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRA_ID2 == readRegisterRT_ST51) begin 
+				if (latency_ST51 == 0) begin
+					forwardDataRA_ID2 = result_ST51;
+					selectForwardRA_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
 	end
-	else if ((latency_ST7 == 0) & regWriteEnable_ST7 & (readRegisterRA_EX == readRegisterRT_ST7)) begin 
-		forwardDataRA_EX = result_ST7;
-		selectForwardRA_EX = 1; 
+	if     (regWriteEnable_ST61) begin
+			if (readRegisterRA_ID1 == readRegisterRT_ST61) begin 
+				if (latency_ST61 == 0) begin
+					forwardDataRA_ID1 = result_ST61;
+					selectForwardRA_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRA_ID2 == readRegisterRT_ST61) begin 
+				if (latency_ST61 == 0) begin
+					forwardDataRA_ID2 = result_ST61;
+					selectForwardRA_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
 	end
-	
-	else begin
-		selectForwardRA_EX= 0; 
+	if     (regWriteEnable_ST71) begin
+			if (readRegisterRA_ID1 == readRegisterRT_ST71) begin 
+				if (latency_ST71 == 0) begin
+					forwardDataRA_ID1 = result_ST71;
+					selectForwardRA_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRA_ID2 == readRegisterRT_ST71) begin 
+				if (latency_ST71 == 0) begin
+					forwardDataRA_ID2 = result_ST71;
+					selectForwardRA_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
 	end
-	//fowardRB
-	if ((latency_ST3 == 0) & regWriteEnable_ST3 & (readRegisterRB_EX == readRegisterRT_ST3)) begin 
-		forwardDataRB_EX = result_ST3;
-		selectForwardRB_EX = 1; 
+//fowardRA //ODD PIPE
+	if     (regWriteEnable_ST32) begin
+			if (readRegisterRA_ID1 == readRegisterRT_ST32) begin 
+				if (latency_ST32 == 0) begin
+					forwardDataRA_ID1 = result_ST32;
+					selectForwardRA_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRA_ID2 == readRegisterRT_ST32) begin 
+				if (latency_ST32  == 0) begin
+					forwardDataRA_ID2 = result_ST32;
+					selectForwardRA_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST42) begin
+			if (readRegisterRA_ID1 == readRegisterRT_ST42) begin 
+				if (latency_ST42 == 0) begin
+					forwardDataRA_ID1 = result_ST42;
+					selectForwardRA_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1;
+				end  
+			end
+			if (readRegisterRA_ID2 == readRegisterRT_ST42) begin 
+				if (latency_ST42 == 0) begin
+					forwardDataRA_ID2 = result_ST42;
+					selectForwardRA_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST52) begin
+			if (readRegisterRA_ID1 == readRegisterRT_ST52) begin 
+				if (latency_ST52 == 0) begin
+					forwardDataRA_ID1 = result_ST52;
+					selectForwardRA_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRA_ID2 == readRegisterRT_ST52) begin 
+				if (latency_ST52 == 0) begin
+					forwardDataRA_ID2 = result_ST52;
+					selectForwardRA_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST62) begin
+			if (readRegisterRA_ID1 == readRegisterRT_ST62) begin 
+				if (latency_ST62 == 0) begin
+					forwardDataRA_ID1 = result_ST62;
+					selectForwardRA_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRA_ID2 == readRegisterRT_ST62) begin 
+				if (latency_ST62 == 0) begin
+					forwardDataRA_ID2 = result_ST62;
+					selectForwardRA_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST72) begin
+			if (readRegisterRA_ID1 == readRegisterRT_ST72) begin 
+				if (latency_ST72 == 0) begin
+					forwardDataRA_ID1 = result_ST72;
+					selectForwardRA_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRA_ID2 == readRegisterRT_ST72) begin 
+				if (latency_ST72 == 0) begin
+					forwardDataRA_ID2 = result_ST72;
+					selectForwardRA_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
 	end
 
-	else if ((latency_ST4 == 0) & regWriteEnable_ST4 & (readRegisterRB_EX == readRegisterRT_ST4)) begin 
-		forwardDataRB_EX = result_ST4;
-		selectForwardRB_EX = 1;
-	end	
-	else if ((latency_ST5 == 0) & regWriteEnable_ST5 & (readRegisterRB_EX == readRegisterRT_ST5)) begin 
-		forwardDataRB_EX = result_ST5;
-		selectForwardRB_EX = 1;
+//fowardRB //EVEN PIPE
+	if     (regWriteEnable_ST31) begin
+			if (readRegisterRB_ID1 == readRegisterRT_ST31) begin 
+				if (latency_ST31 == 0) begin
+					forwardDataRB_ID1 = result_ST31;
+					selectForwardRB_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRB_ID2 == readRegisterRT_ST31) begin 
+				if (latency_ST31 == 0) begin
+					forwardDataRB_ID2 = result_ST31;
+					selectForwardRB_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
 	end
-	else if ((latency_ST6 == 0) & regWriteEnable_ST6 & (readRegisterRB_EX == readRegisterRT_ST6)) begin 
-		forwardDataRB_EX = result_ST6;
-		selectForwardRB_EX = 1;
+	if     (regWriteEnable_ST41) begin
+			if (readRegisterRB_ID1 == readRegisterRT_ST41) begin 
+				if (latency_ST41 == 0) begin
+					forwardDataRB_ID1 = result_ST41;
+					selectForwardRB_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRB_ID2 == readRegisterRT_ST41) begin 
+				if (latency_ST41 == 0) begin
+					forwardDataRB_ID2 = result_ST41;
+					selectForwardRB_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1;
+				end  
+			end
 	end
-	else if ((latency_ST7 == 0) & regWriteEnable_ST7 & (readRegisterRB_EX == readRegisterRT_ST7)) begin 
-		forwardDataRB_EX = result_ST7;
-		selectForwardRB_EX = 1;
-	end	
-	else begin 
-		selectForwardRB_EX = 0; 
+	if     (regWriteEnable_ST51) begin
+			if (readRegisterRB_ID1 == readRegisterRT_ST51) begin 
+				if (latency_ST51 == 0) begin
+					forwardDataRB_ID1 = result_ST51;
+					selectForwardRB_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRB_ID2 == readRegisterRT_ST51) begin 
+				if (latency_ST51 == 0) begin
+					forwardDataRB_ID2 = result_ST51;
+					selectForwardRB_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST61) begin
+			if (readRegisterRB_ID1 == readRegisterRT_ST61) begin 
+				if (latency_ST61 == 0) begin
+					forwardDataRB_ID1 = result_ST61;
+					selectForwardRB_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRB_ID2 == readRegisterRT_ST61) begin 
+				if (latency_ST61 == 0) begin
+					forwardDataRB_ID2 = result_ST61;
+					selectForwardRB_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1;
+				end  
+			end
+	end
+	if     (regWriteEnable_ST71) begin
+			if (readRegisterRB_ID1 == readRegisterRT_ST71) begin 
+				if (latency_ST71 == 0) begin
+					forwardDataRB_ID1 = result_ST71;
+					selectForwardRB_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRB_ID2 == readRegisterRT_ST71) begin 
+				if (latency_ST71 == 0) begin
+					forwardDataRB_ID2 = result_ST71;
+					selectForwardRB_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+//fowardRB //ODD PIPE
+	if     (regWriteEnable_ST32) begin
+			if (readRegisterRB_ID1 == readRegisterRT_ST32) begin 
+				if (latency_ST32 == 0) begin
+					forwardDataRB_ID1 = result_ST32;
+					selectForwardRB_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRB_ID2 == readRegisterRT_ST32) begin 
+				if (latency_ST32  == 0) begin
+					forwardDataRB_ID2 = result_ST32;
+					selectForwardRB_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST42) begin
+			if (readRegisterRB_ID1 == readRegisterRT_ST42) begin 
+				if (latency_ST42 == 0) begin
+					forwardDataRB_ID1 = result_ST42;
+					selectForwardRB_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRB_ID2 == readRegisterRT_ST42) begin 
+				if (latency_ST42 == 0) begin
+					forwardDataRB_ID2 = result_ST42;
+					selectForwardRB_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST52) begin
+			if (readRegisterRB_ID1 == readRegisterRT_ST52) begin 
+				if (latency_ST52 == 0) begin
+					forwardDataRB_ID1 = result_ST52;
+					selectForwardRB_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRB_ID2 == readRegisterRT_ST52) begin 
+				if (latency_ST52 == 0) begin
+					forwardDataRB_ID2 = result_ST52;
+					selectForwardRB_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST62) begin
+			if (readRegisterRB_ID1 == readRegisterRT_ST62) begin 
+				if (latency_ST62 == 0) begin
+					forwardDataRB_ID1 = result_ST62;
+					selectForwardRB_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRB_ID2 == readRegisterRT_ST62) begin 
+				if (latency_ST62 == 0) begin
+					forwardDataRB_ID2 = result_ST62;
+					selectForwardRB_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST72) begin
+			if (readRegisterRB_ID1 == readRegisterRT_ST72) begin 
+				if (latency_ST72 == 0) begin
+					forwardDataRB_ID1 = result_ST72;
+					selectForwardRB_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRB_ID2 == readRegisterRT_ST72) begin 
+				if (latency_ST72 == 0) begin
+					forwardDataRB_ID2 = result_ST72;
+					selectForwardRB_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
 	end
 	
+//fowardRC //EVEN PIPE
+	if     (regWriteEnable_ST31) begin
+			if (readRegisterRC_ID1 == readRegisterRT_ST31) begin 
+				if (latency_ST31 == 0) begin
+					forwardDataRC_ID1 = result_ST31;
+					selectForwardRC_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRC_ID2 == readRegisterRT_ST31) begin 
+				if (latency_ST31 == 0) begin
+					forwardDataRC_ID2 = result_ST31;
+					selectForwardRC_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1;
+				end 
+			end
+	end
+	if     (regWriteEnable_ST41) begin
+			if (readRegisterRC_ID1 == readRegisterRT_ST41) begin 
+				if (latency_ST41 == 0) begin
+					forwardDataRC_ID1 = result_ST41;
+					selectForwardRC_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRC_ID2 == readRegisterRT_ST41) begin 
+				if (latency_ST41 == 0) begin
+					forwardDataRC_ID2 = result_ST41;
+					selectForwardRC_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1;
+				end 
+			end
+	end
+	if     (regWriteEnable_ST51) begin
+			if (readRegisterRC_ID1 == readRegisterRT_ST51) begin 
+				if (latency_ST51 == 0) begin
+					forwardDataRC_ID1 = result_ST51;
+					selectForwardRC_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRC_ID2 == readRegisterRT_ST51) begin 
+				if (latency_ST51 == 0) begin
+					forwardDataRC_ID2 = result_ST51;
+					selectForwardRC_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST61) begin
+			if (readRegisterRC_ID1 == readRegisterRT_ST61) begin 
+				if (latency_ST61 == 0) begin
+					forwardDataRC_ID1 = result_ST61;
+					selectForwardRC_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRC_ID2 == readRegisterRT_ST61) begin 
+				if (latency_ST61 == 0) begin
+					forwardDataRC_ID2 = result_ST61;
+					selectForwardRC_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST71) begin
+			if (readRegisterRC_ID1 == readRegisterRT_ST71) begin 
+				if (latency_ST71 == 0) begin
+					forwardDataRC_ID1 = result_ST71;
+					selectForwardRC_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRC_ID2 == readRegisterRT_ST71) begin 
+				if (latency_ST71 == 0) begin
+					forwardDataRC_ID2 = result_ST71;
+					selectForwardRC_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+//fowardRC //ODD PIPE
+	if     (regWriteEnable_ST32) begin
+			if (readRegisterRC_ID1 == readRegisterRT_ST32) begin 
+				if (latency_ST32 == 0) begin
+					forwardDataRC_ID1 = result_ST32;
+					selectForwardRC_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRC_ID2 == readRegisterRT_ST32) begin 
+				if (latency_ST32  == 0) begin
+					forwardDataRC_ID2 = result_ST32;
+					selectForwardRC_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST42) begin
+			if (readRegisterRC_ID1 == readRegisterRT_ST42) begin 
+				if (latency_ST42 == 0) begin
+					forwardDataRC_ID1 = result_ST42;
+					selectForwardRC_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1;
+				end  
+			end
+			if (readRegisterRC_ID2 == readRegisterRT_ST42) begin 
+				if (latency_ST42 == 0) begin
+					forwardDataRC_ID2 = result_ST42;
+					selectForwardRC_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST52) begin
+			if (readRegisterRC_ID1 == readRegisterRT_ST52) begin 
+				if (latency_ST52 == 0) begin
+					forwardDataRC_ID1 = result_ST52;
+					selectForwardRC_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRC_ID2 == readRegisterRT_ST52) begin 
+				if (latency_ST52 == 0) begin
+					forwardDataRC_ID2 = result_ST52;
+					selectForwardRC_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST62) begin
+			if (readRegisterRC_ID1 == readRegisterRT_ST62) begin 
+				if (latency_ST62 == 0) begin
+					forwardDataRC_ID1 = result_ST62;
+					selectForwardRC_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1;
+				end  
+			end
+			if (readRegisterRC_ID2 == readRegisterRT_ST62) begin 
+				if (latency_ST62 == 0) begin
+					forwardDataRC_ID2 = result_ST62;
+					selectForwardRC_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
+	if     (regWriteEnable_ST72) begin
+			if (readRegisterRC_ID1 == readRegisterRT_ST72) begin 
+				if (latency_ST72 == 0) begin
+					forwardDataRC_ID1 = result_ST72;
+					selectForwardRC_ID1 = 1; 
+					stallEven = 0;
+				end
+				else begin
+					stallEven = 1; 
+				end 
+			end
+			if (readRegisterRC_ID2 == readRegisterRT_ST72) begin 
+				if (latency_ST72 == 0) begin
+					forwardDataRC_ID2 = result_ST72;
+					selectForwardRC_ID2 = 1; 
+					stallOdd = 0; 
+				end
+				else begin
+					stallOdd = 1; 
+				end 
+			end
+	end
 end
-
-
-	
-	
 endmodule

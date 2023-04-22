@@ -5,13 +5,6 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	STAGES
 
-} {} {}} {C:/intelFPGA/SPU Project/MEM_WB.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/MEM_WB.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module MEM_WB_STAGE
-
-Top level modules:
-	MEM_WB_STAGE
-
 } {} {}} {C:/intelFPGA/SPU Project/REG_EX.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/REG_EX.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module REG_EX_STAGE
@@ -26,6 +19,37 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	mux2_to_1_128BIT
 
+} {} {}} {C:/intelFPGA/SPU Project/Execute.sv} {2 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/Execute.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module Execute
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(314): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(319): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(331): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(336): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(349): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(354): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(367): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(372): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(386): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(391): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(405): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(410): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(421): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(426): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(439): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(444): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(457): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(462): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(476): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(481): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(493): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(498): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(512): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/intelFPGA/SPU Project/Execute.sv(517): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+
+Top level modules:
+	Execute
+
 } {} {}} {C:/intelFPGA/SPU Project/DataMemory.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/DataMemory.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module DataMemory
@@ -34,13 +58,6 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	DataMemory
 	DataMemory_TestBench
-
-} {} {}} {C:/intelFPGA/SPU Project/mux3_to_1_128bits.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/mux3_to_1_128bits.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module mux3_to_1_128BIT
-
-Top level modules:
-	mux3_to_1_128BIT
 
 } {} {}} {C:/intelFPGA/SPU Project/EX_MEM.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/EX_MEM.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -56,13 +73,6 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	InstructionFetch
 
-} {} {}} {C:/intelFPGA/SPU Project/mux2_to_1_32bits.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/mux2_to_1_32bits.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module mux2_to_1_32BIT
-
-Top level modules:
-	mux2_to_1_32BIT
-
 } {} {}} {C:/intelFPGA/SPU Project/ForwardingControl.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/ForwardingControl.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module ForwardingControl
@@ -70,20 +80,21 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	ForwardingControl
 
-} {} {}} {C:/intelFPGA/SPU Project/Main.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/Main.sv}
+} {} {}} {C:/intelFPGA/SPU Project/mux2_to_1_32bits.sv} {1 {vlog -work work -sv -stats=none {C:\intelFPGA\SPU Project\mux2_to_1_32bits.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module main_cpu
--- Compiling module main_TestBench
+-- Compiling module mux2_to_1_32BIT
 
 Top level modules:
-	main_TestBench
+	mux2_to_1_32BIT
 
-} {} {}} {C:/intelFPGA/SPU Project/InstructionDecoder.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/InstructionDecoder.sv}
+} {} {}} {C:/intelFPGA/SPU Project/InstructionDecoder.sv} {1 {vlog -work work -sv -stats=none {C:\intelFPGA\SPU Project\InstructionDecoder.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module Registers128_128Bits
+-- Compiling module decoder
+-- Compiling module decoder_test_tb
 
 Top level modules:
-	Registers128_128Bits
+	decoder
+	decoder_test_tb
 
 } {} {}} {C:/intelFPGA/SPU Project/Registers.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/Registers.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -99,18 +110,25 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	ID_REG_STAGE
 
+} {} {}} {C:/intelFPGA/SPU Project/BranchPredictor.sv} {1 {vlog -work work -sv -stats=none {C:\intelFPGA\SPU Project\BranchPredictor.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module static_branch_prediction
+
+Top level modules:
+	static_branch_prediction
+
+} {} {}} {C:/intelFPGA/SPU Project/IF_ID.sv} {1 {vlog -work work -sv -stats=none {C:\intelFPGA\SPU Project\IF_ID.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module IF_ID_STAGE
+
+Top level modules:
+	IF_ID_STAGE
+
 } {} {}} {C:/intelFPGA/SPU Project/Instruction Memory.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/Instruction Memory.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module instruction_memory
 
 Top level modules:
 	instruction_memory
-
-} {} {}} {C:/intelFPGA/SPU Project/IF_ID.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/IF_ID.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module IF_ID
-
-Top level modules:
-	IF_ID
 
 } {} {}}
