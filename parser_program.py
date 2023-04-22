@@ -96,8 +96,8 @@ while True:
         binary_arg=bin(int(arg))[2:]
         binary_arg=get_format_size(opcode_size,binary_arg,i)
         #print(binary_arg)
-        new_arg=binary_arg+new_arg
-    #print(new_arg)
+        new_arg=new_arg+binary_arg
+    print(new_arg)
     new_line=new_binary+new_arg
     print("the new line character length is "+str(len(new_line)))
     #print(new_line)
