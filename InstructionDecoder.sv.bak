@@ -1,6 +1,6 @@
 
 
-module InstructionDecoder(clk,reset,pcpluseight_in,instruction,registerRT,writeData,regWriteEnable,immediate_select,
+module Registers128_128Bits(clk,reset,pcpluseight_in,instruction,registerRT,writeData,regWriteEnable,immediate_select,
                           pcpluseight_out,DestinationRegister_RT,DestinationRegister_RRR,readDataRB,readDataRA,readDataRC, immediate,readRegister_RB_ID,readRegister_RA_ID,branch_address,memory_data_address,branch_control,branch_result);
 parameter PC_bitSize =11; 
 

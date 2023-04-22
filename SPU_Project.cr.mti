@@ -5,20 +5,6 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	STAGES
 
-} {} {}} {C:/intelFPGA/SPU Project/MEM_WB.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/MEM_WB.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module MEM_WB_STAGE
-
-Top level modules:
-	MEM_WB_STAGE
-
-} {} {}} {C:/intelFPGA/SPU Project/REG_EX.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/REG_EX.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module REG_EX_STAGE
-
-Top level modules:
-	REG_EX_STAGE
-
 } {} {}} {C:/intelFPGA/SPU Project/mux2_to_1_128bits.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/mux2_to_1_128bits.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module mux2_to_1_128BIT
@@ -35,13 +21,6 @@ Top level modules:
 	DataMemory
 	DataMemory_TestBench
 
-} {} {}} {C:/intelFPGA/SPU Project/mux3_to_1_128bits.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/mux3_to_1_128bits.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module mux3_to_1_128BIT
-
-Top level modules:
-	mux3_to_1_128BIT
-
 } {} {}} {C:/intelFPGA/SPU Project/EX_MEM.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/EX_MEM.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module EX_MEM
@@ -49,55 +28,19 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 Top level modules:
 	EX_MEM
 
-} {} {}} {C:/intelFPGA/SPU Project/InstructionFetch.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/InstructionFetch.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module InstructionFetch
-
-Top level modules:
-	InstructionFetch
-
-} {} {}} {C:/intelFPGA/SPU Project/mux2_to_1_32bits.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/mux2_to_1_32bits.sv}
+} {} {}} {C:/intelFPGA/SPU Project/mux2_to_1_32bits.sv} {1 {vlog -work work -sv -stats=none {C:\intelFPGA\SPU Project\mux2_to_1_32bits.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
 -- Compiling module mux2_to_1_32BIT
 
 Top level modules:
 	mux2_to_1_32BIT
 
-} {} {}} {C:/intelFPGA/SPU Project/ForwardingControl.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/ForwardingControl.sv}
+} {} {}} {C:/intelFPGA/SPU Project/BranchPredictor.sv} {1 {vlog -work work -sv -stats=none {C:\intelFPGA\SPU Project\BranchPredictor.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module ForwardingControl
+-- Compiling module static_branch_prediction
 
 Top level modules:
-	ForwardingControl
-
-} {} {}} {C:/intelFPGA/SPU Project/Main.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/Main.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module main_cpu
--- Compiling module main_TestBench
-
-Top level modules:
-	main_TestBench
-
-} {} {}} {C:/intelFPGA/SPU Project/InstructionDecoder.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/InstructionDecoder.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module Registers128_128Bits
-
-Top level modules:
-	Registers128_128Bits
-
-} {} {}} {C:/intelFPGA/SPU Project/Registers.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/Registers.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module RegisterFetchStage
-
-Top level modules:
-	RegisterFetchStage
-
-} {} {}} {C:/intelFPGA/SPU Project/ID_REG.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/ID_REG.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module ID_REG_STAGE
-
-Top level modules:
-	ID_REG_STAGE
+	static_branch_prediction
 
 } {} {}} {C:/intelFPGA/SPU Project/Instruction Memory.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/Instruction Memory.sv}
 Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
@@ -105,12 +48,5 @@ Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  
 
 Top level modules:
 	instruction_memory
-
-} {} {}} {C:/intelFPGA/SPU Project/IF_ID.sv} {1 {vlog -work work -sv -stats=none {C:/intelFPGA/SPU Project/IF_ID.sv}
-Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
--- Compiling module IF_ID
-
-Top level modules:
-	IF_ID
 
 } {} {}}
