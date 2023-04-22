@@ -1,5 +1,7 @@
-module Execute(readDataRA_EX,readDataRB_EX,readDataRC_EX,opcode_EX,
-	       result_EX, latency_EX,imm7, imm10, imm16,imm18);
+
+module Execute (readDataRA_EX, readDataRB_EX, readDataRC_EX, opcode_EX,
+	        imm7, imm10, imm16, imm18, 
+		result_EX, latency_EX, branch_PC, branch_flag);
 
                           
 
@@ -7,28 +9,52 @@ module Execute(readDataRA_EX,readDataRB_EX,readDataRC_EX,opcode_EX,
 input [127:0] readDataRA_EX; 
 input [127:0] readDataRB_EX;
 input [127:0] readDataRC_EX;
-input [10:0]   opcode_EX;  
+input [10:0] opcode_EX;  
 input [6:0] imm7; 
 input [9:0] imm10;
 input [15:0] imm16;
-input [17:0] imm18; 
+input [17:0] imm18;
 
+output logic [31:0] branch_PC; //new PC address
+logic [17:0] branch_PC_p1; //add first two bits to PC address 
+logic [31:0] branch_PC_p2; 
+logic [7:0] temp_b; // 8 bit temp number 		   
+logic [31:0] temp_bbbb;
+logic [15:0] temp_r,temp_s;	
 
 output [127:0] result_EX; //perhaps not needed, if we have 
 output logic [2:0] latency_EX; 
-
+output logic branch_flag=0;	//set default to 0
 logic [127:0] RT;
 logic [127:0] RA;
 logic [127:0] RB; 
-logic [127:0] RC; 
+logic [127:0] RC;
+logic [127:0] unsigned_RA;
+logic [127:0] unsigned_RB;
+logic [127:0] unsigned_RC;
+
 logic [15:0] imm_extended;
-logic [31:0] imm_extended_32;
-logic [31:0] temp_32,temp_u;
+logic [31:0] imm_extended_32; 
+logic [31:0] temp_32,temp_u,temp_t;  
+logic [15:0] unsigned_imm_extended;
+logic [31:0] unsigned_imm_extended_32;
 
 assign result_EX     = RT; 
 assign RA = readDataRA_EX; 
 assign RB = readDataRB_EX; 
 assign RC = readDataRC_EX; 
+
+assign unsigned_RA= unsigned'(readDataRA_EX);
+
+assign unsigned_RB= unsigned'(readDataRB_EX);
+
+assign unsigned_RC= unsigned'(readDataRC_EX);
+
+assign branch_PC_p1={imm16,{2{1'b0}}}; 	//add two extra bits 
+assign branch_PC_p2={{14{branch_PC_p1[17]}},branch_PC_p1}; 
+//assign branch_PC=branch_PC_p2&32'hFFFFFFFC; //extend to 32 bits  
+//assign unsigned_imm_extended=unsigned'(imm_extended);  
+//assign unsigned_imm_extended_32=unsigned'(imm_extended_32);
 
 
 always_comb begin
@@ -131,7 +157,8 @@ always_comb begin
 		
 		
 	end	 
-		11'b01010100101: begin //count leading zeros 
+	11'b01010100101: begin //count leading zeros   
+		latency_EX= 3-1; 
 				for(int j=0;j<16;j+=4) begin 
 					temp_32=32'd0;
 					temp_u=RA[(j*8)+:32];
@@ -151,14 +178,553 @@ always_comb begin
 				end// end for j loop
 				
 			end	 //end instr 
+		11'b00011000001: begin 	//and
+			latency_EX= 3-1; 
+		    RT[0+:32] = RA[0+:32]&RB[0+:32]; //bytes 0 and 3
+			RT[32+:32]=RA[32+:32]&RB[32+:32]; //bytes 4 and 7
+			RT[64+:32]=RA[64+:32]&RB[64+:32]; //bytes 8 and 11
+			RT[96+:32]=RA[96+:32]&RB[96+:32]; //bytes 12 and 15
+				
 			
+			
+		end	 
+		11'b01011000001: begin //and with compliment
+			latency_EX= 3-1; 
+		    RT[0+:32] = RA[0+:32]&(~RB[0+:32]); //bytes 0 and 3
+			RT[32+:32]=RA[32+:32]&(~RB[32+:32]); //bytes 4 and 7
+			RT[64+:32]=RA[64+:32]&(~RB[64+:32]); //bytes 8 and 11
+			RT[96+:32]=RA[96+:32]&(~RB[96+:32]); //bytes 12 and 15
+				
+	    end 
+	   	11'b00010101: begin  //and halfword immediate 
+			latency_EX= 3-1; 	 
+			imm_extended={ {11{imm7[6]}},imm7[6:0]};
+			RT[0+:16] = RA[0+:16]&imm_extended;
+			RT[16+:16]=RA[16+:16]&imm_extended;
+			RT[32+:16]=RA[32+:16]&imm_extended;
+			RT[48+:16]=RA[48+:16]&imm_extended;
+			RT[64+:16]=RA[64+:16]&imm_extended;
+			RT[80+:16]=RA[80+:16]&imm_extended;
+			RT[96+:16]=RA[96+:16]&imm_extended;
+			RT[112+:16]=RA[112+:16]&imm_extended;    
+			   
+	    end
+		11'b00010100: begin //and word immediate
+		    latency_EX= 3-1;   
+	 		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
+			RT[0+:32] = RA[0+:32]&imm_extended_32;
+			RT[32+:32]=RA[32+:32]&imm_extended_32;
+			RT[64+:32]=RA[64+:32]&imm_extended_32;
+			RT[96+:32]=RA[96+:32]&imm_extended_32; 	
+			
+		end	  
+		11'b00001000001: begin //or 
+			latency_EX= 3-1; 
+		    RT[0+:32] = RA[0+:32]|RB[0+:32]; //bytes 0 and 3
+			RT[32+:32]=RA[32+:32]|RB[32+:32]; //bytes 4 and 7
+			RT[64+:32]=RA[64+:32]|RB[64+:32]; //bytes 8 and 11
+			RT[96+:32]=RA[96+:32]|RB[96+:32]; //bytes 12 and 15
+			
+		end 
+		11'b01011001001: begin 	//or with complement 
+			latency_EX= 3-1; 
+		    	RT[0+:32] =RA[0+:32]|(~RB[0+:32]); //bytes 0 and 3
+			RT[32+:32]=RA[32+:32]|(~RB[32+:32]); //bytes 4 and 7
+			RT[64+:32]=RA[64+:32]|(~RB[64+:32]); //bytes 8 and 11
+			RT[96+:32]=RA[96+:32]|(~RB[96+:32]); //bytes 12 and 15
+				
+			
+		end 			
+		11'b00000101: begin   //or halfword immediate 
+					latency_EX= 3-1; 	 
+			imm_extended={ {11{imm7[6]}},imm7[6:0]};
+			RT[0+:16] = RA[0+:16]|imm_extended;
+			RT[16+:16]=RA[16+:16]|imm_extended;
+			RT[32+:16]=RA[32+:16]|imm_extended;
+			RT[48+:16]=RA[48+:16]|imm_extended;
+			RT[64+:16]=RA[64+:16]|imm_extended;
+			RT[80+:16]=RA[80+:16]|imm_extended;
+			RT[96+:16]=RA[96+:16]|imm_extended;
+			RT[112+:16]=RA[112+:16]|imm_extended;    
+			
+		end 
+		11'b00000100: begin    //or word immediate 
+		    latency_EX= 3-1;   
+	 		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
+			RT[0+:32] = RA[0+:32]|imm_extended_32;
+			RT[32+:32]=RA[32+:32]|imm_extended_32;
+			RT[64+:32]=RA[64+:32]|imm_extended_32;
+			RT[96+:32]=RA[96+:32]|imm_extended_32; 	
+			
+			
+		end 
+		11'b01001000001: begin //exclusive or 
+			latency_EX= 3-1; 
+		    RT[0+:32] = RA[0+:32]^RB[0+:32]; //bytes 0 and 3
+			RT[32+:32]=RA[32+:32]^RB[32+:32]; //bytes 4 and 7
+			RT[64+:32]=RA[64+:32]^RB[64+:32]; //bytes 8 and 11
+			RT[96+:32]=RA[96+:32]^RB[96+:32]; //bytes 12 and 15
+			
+		end  
+		11'b01000101: begin    //exclusive or halfword immediate 
+			latency_EX= 3-1; 	 
+			imm_extended={ {11{imm7[6]}},imm7[6:0]};
+			RT[0+:16] = RA[0+:16]^imm_extended;
+			RT[16+:16]=RA[16+:16]^imm_extended;
+			RT[32+:16]=RA[32+:16]^imm_extended;
+			RT[48+:16]=RA[48+:16]^imm_extended;
+			RT[64+:16]=RA[64+:16]^imm_extended;
+			RT[80+:16]=RA[80+:16]^imm_extended;
+			RT[96+:16]=RA[96+:16]^imm_extended;
+			RT[112+:16]=RA[112+:16]^imm_extended;  	
+			
+		end 
+		11'b01000100: begin //exclusive or word immediate 
+			 latency_EX= 3-1;   
+	 		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
+			RT[0+:32] = RA[0+:32]^imm_extended_32;
+			RT[32+:32]=RA[32+:32]^imm_extended_32;
+			RT[64+:32]=RA[64+:32]^imm_extended_32;
+			RT[96+:32]=RA[96+:32]^imm_extended_32; 	
+			
+			
+		end 
+		11'b00011001001: begin 	 //nand 
+		   	latency_EX= 3-1; 
+		    RT[0+:32] = ~(RA[0+:32]&RB[0+:32]); //bytes 0 and 3
+			RT[32+:32]=~(RA[32+:32]&RB[32+:32]); //bytes 4 and 7
+			RT[64+:32]=~(RA[64+:32]&RB[64+:32]); //bytes 8 and 11
+			RT[96+:32]=~(RA[96+:32]&RB[96+:32]); //bytes 12 and 15
+				
+			
+			
+		end
+		11'b00001001001: begin 	 //nor 
+			latency_EX= 3-1; 
+		    RT[0+:32] = ~(RA[0+:32]|RB[0+:32]); //bytes 0 and 3
+			RT[32+:32]=~(RA[32+:32]|RB[32+:32]); //bytes 4 and 7
+			RT[64+:32]=~(RA[64+:32]|RB[64+:32]); //bytes 8 and 11
+			RT[96+:32]=~(RA[96+:32]|RB[96+:32]); //bytes 12 and 15
+			
+		end 
+		11'b01111001000: begin 	//compare equal halfward
+		latency_EX= 3-1;
+		for(int j=0; j<16;j+=2) begin 
+			if(RA[(j*8)+:16]==RB[(j*8)+:16]) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+		end	   
+	11'b01111101: begin   //compare equal halfword immediate
+		imm_extended={ {6{imm10[9]}},imm10[9:0]};
+	for(int j=0; j<16;j+=2) begin 
+			if(RA[(j*8)+:16]==imm_extended) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+	end	
+	11'b01111000000: begin //compare equal word
+			
+	latency_EX= 3-1;
+		for(int j=0; j<16;j+=4) begin 
+			if(RA[(j*8)+:32]==RB[(j*8)+:32]) begin 
+				RT[(j*8)+:32]=11'hFFFFFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:32]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+	end	  
+	11'b01111100: begin  //compare equal word immediate
+		latency_EX= 3-1;
+		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
+	for(int j=0; j<16;j+=2) begin 
+			if(RA[(j*8)+:32]==imm_extended_32) begin 
+				RT[(j*8)+:32]=11'hFFFFFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:32]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+	end		
+		
+	 
+	11'b01001001000: begin 	  //compare greater than halfword
+	latency_EX= 3-1;
+		for(int j=0; j<16;j+=2) begin 
+			if(RA[(j*8)+:16]>RB[(j*8)+:16]) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+		end	
+		
+	11'b01001101: begin //compare greater than halfword immediate
+		latency_EX= 3-1;
+		imm_extended={ {6{imm10[9]}},imm10[9:0]};
+	for(int j=0; j<16;j+=2) begin 
+			if(RA[(j*8)+:16]>imm_extended) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+	end  
+	
+	end 
+	 11'b01001000000: begin //compare greater than word 
+		latency_EX= 3-1;
+		for(int j=0; j<16;j+=4) begin 
+			if(RA[(j*8)+:32]>RB[(j*8)+:32]) begin 
+				RT[(j*8)+:32]=11'hFFFFFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:32]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+	end	 
+	11'b01001100: begin //compare greater than word immediate
+		latency_EX= 3-1;
+		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
+	for(int j=0; j<16;j+=2) begin 
+			if(RA[(j*8)+:32]>imm_extended_32) begin 
+				RT[(j*8)+:32]=11'hFFFFFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:32]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+	end		
+	11'b01011001000: begin //compare logical greater than halfword
+
+		latency_EX= 3-1;
+		for(int j=0; j<16;j+=2) begin 
+			if(unsigned_RA[(j*8)+:16]>unsigned_RB[(j*8)+:16]) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+		end	 
+	11'b01011101: begin  //compare logical greater than halfword immediate 
+	latency_EX= 3-1;
+	imm_extended={ {6{imm10[9]}},imm10[9:0]}; 
+	unsigned_imm_extended=unsigned'(imm_extended);
+	for(int j=0; j<16;j+=2) begin 
+			if(unsigned_RA[(j*8)+:16]>unsigned_imm_extended) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+	end  
+	
+	end 
+	
+	11'b01011000000:  begin //compare logical greater than word
+		latency_EX= 3-1;
+		for(int j=0; j<16;j+=4) begin 
+			if(unsigned_RA[(j*8)+:32]>unsigned_RB[(j*8)+:32]) begin 
+				RT[(j*8)+:32]=11'hFFFFFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:32]=11'h00000;
+			
+		end 
+			
+		end 
+			
+			
+	end	 
+	11'b01011100: begin   //compare logical greater than word immediate 
+			latency_EX= 3-1;
+		imm_extended={ {6{imm10[9]}},imm10[9:0]};
+		unsigned_imm_extended=unsigned'(imm_extended);
+	for(int j=0; j<16;j+=2) begin 
+			if(unsigned_RA[(j*8)+:16]>unsigned_imm_extended) begin 
+				RT[(j*8)+:16]=11'hFFFF;
+				
+				
+			end 
+		else begin 
+			RT[(j*8)+:16]=11'h00000;
+			
+		end 
+			
+	end  
+	
+	end  
+	
+	11'b010000011:begin //immediate load halfword
+	latency_EX= 3-1;
+	
+	RT=imm16; 
+		
+	end 
+	11'b0010000010: begin //immediate load halfword upper
+		latency_EX= 3-1;
+			
+		temp_t=imm16<<16; //left shift by 16 to put in upper half
+		RT=temp_t; 
+		
+	end   
+	11'b010000001: begin //imm load word
+	latency_EX= 3-1;
+	imm_extended_32={ {22{imm10[9]}},imm10[9:0]};	
+	RT=imm_extended_32; 
+		
+	end 
+	11'b0100001: begin //immediate load address 
+	latency_EX= 3-1;
+	RT=imm18;
+	RT[31:18]=0; //set rest of the bits to 0
+		
+	end 
+	
+	11'b011000001: begin //immediate or halfword lower
+	latency_EX=3-1; 
+	temp_t=imm16;
+	temp_t[31:16]=0;  
+	RT=RT|temp_t;
+	
+	
+		
+	end
+	11'b00010110: begin 
+	temp_b=imm10 & 16'hFF;
+	temp_bbbb[7:0]=temp_b;
+	temp_bbbb[15:8]=temp_b;
+	temp_bbbb[23:16]=temp_b;
+	temp_bbbb[31:24]=temp_b;
+	RT[0+:32]=RA[0+:24] &temp_bbbb;	  
+	RT[32+:32]=RA[0+:24] &temp_bbbb;
+	RT[64+:32]=RA[0+:24] &temp_bbbb;	 
+	RT[96+:32]=RA[0+:24] &temp_bbbb;
+		
+	end 
+	11'b00001011111: begin 	//shift left halfword	
+	for(int j=0;j<16;j+=2) begin 
+   temp_s=RB[(j*8)+:16]&16'h1F; //halfword access +:16  
+   temp_t=RA[(j*8)+:16];//halfword access +:16 
+	for(int b=0;b<16;b++) begin 
+   if((b+temp_s)<16) begin 
+   temp_r[b]=temp_t[b+temp_s];
+
+   end 
+   else begin 
+  temp_r[b]=0;
+
+   end 
+
+
+   end 
+
+  RT[(j*8)+:16]=temp_r; //set 16 bits of register RT to r_temp  
+  end 
+
+   end 
+		
+   11'b00001111111: begin //shift left halfword immediate 
+	for(int j=0;j<16;j+=2) begin 
+   imm_extended={ {11{imm7[6]}},imm7[6:0]};
+   temp_s=imm_extended&16'h1F; //halfword access +:16  
+   temp_t=RA[(j*8)+:16];//halfword access +:16 
+	for(int b=0;b<16;b++) begin 
+   if((b+temp_s)<16) begin 
+   temp_r[b]=temp_t[b+temp_s];
+
+   end 
+   else begin 
+  temp_r[b]=0;
+
+   end 
+
+
+   end    
+     RT[(j*8)+:16]=temp_r; //set 16 bits of register RT to r_temp  
+  end 
+
+   end    
+  11'b00001011011: begin //shift left word
+		for(int j=0;j<16;j+=4) begin 
+   temp_s=RB[(j*8)+:32]&16'h3F; //halfword access +:16  
+   temp_t=RA[(j*8)+:32];//halfword access +:16 
+	for(int b=0;b<32;b++) begin 
+   if((b+temp_s)<32) begin 
+   temp_r[b]=temp_t[b+temp_s];
+
+   end 
+   else begin 
+  temp_r[b]=0;
+
+   end 
+
+
+   end 
+
+  RT[(j*8)+:32]=temp_r; //set 16 bits of register RT to r_temp  
+  end 
+
+   end   
+	  
+  11'b00001111011: begin //shift left word immediate 
+  	for(int j=0;j<32;j+=4) begin 
+   imm_extended_32={ {25{imm7[6]}},imm7[6:0]};
+   temp_s=imm_extended_32&16'h3F; //halfword access +:16  
+   temp_t=RA[(j*8)+:32];//halfword access +:16 
+	for(int b=0;b<32;b++) begin 
+   if((b+temp_s)<32) begin 
+   temp_r[b]=temp_t[b+temp_s];
+
+   end 
+   else begin 
+  temp_r[b]=0;
+
+   end 
+
+
+   end    
+     RT[(j*8)+:32]=temp_r; //set 16 bits of register RT to r_temp  
+  end 
+
+   end    
+	  
+  11'b001000010: begin 	  //Branch If Not Zero Word
+	if(RT[0+:32]!=0) begin 
+		 branch_flag=1; 
+		 branch_PC=branch_PC_p2&32'hFFFFFFFC;
+		
+	end 
+  else begin 
+	branch_flag=0;   
+	  
+  end 
+	  
+	  
+   end 
+  11'b001000110: begin 	//branch if not zero halfword 
+	if(RT[8+:16]!=0) begin 
+		 branch_flag=1; 
+		 branch_PC=branch_PC_p2&32'hFFFFFFFC;
+		
+	end 
+  else begin 
+	branch_flag=0;   
+	  
+  end 
+	  
+	  
+   end 
 	   
+11'b001000000: begin  //branch if zero word 
+	if(RT[0+:32]==0) begin 
+		 branch_flag=1; 
+		 branch_PC=branch_PC_p2&32'hFFFFFFFC;
+		
+	end 
+  else begin 
+	branch_flag=0;   
+	  
+  end 
+	  
+	  
+   end 
+11'b001000100: begin //branch if zero halfword 
+	if(RT[8+:16]!=0) begin 
+		branch_flag=1;   
+		branch_PC=branch_PC_p2&32'hFFFFFFFC;
+		
+		
+	end 
+  else begin 
+	branch_flag=0;   
+	  
+  end 
+	  
+	  
+   end 
+  11'b001100000: begin 	//branch absolute
+  branch_flag=1; 
+	  
+	  
+end
+11'b001100100: begin //branch relative
+branch_flag=1;
+branch_PC=branch_PC_p2; //removes mask from address
 	
 	
+end 
+  		
 	endcase 
 end 
-
-
+								   
 // ALU aluexecute(ALU_A,ALU_B,ALU_C,ALUControl,ALUResult,zero); // ALU Module
 endmodule 
 

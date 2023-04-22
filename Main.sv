@@ -104,6 +104,14 @@ ForwardingControl forwControl(readRegisterRA_ID1,  readRegisterRB_ID1, readRegis
 			      selectForwardRA_ID2, selectForwardRB_ID2, selectForwardRC_ID2,
 			      stallEven, stallOdd);
 
+
+decoder firstInstruction (instruction1_ID, readRegisterRA_ID1, readRegisterRB_ID1, readRegisterRC_ID1, readRegisterRT_ID1, 
+			  useRA_ID1, useRB_ID1, useRC_ID1, immediate7BIT_ID1, immediate10BIT_ID1, immediate16BIT_ID1, immediate18BIT_ID2, isEven1, latency_ID1, unitID_ID1,
+			  reset);
+decoder secondInstruction(instruction2_ID, readRegisterRA_ID2, readRegisterRB_ID2, readRegisterRC_ID2, readRegisterRT_ID2, 
+		          useRA_ID2, useRB_ID2, useRC_ID2, immediate7BIT_ID1, immediate10BIT_ID2, immediate16BIT_ID2, immediate18BIT_ID2, isEven2, latency_ID2, unitID_ID2,
+		          reset);
+
 static_branch_prediction(unitID_ID, branchOutcome, flushEven, flushOdd);
 
 ID_REG_STAGE id_reg(regWriteEnable_ID1, source_ID1, opcode_ID1,// control inputs2
@@ -155,17 +163,19 @@ REG_EX_STAGE reg_ex(regWriteEnable_REG1, source_REG1, opcode_REG1,
 
 mux2_to_1_128BIT forwardA1(operandA1,readDataRA_EX1,forwardDataRA_EX1,selectForwardRA_EX1); //Select the value of register RA1 or select the forward value for RA1. 
 mux2_to_1_128BIT forwardB1(operandB1,readDataRB_EX1,forwardDataRB_EX1,selectForwardRB_EX1); //Select the value of register RB1 or select the forward value for RB1. 
-mux2_to_1_128BIT forwardC1(operandC1,readDataRC_EX1,forwardDataRC_EX1,selectForwardRC_EX1); //Select the value of register RB1 or select the forward value for RB1. 
+mux2_to_1_128BIT forwardC1(operandC1,readDataRC_EX1,forwardDataRC_EX1,selectForwardRC_EX1); //Select the value of register RC1 or select the forward value for RB1. 
 
 mux2_to_1_128BIT forwardA2(operandA2,readDataRA_EX2,forwardDataRA_EX2,selectForwardRA_EX2); //Select the value of register RA2 or se*lect the forward value for RA2. 
 mux2_to_1_128BIT forwardB2(operandB2,readDataRB_EX2,forwardDataRB_EX2,selectForwardRB_EX2); //Select the value of register RB2 or select the forward value for RB2. 
-mux2_to_1_128BIT forwardC2(operandC2,readDataRC_EX2,forwardDataRC_EX2,selectForwardRC_EX2); //Select the value of register RB2 or select the forward value for RB2. 
+mux2_to_1_128BIT forwardC2(operandC2,readDataRC_EX2,forwardDataRC_EX2,selectForwardRC_EX2); //Select the value of register RC2 or select the forward value for RB2. 
 
+Execute exEven (operandA1, operandB1, operandC1, opcode_EX1,
+	        immediate7BIT_EX1, immediate10BIT_EX1, immediate16BIT_EX1, immediate18BIT_EX1, 
+		result_EX1, latency_EX1, branch_PC1, branch_flag1);
 
-Execute exEven(operandA1, operandB1, operandC1, opcode_EX1,
-	       result_EX1, latency_EX1);
-Execute exOdd (operandA2, operandB2, operandC2, opcode_EX2,
-	       result_EX2, latency_EX2);
+Execute exOdd  (operandA2, operandB2, operandC2, opcode_EX2,
+	        immediate7BIT_EX2, immediate10BIT_EX2, immediate16BIT_EX2, immediate18BIT_EX2, 
+		result_EX2, latency_EX2, branch_PC2, branch_flag2);
 
 STAGES EX_STAGE2    (regWriteEnable_EX1, result_EX1, readRegisterRT_EX1, unitID_EX1, latency_EX1,
 		     regWriteEnable_EX2, result_EX2, readRegisterRT_EX2, unitID_EX2, latency_EX2,
