@@ -1,6 +1,7 @@
 
-module Execute(readDataRA_EX,readDataRB_EX,readDataRC_EX,opcode_EX,
-	       result_EX, latency_EX,imm7, imm10, imm16,imm18,branch_PC,branch_flag);
+module Execute (readDataRA_EX, readDataRB_EX, readDataRC_EX, opcode_EX,
+	        imm7, imm10, imm16, imm18, 
+		result_EX, latency_EX, branch_PC, branch_flag);
 
                           
 
@@ -8,7 +9,7 @@ module Execute(readDataRA_EX,readDataRB_EX,readDataRC_EX,opcode_EX,
 input [127:0] readDataRA_EX; 
 input [127:0] readDataRB_EX;
 input [127:0] readDataRC_EX;
-input [10:0]   opcode_EX;  
+input [10:0] opcode_EX;  
 input [6:0] imm7; 
 input [9:0] imm10;
 input [15:0] imm16;
@@ -42,11 +43,12 @@ assign result_EX     = RT;
 assign RA = readDataRA_EX; 
 assign RB = readDataRB_EX; 
 assign RC = readDataRC_EX; 
-assign unsigned_RA=	unsigned'(readDataRA_EX);
 
-assign unsigned_RB=	unsigned'(readDataRB_EX);
+assign unsigned_RA= unsigned'(readDataRA_EX);
 
-assign unsigned_RC=	unsigned'(readDataRC_EX);
+assign unsigned_RB= unsigned'(readDataRB_EX);
+
+assign unsigned_RC= unsigned'(readDataRC_EX);
 
 assign branch_PC_p1={imm16,{2{1'b0}}}; 	//add two extra bits 
 assign branch_PC_p2={{14{branch_PC_p1[17]}},branch_PC_p1}; 
@@ -226,7 +228,7 @@ always_comb begin
 		end 
 		11'b01011001001: begin 	//or with complement 
 			latency_EX= 3-1; 
-		    RT[0+:32] = RA[0+:32]|(~RB[0+:32]); //bytes 0 and 3
+		    	RT[0+:32] =RA[0+:32]|(~RB[0+:32]); //bytes 0 and 3
 			RT[32+:32]=RA[32+:32]|(~RB[32+:32]); //bytes 4 and 7
 			RT[64+:32]=RA[64+:32]|(~RB[64+:32]); //bytes 8 and 11
 			RT[96+:32]=RA[96+:32]|(~RB[96+:32]); //bytes 12 and 15
@@ -430,7 +432,7 @@ always_comb begin
 			
 	end	 
 	11'b01001100: begin //compare greater than word immediate
-			latency_EX= 3-1;
+		latency_EX= 3-1;
 		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
 	for(int j=0; j<16;j+=2) begin 
 			if(RA[(j*8)+:32]>imm_extended_32) begin 
@@ -449,7 +451,7 @@ always_comb begin
 	end		
 	11'b01011001000: begin //compare logical greater than halfword
 
-	latency_EX= 3-1;
+		latency_EX= 3-1;
 		for(int j=0; j<16;j+=2) begin 
 			if(unsigned_RA[(j*8)+:16]>unsigned_RB[(j*8)+:16]) begin 
 				RT[(j*8)+:16]=11'hFFFF;
@@ -485,7 +487,7 @@ always_comb begin
 	end 
 	
 	11'b01011000000:  begin //compare logical greater than word
-			latency_EX= 3-1;
+		latency_EX= 3-1;
 		for(int j=0; j<16;j+=4) begin 
 			if(unsigned_RA[(j*8)+:32]>unsigned_RB[(j*8)+:32]) begin 
 				RT[(j*8)+:32]=11'hFFFFFFFF;
@@ -719,10 +721,93 @@ branch_PC=branch_PC_p2; //removes mask from address
 	
 	
 end 
-  		
-	endcase 
+11'b00001011100: begin 	//rotate halfword 
+	for(int j=0;j<16;j+=2) begin 
+   temp_s=RB[(j*8)+:16]&16'hF; //halfword access +:16  
+   temp_t=RA[(j*8)+:16];//halfword access +:16 
+	for(int b=0;b<16;b++) begin 
+   if((b+temp_s)<16) begin 
+   temp_r[b]=temp_t[b+temp_s];
+
+   end 
+   else begin 
+  temp_r[b]=temp_t[b+temp_s-16];
+
+   end 
+
+
+   end 
+
+  RT[(j*8)+:16]=temp_r; //set 16 bits of register RT to r_temp  
+  end 
+
+   end  
+11'b00001111100: begin //rotate halfword immediate  
+	for(int j=0;j<16;j+=2) begin 
+   imm_extended={ {11{imm7[6]}},imm7[6:0]};
+   temp_s=imm_extended&16'hF; //halfword access +:16  
+   temp_t=RA[(j*8)+:16];//halfword access +:16 
+	for(int b=0;b<16;b++) begin 
+   if((b+temp_s)<16) begin 
+   temp_r[b]=temp_t[b+temp_s];
+
+   end 
+   else begin 
+  temp_r[b]=temp_t[b+temp_s-16];
+
+   end 
+
+
+   end    
+     RT[(j*8)+:16]=temp_r; //set 16 bits of register RT to r_temp  
+  end 
+
+end  
+11'b00001011000: begin 	 //rotate word 
+		for(int j=0;j<16;j+=4) begin 
+   temp_s=RB[(j*8)+:32]&16'h1F; //word access +:16  
+   temp_t=RA[(j*8)+:32];//word access +:16 
+	for(int b=0;b<32;b++) begin 
+   if((b+temp_s)<32) begin 
+   temp_r[b]=temp_t[b+temp_s];
+
+   end 
+   else begin 
+  temp_r[b]=temp_t[b+temp_s-32];
+
+   end 
+
+
+   end 
+
+  RT[(j*8)+:32]=temp_r; //set 16 bits of register RT to r_temp  
+  end 
+
 end 
-								   
+11'b00001111000: begin //rotate word immediate 
+	for(int j=0;j<32;j+=4) begin 
+   imm_extended_32={ {25{imm7[6]}},imm7[6:0]};
+   temp_s=imm_extended_32&16'h1F; //word access +:32  
+   temp_t=RA[(j*8)+:32];//word access +:32 
+	for(int b=0;b<32;b++) begin 
+   if((b+temp_s)<32) begin 
+   temp_r[b]=temp_t[b+temp_s];
+
+   end 
+   else begin 
+  temp_r[b]=temp_t[b+temp_s-32];
+
+   end 
+
+
+   end    
+     RT[(j*8)+:32]=temp_r; //set 16 bits of register RT to r_temp  
+  end 
+
+   end 
+endcase
+
+end 								   
 // ALU aluexecute(ALU_A,ALU_B,ALU_C,ALUControl,ALUResult,zero); // ALU Module
 endmodule 
 
@@ -730,7 +815,6 @@ endmodule
 
 /*
 module Execute_Testbench();
-
 logic [127:0] readDataRA_EX; 
 logic [127:0] readDataRB_EX;
 logic [127:0] readDataRC_EX;
@@ -739,14 +823,9 @@ logic [3:0] opcode_EX;
 logic [127:0] result;
 logic [10:0] opcode; 
 logic [127:0] result_EX; //perhaps not needed, if we have  
-
-
 assign opcode = 11'b00011001000; 
 assign readDataRA_EX= 128'd543534534452345043;
 assign readDataRB_EX= 128'd234234234545610253; 
-
-
 Execute ex(readDataRA_EX,readDataRB_EX,readDataRC_EX,result,opcode,opcode_EX,result_EX);
-
 endmodule
 */
