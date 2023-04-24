@@ -4,6 +4,11 @@ module decoder (instruction, readRegisterRA, readRegisterRB, readRegisterRC, rea
 
 input [31:0] instruction;
 input logic  reset;
+
+
+logic isFour=0, isSeven=0, isEight=0, isNine=0, isEleven=0; //will check opcode by size in order    
+logic opcode_found=0;
+
 output logic [6:0] readRegisterRA,readRegisterRB,readRegisterRC,readRegisterRT;
 output logic [6:0] imm7;
 output logic [9:0] imm10;
@@ -11,14 +16,12 @@ output logic [25:0] imm16;
 output logic [17:0] imm18;  
 output logic useRA,useRB,useRC;
 output logic  [3:0] latency;
+output logic [2:0] unitID; 
+output logic isEven;	
 //output logic [1:0] select_imm; //which imm is being used not sure if needd for forwarding so might not be used 
 
-output logic [2:0] unitID; 
-output logic isEven;		 
+	 
 
-logic isFour=0, isSeven=0, isEight=0, isNine=0, isEleven=0; //will check opcode by size in order    
-
-logic opcode_found=0;
 //As of 4/2/2023 immediate or halfword lower is what I got up to
 //as of 4/18/2023 I got up to compare equal byte immediate	
 //as of 4/18/2023, finished all opcodes now have to add unit ids  
