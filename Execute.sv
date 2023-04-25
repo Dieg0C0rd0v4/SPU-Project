@@ -6,14 +6,14 @@ module Execute (readDataRA_EX, readDataRB_EX, readDataRC_EX, opcode_EX,
                           
 
 //Jump Branch datapath 
-input [127:0] readDataRA_EX; 
-input [127:0] readDataRB_EX;
-input [127:0] readDataRC_EX;
+input signed [127:0] readDataRA_EX; 
+input signed [127:0] readDataRB_EX;
+input signed [127:0] readDataRC_EX;
 input [10:0] opcode_EX;  
-input [6:0] imm7; 
-input [9:0] imm10;
-input [15:0] imm16;
-input [17:0] imm18;
+input signed [6:0] imm7; 
+input signed [9:0] imm10;
+input signed [15:0] imm16;
+input signed  [17:0] imm18;
 
 output logic [31:0] branch_PC; //new PC address
 logic [17:0] branch_PC_p1; //add first two bits to PC address 
@@ -31,11 +31,14 @@ logic [127:0] RB;
 logic [127:0] RC;
 logic [127:0] unsigned_RA;
 logic [127:0] unsigned_RB;
-logic [127:0] unsigned_RC;
+logic [127:0] unsigned_RC;	
+shortreal float_RA;
+shortreal float_RB;
+shortreal float_RC; 
 
 logic [15:0] imm_extended;
 logic [31:0] imm_extended_32; 
-logic [31:0] temp_32,temp_u,temp_t;  
+logic [31:0] temp_32,temp_u,temp_t,temp_t1,temp_t2,temp_t3;  
 logic [15:0] unsigned_imm_extended;
 logic [31:0] unsigned_imm_extended_32;
 
@@ -44,11 +47,15 @@ assign RA = readDataRA_EX;
 assign RB = readDataRB_EX; 
 assign RC = readDataRC_EX; 
 
-assign unsigned_RA= unsigned'(readDataRA_EX);
+assign unsigned_RA= unsigned'(RA);
 
-assign unsigned_RB= unsigned'(readDataRB_EX);
+assign unsigned_RB= unsigned'(RB);
 
-assign unsigned_RC= unsigned'(readDataRC_EX);
+assign unsigned_RC= unsigned'(RC);	 
+assign float_RA= shortreal'(RA); 
+
+assign float_RB= shortreal'(RB);
+assign float_RC= shortreal'(RC);
 
 assign branch_PC_p1={imm16,{2{1'b0}}}; 	//add two extra bits 
 assign branch_PC_p2={{14{branch_PC_p1[17]}},branch_PC_p1}; 
@@ -804,7 +811,81 @@ end
      RT[(j*8)+:32]=temp_r; //set 16 bits of register RT to r_temp  
   end 
 
-   end 
+end 
+11'b01111000100: begin 			 //multiply op code 
+		    RT[0+:32] = RA[0+:32]*RB[0+:32]; //bytes 0 and 3
+			RT[32+:32]=RA[32+:32]*RB[32+:32]; //bytes 4 and 7
+			RT[64+:32]=RA[64+:32]*RB[64+:32]; //bytes 8 and 11
+			RT[96+:32]=RA[96+:32]*RB[96+:32]; //bytes 12 and 15
+	
+	
+end   
+11'b01111001100: begin //multiply unsigned 
+	        RT[0+:32] = unsigned_RA[0+:32]*unsigned_RB[0+:32]; //bytes 0 and 3
+			RT[32+:32]=unsigned_RA[32+:32]*unsigned_RB[32+:32]; //bytes 4 and 7
+			RT[64+:32]=unsigned_RA[64+:32]*unsigned_RB[64+:32]; //bytes 8 and 11
+			RT[96+:32]=unsigned_RA[96+:32]*unsigned_RB[96+:32]; //bytes 12 and 15
+	
+end 
+11'b01110100: begin  //multiply immediate 
+            latency_EX= 3-1; //multiply word immediate	   
+	 		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
+			RT[0+:32] = RA[0+:32]*imm_extended_32;
+			RT[32+:32]=RA[32+:32]*imm_extended_32;
+			RT[64+:32]=RA[64+:32]*imm_extended_32;
+			RT[96+:32]=RA[96+:32]*imm_extended_32; 	
+			
+	
+	
+end 
+11'b01110101: begin  //multiply unsigned immediate 
+	        latency_EX= 3-1; //multiply word immediate	   
+	 		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
+			RT[0+:32] = unsigned_RA[0+:32]*unsigned'(imm_extended_32);
+			RT[32+:32]=unsigned_RA[32+:32]*unsigned'(imm_extended_32);
+			RT[64+:32]=unsigned_RA[64+:32]*unsigned'(imm_extended_32);
+			RT[96+:32]=unsigned_RA[96+:32]*unsigned'(imm_extended_32); 	
+	
+	
+end   
+11'b1100: begin //multiply and add
+			temp_t = RA[0+:32]*RB[0+:32]; //bytes 0 and 3
+			temp_t1=RA[32+:32]*RB[32+:32]; //bytes 4 and 7
+			temp_t2=RA[64+:32]*RB[64+:32]; //bytes 8 and 11
+			temp_t3=RA[96+:32]*RB[96+:32]; //bytes 12 and 15  
+			RT[0+:32] = RC[0+:32]+temp_t;
+			RT[32+:32]=RC[32+:32]+temp_t1;
+			RT[64+:32]=RC[64+:32]+temp_t2;
+			RT[96+:32]=RC[96+:32]+temp_t3; 	
+	
+	
+	
+	
+end
+11'b01011000100: begin 	 //floating add 
+RT=float_RA+float_RB;	
+	
+	
+end  
+
+11'b01011000101: begin //floating subtract
+RT=float_RA-float_RB;		
+	
+end  
+11'b01011000110:begin //floating multiply
+RT=float_RA*float_RB;		
+	
+end 
+11'b1110:begin 		   //floating multiply and add 
+RT=(float_RA*float_RB)+float_RC;	
+	
+end  
+
+11'b1111: begin //floating multiply and subtract 
+RT=(float_RA*float_RB)-float_RC;	
+	
+	
+end 
 endcase
 
 end 								   
