@@ -54,13 +54,13 @@ def get_format_size(opcode_length,binary_number,current_arg):
     RRR=[7,7,7,7]
     #size 4
     
-    R_I10=[10,7,7]
+    R_I10=[7,7,10]
     #size 8
     
-    R_I16=[16,7]
+    R_I16=[7,16]
     #size 9
     
-    R_I18=[18,7]
+    R_I18=[7,18]
     #size 7
     if(opcode_length==11):
         padded_binary=binary_number.zfill(RR_or_RI7[current_arg])
@@ -108,15 +108,18 @@ while True:
     opcode_size=get_op_length(split_line[0])
     print(split_line[0]+" opcode's size is "+str(opcode_size))
     reg_and_imm=split_line[1].split(',') #remove commas
+
     print(reg_and_imm)
     print("The number of args are "+str(len(reg_and_imm)))
     for i in range(len(reg_and_imm)):
         arg=reg_and_imm[i]
-        print("i is "+str(i))
+        #print("i is "+str(i))
         #print(bin(int(arg)))
         binary_arg=bin(int(arg))[2:]
-        print("Current binary arg is "+binary_arg)
+        
         binary_arg=get_format_size(opcode_size,binary_arg,i)
+        print("Current binary arg is "+str(binary_arg))
+        
         arg_array.append(binary_arg)
         #print(binary_arg)
         #new_arg=new_arg+binary_arg
