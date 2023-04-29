@@ -18,7 +18,7 @@ input signed  [17:0] imm18;
 output logic [31:0] branch_PC; //new PC address
 logic [17:0] branch_PC_p1; //add first two bits to PC address 
 logic [31:0] branch_PC_p2; 
-logic [7:0] temp_b; // 8 bit temp number 		   
+logic [7:0] temp_b,temp_c; // 8 bit temp number 		   
 logic [31:0] temp_bbbb;
 logic [15:0] temp_r,temp_s;	
 
@@ -885,6 +885,190 @@ end
 RT=(float_RA*float_RB)-float_RC;	
 	
 	
+end  
+11'b00011010011: begin //average bytes 
+for(int j=0;j<16;j++) begin 
+RT[(j*8)+:32]=(RA[(j*8)+:32]+RB[(j*8)+:32]+1)>>1;
+	
+	
+end	
+end 
+11'b01010110100: begin //counts ones in bytes 
+for(int j=0;j<7;j++) begin 
+	temp_c=0;
+	temp_b=RA[(j*8)+:8];
+	for(int m=0;m<7;m++) begin 
+		if(temp_b==1) begin 
+			
+			temp_c=temp_c+1;
+		end
+	RT[(j*8)+:8]=temp_c;	
+		
+		
+	end 
+	
+end 
+
+end 
+11'b00001010011: begin //absolute differences of bytes 
+	for(int j=0;j<16;j++) begin 
+		if(unsigned_RB[(j*8)+:8]>unsigned_RA[(j*8)+:8]) begin 
+			
+		RT[(j*8)+:8]=unsigned_RB[(j*8)+:8]-unsigned_RA[(j*8)+:8];	
+		end 
+	else begin 
+		RT[(j*8)+:8]=unsigned_RA[(j*8)+:8]-unsigned_RB[(j*8)+:8];	
+		
+	end 
+		
+	end 
+	 
+
+	
+end	
+11'b01001010011: begin //sum bytes ito halfwords 
+	RT[0+:16]=RB[0+:8]+RB[8+:8]+RB[16+:8]+RB[24+:8];  //bytes 0 and 1
+	RT[16+:16]=RA[0+:8]+RA[8+:8]+RA[16+:8]+RA[24+:8];  //byes 2 and 3
+	RT[32+:16]=RA[32+:8]+RA[40+:8]+RA[48+:8]+RA[56+:8];   //bytes 4 and 5
+	RT[48+:16]=RB[32+:8]+RA[40+:8]+RA[48+:8]+RA[56+:8];	//bytes	 6 and 7
+	RT[64+:16]=RB[64+:8]+RB[72+:8]+RB[80+:8]+RB[88+:8];//bytes 8 and 9 	  
+	RT[80+:16]=RA[64+:8]+RA[72+:8]+RA[80+:8]+RA[88+:8];//bytes 10 and 11 
+	RT[96+:16]=RB[96+:8]+RB[104+:8]+RB[112+:8]+RB[120+:8]; //bytes 12 and 13 
+	RT[96+:16]=RA[96+:8]+RA[104+:8]+RA[112+:8]+RA[120+:8]; 	  //bytes 14 and 15
+	
+	
+end   
+11'b01111010000: begin //compare equal byte
+	for(int i=0;i<15;i++) begin 
+		if(RA[(i*8)+:8]==RB[(i*8)+:8]) begin 
+			RT[(i*8)+:8]=8'hFF;
+			
+		end 
+	else begin 
+		RT[(i*8)+:8]=0;
+		
+	end 
+		
+	end 
+	
+end
+11'b01111110: begin //compare equal byte immediate 
+for(int i=0;i<15;i++) begin 
+		if(RA[(i*8)+:8]==imm10[2+:8]) begin 
+			RT[(i*8)+:8]=8'hFF;
+			
+		end 
+	else begin 
+		RT[(i*8)+:8]=0;
+		
+	end 
+		
+end	
+end 
+11'b00111011011: begin 	 //shift left quadword by bits 
+	temp_s=RB[29+:3];
+	for(int b=0;b<128;b++) begin 
+		if((b+temp_s)<128) begin 
+			temp_r[b]=RA[b+temp_s];
+			
+		end 
+	else begin 
+		temp_r[b]=0;
+		
+	end 
+		
+	end 
+RT=temp_r;	
+		
+end 
+11'b00111111011: begin 		  //Shift Left Quadword by Bits Immediate
+temp_s=imm7&7'h7;
+for(int b=0;b<128;b++) begin 
+		if((b+temp_s)<128) begin 
+			temp_r[b]=RA[b+temp_s];
+			
+		end 
+	else begin 
+		temp_r[b]=0;
+		
+	end 
+		
+end
+RT=temp_r;	
+	
+end 
+11'b00111011111: begin //shift left quadword by bytes 
+	temp_s=RB[27+:5]; //bits 27-31 27,28,29,30,31 
+for(int b=0;b<16;b++) begin 
+	if(b+temp_s<16) begin 
+		temp_r[(b*8)+:8]=RA[((b+temp_s)*8)+:8];
+		
+	end 
+else begin 
+	temp_r[(b*8)+:8]=0; 
+end 
+	
+end 
+RT=temp_r;	
+	
+end
+11'b00111111111: begin //shift left quadword by bytes immediate  	
+	temp_s=imm7&7'h1F;
+for(int b=0;b<16;b++) begin 
+	if(b+temp_s<16) begin 
+		temp_r[(b*8)+:8]=RA[((b+temp_s)*8)+:8];
+		
+	end 
+else begin 
+	temp_r[(b*8)+:8]=0; 
+end 
+	
+end 
+RT=temp_r;	
+	
+end	
+11'b00111001111: begin //shift left quadword by bits bit shift count 
+	temp_s=RB[24+:5]; //bits 24-28 24,25,26,27,28 
+	for(int b=0; b<16;b++) begin 
+		if((b+temp_s)<16) begin 
+			temp_r[(b*8)+:8]=RA[((b+temp_s)*8)+:8];
+			
+		end   
+	else begin 
+		temp_r[(b*8)+:8]=0;
+		
+	end 
+		
+	end
+	RT=temp_r;
+end  
+11'b00111011100: begin 	  //rotate quadword by bytes 
+temp_s=RB[28+:4]; //28-31 28,29,30,31	
+for(int b=0;b<16;b++) begin 
+	if((b+temp_s)<16) begin 
+		temp_r[(b*8)+:8]=RA[((b+temp_s)*8)+:8]; 
+		
+	end   
+else begin 
+temp_r[(b*8)+:8]=RA[((b+temp_s-16)*8)+:8]; 	
+	
+end 
+	
+end 
+end 
+11'b00111111100: begin 	//rotate quadword by bytes immediate 
+	 temp_s=imm7[14+:3]; //14,15,17
+for(int b=0;b<16;b++) begin 
+	if((b+temp_s)<16) begin 
+		temp_r[(b*8)+:8]=RA[((b+temp_s)*8)+:8]; 
+		
+	end   
+else begin 
+temp_r[(b*8)+:8]=RA[((b+temp_s-16)*8)+:8]; 	
+	
+end 
+	
+end
 end 
 endcase
 
