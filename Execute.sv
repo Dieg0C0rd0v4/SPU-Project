@@ -1,7 +1,7 @@
 
 module Execute (readDataRA_EX, readDataRB_EX, readDataRC_EX, opcode_EX,
 	        imm7, imm10, imm16, imm18, 
-		result_EX, latency_EX, branch_PC, branch_flag);
+		result_EX, latency_EX, branch_PC, branch_flag,local_store_address);
 
                           
 
@@ -15,11 +15,11 @@ input signed [9:0] imm10;
 input signed [15:0] imm16;
 input signed  [17:0] imm18;
 
-output logic [31:0] branch_PC; //new PC address
+output logic [31:0] branch_PC,local_store_address; //new PC address
 logic [17:0] branch_PC_p1; //add first two bits to PC address 
 logic [31:0] branch_PC_p2; 
 logic [7:0] temp_b,temp_c; // 8 bit temp number 		   
-logic [31:0] temp_bbbb,local_store_address;
+logic [31:0] temp_bbbb;
 logic [15:0] temp_r,temp_s,temp_k;	
 
 output [127:0] result_EX; //perhaps not needed, if we have 
@@ -1142,8 +1142,14 @@ RT[(8*8)+:32]=0;
 RT[(12*8)+:32]=0;
 	
 end
-11'b00110100: begin  //load quadword d form 
-	imm_extended_32={ imm10[9:0],{4{1'b0}}};
+11'b00110100: begin  //load quadword d form
+	//bits 0 to 3 of imm extended 32 is 0 
+	//bits 4 to 13 should be 10 bits 
+	//4,5,6,7,8,9,10,11,12,13 
+	//18+14=32
+	imm_extended_32[4:0]=0;
+	imm_extended_32[13:4]=imm10;  
+	
 	imm_extended_32={{18{imm_extended_32[31]}},imm_extended_32};
 	local_store_address=imm_extended_32+RA[0+:32]&32'hFFFFFFF0;
 	RT=local_store_address;
