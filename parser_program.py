@@ -113,6 +113,7 @@ while True:
     print("The number of args are "+str(len(reg_and_imm)))
     for i in range(len(reg_and_imm)):
         arg=reg_and_imm[i]
+        print("CURR arg is "+arg)
         #print("i is "+str(i))
         #print(bin(int(arg)))
         binary_arg=bin(int(arg))[2:]
@@ -129,9 +130,10 @@ while True:
     new_line=new_binary+new_line
     print("the new line character length is "+str(len(new_line)))
     #print(new_line)
-    new_arg="" #clear new_arg `
-    binary_code_array.append(new_line) #add line to array 
-    arr_array=[]
+    
+    binary_code_array.append(new_line) #add line to array
+    new_line="" #clear new_arg 
+    arg_array=[]
 code.close()
 with open('binary_code.txt','w') as binary_code:
     for binary in binary_code_array:
