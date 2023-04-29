@@ -19,8 +19,8 @@ output logic [31:0] branch_PC; //new PC address
 logic [17:0] branch_PC_p1; //add first two bits to PC address 
 logic [31:0] branch_PC_p2; 
 logic [7:0] temp_b,temp_c; // 8 bit temp number 		   
-logic [31:0] temp_bbbb;
-logic [15:0] temp_r,temp_s;	
+logic [31:0] temp_bbbb,local_store_address;
+logic [15:0] temp_r,temp_s,temp_k;	
 
 output [127:0] result_EX; //perhaps not needed, if we have 
 output logic [2:0] latency_EX; 
@@ -1028,7 +1028,7 @@ RT=temp_r;
 	
 end	
 11'b00111001111: begin //shift left quadword by bits bit shift count 
-	temp_s=RB[24+:5]; //bits 24-28 24,25,26,27,28 
+	temp_s=RB[28:24]; //bits 24-28 24,25,26,27,28 
 	for(int b=0; b<16;b++) begin 
 		if((b+temp_s)<16) begin 
 			temp_r[(b*8)+:8]=RA[((b+temp_s)*8)+:8];
@@ -1043,7 +1043,7 @@ end
 	RT=temp_r;
 end  
 11'b00111011100: begin 	  //rotate quadword by bytes 
-temp_s=RB[28+:4]; //28-31 28,29,30,31	
+temp_s=RB[31:28]; //28-31 28,29,30,31	
 for(int b=0;b<16;b++) begin 
 	if((b+temp_s)<16) begin 
 		temp_r[(b*8)+:8]=RA[((b+temp_s)*8)+:8]; 
@@ -1054,7 +1054,8 @@ temp_r[(b*8)+:8]=RA[((b+temp_s-16)*8)+:8];
 	
 end 
 	
-end 
+end
+RT=temp_r;
 end 
 11'b00111111100: begin 	//rotate quadword by bytes immediate 
 	 temp_s=imm7[14+:3]; //14,15,17
@@ -1067,8 +1068,106 @@ else begin
 temp_r[(b*8)+:8]=RA[((b+temp_s-16)*8)+:8]; 	
 	
 end 
+
+end
+RT=temp_r;
+end 
+11'b00111011000: begin //rotate quadword by bits 
+	for(int b=0;b<128;b++) begin 
+		if((b+temp_s)<128) begin 
+			temp_r[(b*8)+:8]=RA[((b+temp_s)*8)+:8];
+		end  
+		else begin 
+temp_r[(b*8)+:8]=RA[((b+temp_s-128)*8)+:8]; 	
+	
+end 
+	end  
+RT=temp_r;	
+end 
+11'b00111111000: begin //rotate quadword by bits immediate 
+	temp_s=imm7[6:4]; 
+	for(int b=0;b<128;b++) begin 
+		if((b+temp_s)<128) begin 
+			temp_r[(b*8)+:8]=RA[((b+temp_s)*8)+:8]; 
+		end  
+		else begin 
+temp_r[(b*8)+:8]=RA[((b+temp_s-128)*8)+:8]; 	
+	
+end 
+	end  
+RT=temp_r;	
+end 
+11'b00110110010: begin //gather bits from bytes 
+	temp_k=0; 
+	temp_s=0;
+for(int j=7;j<128;j+=8) begin 
+temp_s[temp_k]=RA[j];
+temp_k=temp_k+1; 
+	
+end 
+RT[0+:16]=0;
+RT[16+:16]=temp_s; 
+RT[(4*8)+:32]=0;
+RT[(8*8)+:32]=0;
+RT[(12*8)+:32]=0;
+	
+end 
+11'b00110110001: begin //gather bits from halfwords
+	temp_k=0; 
+	temp_s=0;
+for(int j=15;j<128;j+=16) begin 
+temp_s[temp_k]=RA[j];
+temp_k=temp_k+1; 
+	
+end 
+RT[0+:24]=0;
+RT[24+:8]=temp_s; 
+RT[(4*8)+:32]=0;
+RT[(8*8)+:32]=0;
+RT[(12*8)+:32]=0;
+	
+end 
+11'b00110110000: begin //gather bits from words 
+	temp_k=0; 
+	temp_s=0;
+for(int j=31;j<128;j+=32) begin 
+temp_s[temp_k]=RA[j];
+temp_k=temp_k+1; 
+	
+end 
+RT[0+:28]=0;
+RT[28+:4]=temp_s; 
+RT[(4*8)+:32]=0;
+RT[(8*8)+:32]=0;
+RT[(12*8)+:32]=0;
 	
 end
+11'b00110100: begin  //load quadword d form 
+	imm_extended_32={ imm10[9:0],{4{1'b0}}};
+	imm_extended_32={{18{imm_extended_32[31]}},imm_extended_32};
+	local_store_address=imm_extended_32+RA[0+:32]&32'hFFFFFFF0;
+	RT=local_store_address;
+	
+end  
+11'b00111000100: begin //load quadword x form  
+
+	local_store_address=(RB[0+:32]+RA[0+:32])&32'hFFFFFFF0;
+	RT=local_store_address;
+	
+end 
+11'b00100100: begin//store quadword d form  
+    imm_extended_32={ imm10[9:0],{4{1'b0}}};
+	imm_extended_32={{18{imm_extended_32[31]}},imm_extended_32};
+	local_store_address=imm_extended_32+RA[0+:32]&32'hFFFFFFF0;
+		
+	
+	
+end 
+11'b00101000100: begin //store quadword x form 
+	local_store_address=(RB[0+:32]+RA[0+:32])&32'hFFFFFFF0;
+	
+	
+	
 end 
 endcase
 
