@@ -25,7 +25,7 @@ module REG_EX_STAGE(regWriteEnable_REG1, opcode_REG1, unitID_REG1,
 input clk;
 input stall, flush;
 input regWriteEnable_REG1, regWriteEnable_REG2;
-input [6:0] opcode_REG1, opcode_REG2;
+input [10:0] opcode_REG1, opcode_REG2;
 input [2:0] unitID_REG1, unitID_REG2;
 input [127:0] readDataRA_REG1, readDataRB_REG1, readDataRC_REG1;
 input [127:0] readDataRA_REG2, readDataRB_REG2, readDataRC_REG2;
@@ -42,7 +42,7 @@ input         selectForwardRA_REG2, selectForwardRB_REG2, selectForwardRC_REG2;
 
 
 output logic regWriteEnable_EX1, regWriteEnable_EX2;
-output logic [6:0] opcode_EX1, opcode_EX2;
+output logic [10:0] opcode_EX1, opcode_EX2;
 output logic [2:0] unitID_EX1, unitID_EX2;
 output logic [127:0] readDataRA_EX1, readDataRB_EX1, readDataRC_EX1;
 output logic [127:0] readDataRA_EX2, readDataRB_EX2, readDataRC_EX2;
@@ -69,7 +69,6 @@ always_ff @(posedge clk) begin
 		// Even Pipe
 		regWriteEnable_EX1<=regWriteEnable_REG1;
 		opcode_EX1<=opcode_REG1;
-		unitID_EX1<=unitID_REG1;
 		readDataRA_EX1<=readDataRA_REG1; readDataRB_EX1<=readDataRB_REG1; readDataRC_EX1<=readDataRC_REG1;
 		readRegisterRA_EX1<=readRegisterRA_REG1; readRegisterRB_EX1<=readRegisterRB_REG1; readRegisterRT_EX1<=readRegisterRT_REG1;
 		immediate7BIT_EX1<=immediate7BIT_REG1;
@@ -81,7 +80,6 @@ always_ff @(posedge clk) begin
 		//Odd Pipe
 		regWriteEnable_EX2<=regWriteEnable_REG2;
 		opcode_EX2<=opcode_REG2;
-		unitID_EX2<=unitID_REG2;
 		readDataRA_EX2<=readDataRA_REG2; readDataRB_EX2<=readDataRB_REG2; readDataRC_EX2<=readDataRC_REG2;
 		readRegisterRA_EX2<=readRegisterRA_REG2; readRegisterRB_EX2<=readRegisterRB_REG2; readRegisterRT_EX2<=readRegisterRT_REG2;
 		immediate7BIT_EX2<=immediate7BIT_REG2;

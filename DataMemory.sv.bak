@@ -3,7 +3,7 @@
 module DataMemory(address, writeData, unitID, regWriteEnable, readData);
 
 
-input [31:0] address; // result ( LSA )
+input [127:0] address; // result ( LSA )
 input [127:0] writeData; // readregisterRC
 input [2:0] unitID; //unit id of store and load is 7
 input regWriteEnable;// regWriteEnable_ST72

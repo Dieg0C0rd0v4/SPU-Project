@@ -43,10 +43,8 @@ always_comb begin
 //fowardRA //EVEN PIPE
 
 	if (reset) begin 
-        stall = 0;
-        selectForwardRA_ID1 = 0; selectForwardRB_ID1 = 0; selectForwardRC_ID1 = 0;
-        selectForwardRA_ID2 = 0; selectForwardRB_ID2 = 0; selectForwardRC_ID2 = 0;
-    end
+		stall = 0;
+	end
 
 
 	else begin
@@ -717,28 +715,6 @@ always_comb begin
 				end
 		end
 	//fowardRC //ODD PIPE
-		if     (regWriteEnable_ST22) begin
-				if (readRegisterRC_ID1 == readRegisterRT_ST22) begin 
-					if (latency_ST22 == 0) begin
-						forwardDataRC_ID1 = result_ST32;
-						selectForwardRC_ID1 = 1; 
-						stall = 0;
-					end
-					else begin
-						stall = 1; 
-					end 
-				end
-				if (readRegisterRC_ID2 == readRegisterRT_ST22) begin 
-					if (latency_ST22  == 0) begin
-						forwardDataRC_ID2 = result_ST22;
-						selectForwardRC_ID2 = 1; 
-						stall = 0; 
-					end
-					else begin
-						stall = 1; 
-					end 
-				end
-		end
 		if     (regWriteEnable_ST32) begin
 				if (readRegisterRC_ID1 == readRegisterRT_ST32) begin 
 					if (latency_ST32 == 0) begin

@@ -7,8 +7,9 @@ input enablePC; //pipe so address goes by +4; If stall then this is set to 0 fro
 input branchFlag;
 input [10:0] branchTarget; 
 
-reg [63:0] mem[0:249]; // Memory of the instructions; 2KB = ? ;
-
+//reg [63:0] mem[0:249]; // Memory of the instructions; 2KB = ? ;
+integer mem; 
+logic [63:0] line;  
 logic [10:0] address; 
 logic [10:0] PC; 
 
@@ -17,9 +18,9 @@ assign address=PC>>3; // Renaming PC as address for better understanding
 output logic  [31:0] instruction1, instruction2;
 
 initial begin
-
-	$readmemb("code.txt", mem); // Read the file of the instructions; Also read text binary from parser
-
+        mem=$fopen("code.txt","rb");  
+	//$readmemh("code.txt", mem); // Read the file of the instructions; Also read text binary from parser
+	//line = $fgets (line,"code.txt"); //Get entire line
 end 
 
 always_ff @(posedge clk) begin
@@ -40,8 +41,8 @@ end
 
 always_comb begin
 
-	instruction1 = mem[address][63:32];
-	instruction2 = mem[address][31:0];
+	instruction1 = line[63:32];
+	instruction2 = line[31:0]; 
 end
 
 endmodule

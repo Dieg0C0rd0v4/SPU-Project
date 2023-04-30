@@ -17,7 +17,7 @@ always_ff @(posedge clk) begin
 		instruction2_ID <= 0; 
 	end
 
-	else if (!stall) begin
+	if (!stall) begin
 		instruction1_ID <= instruction1_IF;
 		instruction2_ID <= instruction2_IF; 
 	end	
