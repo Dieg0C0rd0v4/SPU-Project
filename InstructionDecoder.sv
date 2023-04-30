@@ -86,20 +86,22 @@ always_comb begin
 		
 		
 	end 
-else if(isSeven==0&&opcode_found==0) begin 
-	case(instruction[31:25])
-	7'b0100001: begin 	 //load address 
+if(isSeven==0&&opcode_found==0) begin 
+	//case(instruction[31:25])
+	if(instruction[31:25]== 7'b0100001) begin 	 //load address 
 	imm18=instruction[24:7];
 	readRegisterRT=instruction[6:0];
 	    useRA=0;
 		useRB=0;
 		useRC=0;
 		unitID=1;
-		opcode=43; 
+		opcode=43;
+		opcode_found=1; 
+		isSeven=1; 
 	end 
 	
 	
-	endcase 
+	//endcase 
 		
 	end  
 	 

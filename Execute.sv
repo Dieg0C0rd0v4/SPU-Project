@@ -1,7 +1,7 @@
 
-module Execute (readDataRA_EX, readDataRB_EX, readDataRC_EX, opcode_EX,
-	        imm7, imm10, imm16, imm18, 
-		result_EX, latency_EX, branch_PC, branch_flag,local_store_address);
+module Execute (readDataRA_EX, readDataRB_EX, readDataRC_EX, opcode_EX,	unitID_EX,
+	        	imm7, imm10, imm16, imm18, 
+				result_EX, latency_EX, branch_PC, branch_flag,local_store_address);
 
                           
 
@@ -14,14 +14,14 @@ input signed [6:0] imm7;
 input signed [9:0] imm10;
 input signed [15:0] imm16;
 input signed  [17:0] imm18;
-
+input [2:0] unitID_EX;
 output logic [31:0] branch_PC,local_store_address; //new PC address
 logic [17:0] branch_PC_p1; //add first two bits to PC address 
 logic [31:0] branch_PC_p2; 
 logic [7:0] temp_b,temp_c; // 8 bit temp number 		   
 logic [31:0] temp_bbbb;
 logic [15:0] temp_r,temp_s,temp_k;	
-
+logic [127:0] temp_r_large; 
 output [127:0] result_EX; //perhaps not needed, if we have 
 output logic [2:0] latency_EX; 
 output logic branch_flag=0;	//set default to 0
@@ -41,7 +41,7 @@ logic [31:0] imm_extended_32;
 logic [31:0] temp_32,temp_u,temp_t,temp_t1,temp_t2,temp_t3;  
 logic [15:0] unsigned_imm_extended;
 logic [31:0] unsigned_imm_extended_32;
-
+logic [13:0] fourteen_temp;
 assign result_EX     = RT; 
 assign RA = readDataRA_EX; 
 assign RB = readDataRB_EX; 
@@ -64,7 +64,13 @@ assign branch_PC_p2={{14{branch_PC_p1[17]}},branch_PC_p1};
 //assign unsigned_imm_extended_32=unsigned'(imm_extended_32);
 
 
-always_comb begin
+always_comb begin 
+	
+	if (unitID_EX == 1 ) begin
+		latency_EX = 3-1; 
+	end
+	else latency_EX = 0; 
+	
 	case(opcode_EX) 
 		7'd5: begin //add halfword 
 			latency_EX= 3-1; 
@@ -132,23 +138,23 @@ always_comb begin
 	7'd10: begin	 //subtract from halfword immediate  
 			latency_EX= 3-1; 	 
 			imm_extended={ {6{imm10[9]}},imm10};
-			RT[0+:16] = (~RA[0+:16]+1)+imm_extended;
-			RT[16+:16]=(~RA[16+:16]+1)+imm_extended;
-			RT[32+:16]=(~RA[32+:16]+1)+imm_extended;
-			RT[48+:16]=(~RA[48+:16]+1)+imm_extended;
-			RT[64+:16]=(~RA[64+:16]+1)+imm_extended;
-			RT[80+:16]=(~RA[80+:16]+1)+imm_extended;
-			RT[96+:16]=(~RA[96+:16]+1)+imm_extended;
-			RT[112+:16]=(~RA[112+:16]+1)+imm_extended; 
+			RT[0+:16] = (~RA[0+:16])+imm_extended+1;
+			RT[16+:16]=(~RA[16+:16])+imm_extended+1;
+			RT[32+:16]=(~RA[32+:16])+imm_extended+1;
+			RT[48+:16]=(~RA[48+:16])+imm_extended+1;
+			RT[64+:16]=(~RA[64+:16])+imm_extended+1;
+			RT[80+:16]=(~RA[80+:16])+imm_extended+1;
+			RT[96+:16]=(~RA[96+:16])+imm_extended+1;
+			RT[112+:16]=(~RA[112+:16])+imm_extended+1; 
 		
 	end 
 	7'd11: //subtract from word
 	begin 
 		    latency_EX= 3-1; //subtract from word
-			RT[0+:32] = (~RA[0+:32]+1)+RB[0+:32]; //bytes 0 and 3
-			RT[32+:32]=(~RA[32+:32]+1)+RB[32+:32]; //bytes 4 and 7
-			RT[64+:32]=(~RA[64+:32]+1)+RB[64+:32]; //bytes 8 and 11
-			RT[96+:32]=(~RA[96+:32]+1)+RB[96+:32]; //bytes 12 and 15
+			RT[0+:32] = (~RA[0+:32])+RB[0+:32]+1; //bytes 0 and 3
+			RT[32+:32]=(~RA[32+:32])+RB[32+:32]+1; //bytes 4 and 7
+			RT[64+:32]=(~RA[64+:32])+RB[64+:32]+1; //bytes 8 and 11
+			RT[96+:32]=(~RA[96+:32])+RB[96+:32]+1; //bytes 12 and 15
 			
 		
 		
@@ -471,7 +477,7 @@ always_comb begin
 
 		latency_EX= 3-1;
 		for(int j=0; j<16;j+=2) begin 
-			if(unsigned_RA[(j*8)+:16]>unsigned_RB[(j*8)+:16]) begin 
+			if(unsigned'(RA[(j*8)+:16])>unsigned'(RB[(j*8)+:16])) begin 
 				RT[(j*8)+:16]=11'hFFFF;
 				
 				
@@ -490,7 +496,7 @@ always_comb begin
 	imm_extended={ {6{imm10[9]}},imm10[9:0]}; 
 	unsigned_imm_extended=unsigned'(imm_extended);
 	for(int j=0; j<16;j+=2) begin 
-			if(unsigned_RA[(j*8)+:16]>unsigned_imm_extended) begin 
+			if(unsigned'(RA[(j*8)+:16])>unsigned'(imm_extended)) begin 
 				RT[(j*8)+:16]=11'hFFFF;
 				
 				
@@ -526,7 +532,7 @@ always_comb begin
 		imm_extended={ {6{imm10[9]}},imm10[9:0]};
 		unsigned_imm_extended=unsigned'(imm_extended);
 	for(int j=0; j<16;j+=2) begin 
-			if(unsigned_RA[(j*8)+:16]>unsigned_imm_extended) begin 
+			if(unsigned'(RA[(j*8)+:16])>unsigned'(imm_extended)) begin 
 				RT[(j*8)+:16]=11'hFFFF;
 				
 				
@@ -561,16 +567,21 @@ always_comb begin
 	end 
 	7'd43: begin //immediate load address 
 	latency_EX= 3-1;
-	RT=imm18;
-	RT[31:18]=0; //set rest of the bits to 0
+	imm_extended_32={ {14{imm18[17]}},imm18};
+	RT[0+:32]=imm_extended_32;
+	RT[32+:32]=imm_extended_32;
+	RT[64+:32]=imm_extended_32;
+	RT[96+:32]=imm_extended_32; 
 		
 	end 
 	
 	7'd44: begin //immediate or halfword lower
 	latency_EX=3-1; 
-	temp_t=imm16;
-	temp_t[31:16]=0;  
-	RT=RT|temp_t;
+	temp_t={ {16{imm16[15]}},imm16};
+	RT[0+:32]=temp_t|RT[0+:32];
+	RT[32+:32]=temp_t|RT[32+:32];
+	RT[64+:32]=temp_t|RT[64+:32];
+	RT[96+:32]=temp_t|RT[96+:32]; 
 	
 	
 		
@@ -581,10 +592,10 @@ always_comb begin
 	temp_bbbb[15:8]=temp_b;
 	temp_bbbb[23:16]=temp_b;
 	temp_bbbb[31:24]=temp_b;
-	RT[0+:32]=RA[0+:24] &temp_bbbb;	  
-	RT[32+:32]=RA[0+:24] &temp_bbbb;
-	RT[64+:32]=RA[0+:24] &temp_bbbb;	 
-	RT[96+:32]=RA[0+:24] &temp_bbbb;
+	RT[0+:32]=RA[0+:32] &temp_bbbb;	  
+	RT[32+:32]=RA[32+:32] &temp_bbbb;
+	RT[64+:32]=RA[64+:32] &temp_bbbb;	 
+	RT[96+:32]=RA[96+:32] &temp_bbbb;
 		
 	end 
 	7'd46: begin 	//shift left halfword	
@@ -611,7 +622,7 @@ always_comb begin
 		
    7'd47: begin //shift left halfword immediate 
 	for(int j=0;j<16;j+=2) begin 
-   imm_extended={ {11{imm7[6]}},imm7[6:0]};
+   imm_extended={ {9{imm7[6]}},imm7};
    temp_s=imm_extended&16'h1F; //halfword access +:16  
    temp_t=RA[(j*8)+:16];//halfword access +:16 
 	for(int b=0;b<16;b++) begin 
@@ -832,10 +843,10 @@ end
 	
 end   
 7'd55: begin //multiply unsigned 
-	        RT[0+:32] = unsigned_RA[0+:32]*unsigned_RB[0+:32]; //bytes 0 and 3
-			RT[32+:32]=unsigned_RA[32+:32]*unsigned_RB[32+:32]; //bytes 4 and 7
-			RT[64+:32]=unsigned_RA[64+:32]*unsigned_RB[64+:32]; //bytes 8 and 11
-			RT[96+:32]=unsigned_RA[96+:32]*unsigned_RB[96+:32]; //bytes 12 and 15
+	        RT[0+:32] = unsigned'(RA[0+:32])*unsigned'(RB[0+:32]); //bytes 0 and 3
+			RT[32+:32]=unsigned'(RA[32+:32])*unsigned'(RB[32+:32]); //bytes 4 and 7
+			RT[64+:32]=unsigned'(RA[64+:32])*unsigned'(RB[64+:32]); //bytes 8 and 11
+			RT[96+:32]=unsigned'(RA[96+:32])*unsigned'(RB[96+:32]); //bytes 12 and 15
 	
 end 
 7'd56: begin  //multiply immediate 
@@ -852,10 +863,10 @@ end
 7'd57: begin  //multiply unsigned immediate 
 	        latency_EX= 3-1; //multiply word immediate	   
 	 		imm_extended_32={ {22{imm10[9]}},imm10[9:0]};
-			RT[0+:32] = unsigned_RA[0+:32]*unsigned'(imm_extended_32);
-			RT[32+:32]=unsigned_RA[32+:32]*unsigned'(imm_extended_32);
-			RT[64+:32]=unsigned_RA[64+:32]*unsigned'(imm_extended_32);
-			RT[96+:32]=unsigned_RA[96+:32]*unsigned'(imm_extended_32); 	
+			RT[0+:32] = unsigned'(RA[0+:32])*unsigned'(imm_extended_32);
+			RT[32+:32]=unsigned'(RA[32+:32])*unsigned'(imm_extended_32);
+			RT[64+:32]=unsigned'(RA[64+:32])*unsigned'(imm_extended_32);
+			RT[96+:32]=unsigned'(RA[96+:32])*unsigned'(imm_extended_32); 	
 	
 	
 end   
@@ -923,12 +934,12 @@ end
 end 
 7'd66: begin //absolute differences of bytes 
 	for(int j=0;j<16;j++) begin 
-		if(unsigned_RB[(j*8)+:8]>unsigned_RA[(j*8)+:8]) begin 
+		if(unsigned'(RB[j*8+:8])>unsigned'(RA[j*8+:8])) begin 
 			
-		RT[(j*8)+:8]=unsigned_RB[(j*8)+:8]-unsigned_RA[(j*8)+:8];	
+		RT[(j*8)+:8]=unsigned'(RB[(j*8)+:8])-unsigned'(RA[(j*8)+:8]);	
 		end 
 	else begin 
-		RT[(j*8)+:8]=unsigned_RA[(j*8)+:8]-unsigned_RB[(j*8)+:8];	
+		RT[(j*8)+:8]=unsigned'(RA[(j*8)+:8])-unsigned'(RB[(j*8)+:8]);	
 		
 	end 
 		
@@ -980,27 +991,27 @@ end
 	temp_s=RB[29+:3];
 	for(int b=0;b<128;b++) begin 
 		if((b+temp_s)<128) begin 
-			temp_r[b]=RA[b+temp_s];
+			temp_r_large[b]=RA[b+temp_s];
 			
 		end 
 	else begin 
-		temp_r[b]=0;
+		temp_r_large[b]=0;
 		
 	end 
 		
 	end 
-RT=temp_r;	
+RT=temp_r_large;	
 		
 end 
 7'd71: begin 		  //Shift Left Quadword by Bits Immediate
 temp_s=imm7&7'h7;
 for(int b=0;b<128;b++) begin 
 		if((b+temp_s)<128) begin 
-			temp_r[b]=RA[b+temp_s];
+			temp_r_large[b]=RA[b+temp_s];
 			
 		end 
 	else begin 
-		temp_r[b]=0;
+		temp_r_large[b]=0;
 		
 	end 
 		
@@ -1086,23 +1097,23 @@ end
 7'd77: begin //rotate quadword by bits 
 	for(int b=0;b<128;b++) begin 
 		if((b+temp_s)<128) begin 
-			temp_r[(b*8)+:8]=RA[((b+temp_s)*8)+:8];
+			temp_r_large[b]=RA[b+temp_s];
 		end  
 		else begin 
-temp_r[(b*8)+:8]=RA[((b+temp_s-128)*8)+:8]; 	
+temp_r_large[b]=RA[b+temp_s-128]; 	
 	
 end 
 	end  
-RT=temp_r;	
+RT=temp_r_large;	
 end 
 7'd78: begin //rotate quadword by bits immediate 
 	temp_s=imm7[6:4]; 
 	for(int b=0;b<128;b++) begin 
 		if((b+temp_s)<128) begin 
-			temp_r[(b*8)+:8]=RA[((b+temp_s)*8)+:8]; 
+			temp_r_large[b]=RA[b+temp_s];
 		end  
 		else begin 
-temp_r[(b*8)+:8]=RA[((b+temp_s-128)*8)+:8]; 	
+temp_r_large[b]=RA[b+temp_s-128]; 	
 	
 end 
 	end  
@@ -1158,10 +1169,8 @@ end
 	//bits 4 to 13 should be 10 bits 
 	//4,5,6,7,8,9,10,11,12,13 
 	//18+14=32
-	imm_extended_32[4:0]=0;
-	imm_extended_32[13:4]=imm10;  
-	
-	imm_extended_32={{18{imm_extended_32[31]}},imm_extended_32};
+	fourteen_temp={ imm10,{4{1'b0}}};
+	imm_extended_32={{18{fourteen_temp[13]}},fourteen_temp};
 	local_store_address=imm_extended_32+RA[0+:32]&32'hFFFFFFF0;
 	RT=local_store_address;
 	
@@ -1173,8 +1182,8 @@ end
 	
 end 
 7'd84: begin//store quadword d form  
-    imm_extended_32={ imm10[9:0],{4{1'b0}}};
-	imm_extended_32={{18{imm_extended_32[31]}},imm_extended_32};
+    fourteen_temp={ imm10,{4{1'b0}}};
+	imm_extended_32={{18{fourteen_temp[13]}},fourteen_temp};
 	local_store_address=imm_extended_32+RA[0+:32]&32'hFFFFFFF0;
 		
 	
