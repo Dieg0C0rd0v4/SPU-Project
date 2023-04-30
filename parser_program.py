@@ -85,7 +85,7 @@ def order_code(opcode_length,array):
         final_string=array[0]+array[2]+array[1]+array[3]
        # padded_binary=binary_number.zfill(RRR[current_arg])
     elif(opcode_length==8):
-        final_string=array[3]+array[1]+array[0]
+        final_string=array[2]+array[1]+array[0]
        # padded_binary=binary_number.zfill(R_I10[current_arg])
     elif(opcode_length==9):
         final_string=array[1]+array[0]
@@ -100,6 +100,7 @@ while True:
     if len(file_line) == 0: #break when there are no more strings 
          break
     split_line=file_line.split() # separate keyword from registers
+    print(split_line)
     print("The length of the file is")
     print(len(file_line))
     #print("Opcode is "+split_line[0])
@@ -135,8 +136,15 @@ while True:
     new_line="" #clear new_arg 
     arg_array=[]
 code.close()
+
+i=0
 with open('binary_code.txt','w') as binary_code:
     for binary in binary_code_array:
-        binary_code.write(binary)
-        binary_code.write('\n')
+        binary_code.write(binary) #0,1 line 2,3, line 
+        i=i+1
+        if(i%2==0 or i==0):
+            binary_code.write('\n')
+            
+        
+        
 binary_code.close()
